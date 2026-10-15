@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#000000"><link rel="manifest" href="manifest.json"><meta name="apple-mobile-web-app-title" content="HoopsDesk"><meta http-equiv="Cache-Control" content="no-cache"></head><body>
+<!doctype html><html><head><script>(function(){function f(){if(!(navigator.standalone||matchMedia("(display-mode: standalone)").matches))return;var h=Math.max(innerHeight,(innerWidth<innerHeight?screen.height:screen.width));document.documentElement.style.setProperty("--fullh",h+"px");document.documentElement.classList.add("hd-sa")}f();addEventListener("resize",f);addEventListener("orientationchange",function(){setTimeout(f,300)})})();</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#000000"><link rel="manifest" href="manifest.json"><meta name="apple-mobile-web-app-title" content="HoopsDesk"><meta http-equiv="Cache-Control" content="no-cache"></head><body>
 <script>window.HDP=function(id){return location.port?"/img/p/"+id+".png":"https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/"+id+".png&w=260&h=190"};window.HDT=function(k){return location.port?"/img/t/"+k+".png":"https://a.espncdn.com/i/teamlogos/nba/500/"+k+".png"};</script><title>HoopsDesk iPhone</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap">
 <style>
@@ -919,6 +919,8 @@ html,body{background:#000!important}
 .hdstk>.lt+.hd-otabs{margin:0!important;padding:0!important}
 .hdstk>.whtop{margin:0!important;padding:0 0 6px!important}
 .hdstk>.whtop+.whtabs{margin:0!important;padding:0!important}
+
+@media (max-width:520px){html.hd-sa .phone{bottom:auto!important;height:var(--fullh)!important}html.hd-sa,html.hd-sa body{height:var(--fullh)!important}}
 </style>
 <div class="stage">
  <aside class="side"><h1>HoopsDesk <span>for iPhone</span></h1><p>Design of the iPhone app. Tap around, it all works: the tabs, the players, the trade builder.</p><ul><li><b>Home</b>: score, last night, this week's review, category ranks, waivers. Tap the score for the full game.</li><li><b>Team</b>: roster and player cards</li><li><b>Matchup</b>: ESPN-style category table with our ball logic</li><li><b>More</b>: rankings and settings</li><li><b>Trades</b>: your market and the builder</li></ul><p>Numbers are a snapshot of your Anti-Quemo league (preseason projections). Photos show as initials here; the app uses real headshots.</p><p>On your phone, open this link directly and it fills the screen.</p></aside>
