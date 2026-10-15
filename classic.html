@@ -869,6 +869,7 @@ button.whfit{border:0;background:none;padding:0;cursor:pointer;color:inherit;fon
 .espt th{font:700 10px system-ui;color:var(--sub);padding:7px 2px;border-bottom:1px solid var(--sep);text-align:center}
 .espt td{text-align:center;padding:9px 2px;border-bottom:1px solid var(--sep);color:var(--sub)}.espt td small{display:block;font:800 9px system-ui}
 .espt .tm{text-align:left;color:var(--ink);font-weight:800}.espt td.b{color:var(--ink);font-weight:800}.espt td.pn{opacity:.4}.espt td.sc{font:800 14px "Roboto Condensed",sans-serif;color:var(--ink)}
+body:has(#cr-root) #tabs,body:has(.mvsh) #tabs{opacity:0!important;pointer-events:none!important;transition:opacity .2s}
 .mvgear{margin-left:auto;width:34px;height:34px;border-radius:50%;border:1px solid var(--sep,#2f3035);background:var(--surface,#1b1c20);color:var(--ink,#fff);display:grid;place-items:center;cursor:pointer;flex:none}
 .mvov{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:900}
 .mvsh{position:fixed;left:0;right:0;bottom:0;z-index:901;max-width:520px;margin:0 auto;background:#1c1d21;border-radius:20px 20px 0 0;border-top:1px solid #333;padding:10px 16px calc(18px + env(safe-area-inset-bottom));font-family:system-ui;color:#ececee;animation:mvup .28s cubic-bezier(.2,.8,.2,1)}
@@ -1768,12 +1769,12 @@ function viz(R,r,look,key,small){const p=r.p,P=pc(p),c=col(p);
  if(look==="tug"){return `<div class="cr-tug"><div class="cr-tugb"><i style="width:${P}%"></i><span style="left:${P}%"></span></div><div class="cr-tugl"><b style="color:#ffc62b">You ${P}%</b><b style="color:#4da3ff">${100-P}% Them</b></div></div>`}
  if(look==="cast"){const ic=p>=.75?"☀️":p>=.6?"🌤️":p>=.4?"⛅":p>=.25?"🌧️":"⛈️",fr=p>=.95?"Basically locked":p>=.75?"Like rolling 1–5 on a die":p>=.6?"Better than a coin flip":p>=.4?"A coin flip":p>=.25?"Worse than a coin flip":"Long shot";return `<div class="cr-cast"><span>${ic}</span><div><b style="color:${c}">${P}% chance</b><small>you win ${R.c} · ${fr}</small></div></div>`}
  return curve(R,r,small?64:96,key)+(small?"":`<div class="cr-vcap">Higher = more likely final margin. <b style="color:#47d16f">Green</b> = weeks you win.</div>`)}
-function lookBar(S){return `<div class="cr-looks">${LOOKS.map(([k,n])=>`<button data-look="${k}" class="${S.look===k?"on":""}">${n}</button>`).join("")}</div>`}
+function lookBar(S){const i=Math.max(0,LOOKS.findIndex(x=>x[0]===S.look)),nx=LOOKS[(i+1)%LOOKS.length];return `<button class="cr-lkbtn" data-look="${nx[0]}" aria-label="Switch view"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg>${LOOKS[i][1]}</button>`}
 function pOdds(R,S,r){const m=r.v-R.b,sdm=R.sd*.75,s=series(R,S),bk=s.filter(x=>x.past).reduce((t,x)=>t+(R.pct?0:x.me),0),bkT=s.filter(x=>x.past).reduce((t,x)=>t+(R.pct?0:x.th),0);
  const lab=Math.abs(m)<(R.pct?.0005:.5)?"dead even":m>=0?`win by ${F(R,Math.abs(m))}`:`lose by ${F(R,Math.abs(m))}`;
- return `<div class="cr-sec">How this ends</div>${lookBar(S)}${viz(R,r,S.look,"o")}<div class="cr-call">Most likely: <b>${lab}</b>. ${r.p>=.8?"Safe. Don't spend moves here.":r.p<=.2?"Long shot. Only chase it if it's cheap.":"Live. One good night swings it."}</div>
-<div class="cr-sec" style="margin-top:14px">Range · cold / typical / hot</div><div class="cr-rng"><span></span><b class="cr-lab">Cold</b><b class="cr-lab">Typical</b><b class="cr-lab">Hot</b><b style="color:#ffc62b">You</b><span>${F(R,r.v-sdm,0)}</span><b>${F(R,r.v,0)}</b><span>${F(R,r.v+sdm,0)}</span><b style="color:#4da3ff">Opp</b><span>${F(R,R.b-sdm,0)}</span><b>${F(R,R.b,0)}</b><span>${F(R,R.b+sdm,0)}</span></div>
- ${R.pct?"":`<div class="cr-sec" style="margin-top:14px">Banked vs still to come</div>${[["You",r.v,bk,"#ffc62b"],["Opp",R.b,bkT,"#4da3ff"]].map(([n,t,k0,c])=>`<div class="cr-bk"><div class="cr-bkh"><b style="color:${c}">${n}</b><b>${F(R,t,0)}</b></div><div class="cr-bkb"><i style="width:${k0/Math.max(r.v,R.b)*100}%;background:${c}"></i><i style="width:${(t-k0)/Math.max(r.v,R.b)*100}%;background:repeating-linear-gradient(45deg,${c} 0 5px,transparent 5px 10px)"></i></div><small>${Math.round(k0)} banked · ${Math.round(t-k0)} to come</small></div>`).join("")}${R.ti===0?`<p class="cr-foot">Week hasn't started, so it's all still to come.</p>`:""}`}`}
+ return `<div class="cr-sec" style="display:flex;justify-content:space-between;align-items:center">How this ends${lookBar(S)}</div>${viz(R,r,S.look,"o")}<div class="cr-call">Most likely: <b>${lab}</b>. ${r.p>=.8?"Safe. Don't spend moves here.":r.p<=.2?"Long shot. Only chase it if it's cheap.":"Live. One good night swings it."}</div>
+${R.pct?"":`<div class="cr-sec" style="margin-top:14px">Banked vs still to come</div>${[["You",r.v,bk,"#ffc62b"],["Opp",R.b,bkT,"#4da3ff"]].map(([n,t,k0,c])=>`<div class="cr-bk"><div class="cr-bkh"><b style="color:${c}">${n}</b><b>${F(R,t,0)}</b></div><div class="cr-bkb"><i style="width:${k0/Math.max(r.v,R.b)*100}%;background:${c}"></i><i style="width:${(t-k0)/Math.max(r.v,R.b)*100}%;background:repeating-linear-gradient(45deg,${c} 0 5px,transparent 5px 10px)"></i></div><small>${Math.round(k0)} banked · ${Math.round(t-k0)} to come</small></div>`).join("")}${R.ti===0?`<p class="cr-foot">Week hasn't started, so it's all still to come.</p>`:""}`}
+<div class="cr-sec" style="margin-top:14px">Range · cold / typical / hot</div><div class="cr-rng"><span></span><b class="cr-lab">Cold</b><b class="cr-lab">Typical</b><b class="cr-lab">Hot</b><b style="color:#ffc62b">You</b><span>${F(R,r.v-sdm,0)}</span><b>${F(R,r.v,0)}</b><span>${F(R,r.v+sdm,0)}</span><b style="color:#4da3ff">Opp</b><span>${F(R,R.b-sdm,0)}</span><b>${F(R,R.b,0)}</b><span>${F(R,R.b+sdm,0)}</span></div>`}
 function pMovers(R,S){const L=[...R.pl].sort((x,y)=>(R.pct?Math.abs(y.c)-Math.abs(x.c):y.c-x.c)),mx=Math.max(...L.map(p=>Math.abs(p.c)),.01);
  return `<div class="cr-sec">Who moves ${R.c} this week</div>`+L.slice(0,9).map(p=>`<div class="cr-row">${ph(p.n,p.id,30)}<div class="cr-m"><b>${esc(p.n)}</b><small>${R.pct?`${(p.mk/(p.at||1)).toFixed(3).replace(/^0/,"")} · ${p.at.toFixed(1)} att × ${p.t.length}g`:`${(+p.pg).toFixed(1)} × ${p.t.length} games`}</small><div class="cr-bar"><i style="width:${Math.abs(p.c)/mx*100}%;background:${p.c>=0?"#ffc62b":"#ff6363"}"></i></div></div><span class="cr-v">${R.pct?(p.c>=0?"+":"−")+Math.abs(p.c).toFixed(1)+" mk":F(R,p.c)}</span></div>`).join("")+(R.pct?`<p class="cr-foot">mk = makes above (or below) your team rate.</p>`:"")}
 function stickyHTML(R,S,r){return `${viz(R,r,S.look,"s",true)}<div class="cr-res"><span>${R.c} win</span><b><span style="color:#8e9096">${pc(R.p0)}</span> → <span style="color:${col(r.p)}">${pc(r.p)}%</span></b></div>`}
@@ -1790,10 +1791,10 @@ const PAGES={players:["Players",pPlayers],days:["By day",pDays],league:["League"
 const CON={
  "T-A":{kind:"deck",pages:["players","days","league"],chips:false},
  "T-B":{kind:"scroll",pages:["players","days","league"],chips:false},
- "T-C":{kind:"deck",pages:["players","days","league","odds","scen"],chips:false,start:"players"},
+ "T-C":{kind:"deck",pages:["players","days","league"],chips:false,start:"players"},
  "J-A":{kind:"deck",pages:["odds","movers","scen"],chips:false},
  "J-B":{kind:"live"},
- "J-C":{kind:"deck",pages:["players","days","league","odds","movers","scen"],chips:false,start:"odds"}};
+ "J-C":{kind:"deck",pages:["odds","movers","scen"],chips:false,start:"odds"}};
 let WK=null,WKP=null;
 function weekLoad(){if(WK||WKP)return;let pr={};try{pr=JSON.parse(localStorage.getItem("hd_prefs")||"{}")}catch(e){}
  if(!location.port)return;const q=new URLSearchParams({src:"proj",punts:(pr.punts||["TO"]).join(","),include_ir:false,skip_out:true});
@@ -1817,7 +1818,7 @@ function openPlayer(n){const p=R.pl.find(x=>x.n===n)||{n,id:null,t:[],pg:0,L:{}}
  (location.port?fetch("/api/nba/player?id="+encodeURIComponent(p.id)).then(r=>r.json()):window.HDESPN?HDESPN.player(p.id):Promise.reject()).then(j=>{PLOG[p.id]=j;show(j)}).catch(()=>show({detail:"Couldn't reach ESPN."}))}
 let R=null,S=null,CC=null,root=null;
 function open(c,concept){const X=window.HDX;if(!X)return;if(!(X.WH&&X.WH.data)&&X.whLoad){try{X.whLoad()}catch(e){}}
- R=build(c);S={off:[],gm:{},pv:{},st:[],smode:"g",look:(()=>{try{return localStorage.getItem("hd_oddslook2")||"dots"}catch(e){return"curve"}})()};weekLoad();CC=CON[concept]||CON["T-A"];lastTie={};
+ R=build(c);S={off:[],gm:{},pv:{},st:[],smode:"g",look:(()=>{try{return localStorage.getItem("hd_oddslook3")||"dots"}catch(e){return"dots"}})()};weekLoad();CC=CON[concept]||CON["T-A"];lastTie={};
  const box=document.getElementById("tabs").parentNode;close();root=document.createElement("div");root.id="cr-root";
  const bh=(document.getElementById("hdlab-bar")||{}).offsetHeight||0;root.style.bottom=(84+bh)+"px";
  let body;
@@ -1842,7 +1843,7 @@ function update(first,skip){const r=calc(R,S);const h=root.querySelector(".cr-h"
 function bind(){root.addEventListener("click",e=>{const t=e.target.closest("[data-close],[data-off],[data-rs],[data-st],[data-pg],[data-pp],[data-look],[data-smode],[data-jump],[data-ppx]");if(!t)return;e.stopPropagation();
   if(t.dataset.ppx!=null){const q=root.querySelector(".cr-pp");if(q){q.classList.remove("in");setTimeout(()=>q.remove(),200)}return}
   if(t.dataset.pp!=null){openPlayer(t.dataset.pp);return}
-  if(t.dataset.look!=null){S.look=t.dataset.look;try{localStorage.setItem("hd_oddslook2",S.look)}catch(x){}update();return}
+  if(t.dataset.look!=null){S.look=t.dataset.look;try{localStorage.setItem("hd_oddslook3",S.look)}catch(x){}update();return}
   if(t.dataset.smode!=null){S.smode=t.dataset.smode;update();return}
   if(t.dataset.jump!=null){const d=root.querySelector("#crd"+t.dataset.jump),sc=d&&d.closest(".cr-page,.cr-one");if(d&&sc)sc.scrollTo({top:d.offsetTop-sc.offsetTop-4,behavior:"smooth"});return}
   if(t.dataset.close!=null){root.classList.remove("in");setTimeout(close,220);return}
@@ -1902,6 +1903,7 @@ const st=document.createElement("style");st.textContent=CSSX+`
 .cr-tug{margin:6px 0}.cr-tugb{position:relative;height:18px;border-radius:9px;background:#4da3ff;overflow:visible}.cr-tugb i{position:absolute;left:0;top:0;bottom:0;background:#ffc62b;border-radius:9px 0 0 9px;transition:width .45s}.cr-tugb span{position:absolute;top:-5px;width:6px;height:28px;margin-left:-3px;background:#fff;border-radius:3px;transition:left .45s}.cr-tugl{display:flex;justify-content:space-between;font-size:13px;margin-top:6px}
 .cr-cast{display:flex;align-items:center;gap:14px;background:#222327;border-radius:14px;padding:12px 14px}.cr-cast span{font-size:44px;line-height:1}.cr-cast b{display:block;font:800 26px "Roboto Condensed",system-ui}.cr-cast small{color:#aaa;font-size:12px}
 .cr-seg{display:flex;background:#222327;border-radius:10px;padding:3px;margin:8px 0}.cr-seg button{flex:1;border:0;background:none;color:#8e9096;border-radius:8px;padding:6px;font:700 12px system-ui;cursor:pointer}.cr-seg button.on{background:#ececee;color:#111}
+.cr-lkbtn{display:inline-flex;align-items:center;gap:5px;border:1px solid #34353b;background:#1f2023;color:#ececee;border-radius:999px;padding:4px 10px;font:700 11px system-ui;letter-spacing:0;text-transform:none;cursor:pointer}
 .cr-reset{border:1px dashed #ffc62b;background:none;color:#ffc62b;border-radius:10px;padding:8px;width:100%;font:700 12px system-ui;margin-top:6px;cursor:pointer}
 .cr-pp{position:absolute;inset:0;z-index:5;background:rgba(0,0,0,0);transition:background .2s;display:flex;flex-direction:column;justify-content:flex-end;border-radius:20px 20px 0 0;overflow:hidden}.cr-pp.in{background:rgba(0,0,0,.5)}
 .cr-ppc{background:#1d1e22;border-top:1px solid #3a3b40;border-radius:18px 18px 0 0;padding:12px 16px 16px;max-height:88%;overflow-y:auto;transform:translateY(100%);transition:transform .22s cubic-bezier(.2,.8,.2,1)}.cr-pp.in .cr-ppc{transform:none}
