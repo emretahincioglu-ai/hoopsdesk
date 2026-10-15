@@ -909,6 +909,16 @@ html,body{background:#000!important}
 .rtr td,.avt2 .rtr td{height:62px!important;font-size:16px!important;padding:0 11px!important}
 .rth,.rtr th{height:36px!important;font-size:13.5px!important}
 .rtr tr.gap td{height:36px!important}.rth.sub{height:36px!important}
+
+.hdstk{position:sticky;top:calc(-2px - var(--sat));z-index:30;background:#000;margin:calc(-2px - var(--sat)) -18px 12px!important;padding:calc(var(--sat) + 6px) 18px 0;border-bottom:1px solid var(--sep,#2f3035)}
+.ah>.hdstk{margin-bottom:0!important}
+.hdstk>*{background:none!important;border-bottom:0!important}
+.hdstk>.ahtop{margin:0!important;padding:0 0 10px!important}
+.hdstk>.th2{margin:0!important;padding:0 0 12px!important}
+.hdstk>.lt{margin:0!important;padding:0 0 8px!important}
+.hdstk>.lt+.hd-otabs{margin:0!important;padding:0!important}
+.hdstk>.whtop{margin:0!important;padding:0 0 6px!important}
+.hdstk>.whtop+.whtabs{margin:0!important;padding:0!important}
 </style>
 <div class="stage">
  <aside class="side"><h1>HoopsDesk <span>for iPhone</span></h1><p>Design of the iPhone app. Tap around, it all works: the tabs, the players, the trade builder.</p><ul><li><b>Home</b>: score, last night, this week's review, category ranks, waivers. Tap the score for the full game.</li><li><b>Team</b>: roster and player cards</li><li><b>Matchup</b>: ESPN-style category table with our ball logic</li><li><b>More</b>: rankings and settings</li><li><b>Trades</b>: your market and the builder</li></ul><p>Numbers are a snapshot of your Anti-Quemo league (preseason projections). Photos show as initials here; the app uses real headshots.</p><p>On your phone, open this link directly and it fills the screen.</p></aside>
@@ -2066,7 +2076,11 @@ function after(el,cur){const X=window.HDX;if(!X)return;
   if(OT){let past=false;[...el.children].forEach(c=>{if(c===tb){past=true;return}if(past)c.style.display="none"});const o=opp();el.appendChild(shadow(o.inner?o.inner():"",".lx{padding:0 0 30px}"));return}
   if(lt){lt.style.display="flex";lt.style.alignItems="center";const g=document.createElement("button");g.className="mvgear";g.setAttribute("aria-label","Customize matchup view");g.innerHTML=GEAR;g.onclick=e=>{e.stopPropagation();window.__mvOpen=false;mvSheet()};lt.appendChild(g)}
   const gt=el.querySelector(".gtab");if(gt){conf(X,gt);const cats=X.D.cats;el.querySelectorAll(".gtab .grow").forEach((row,i)=>{const c=cats[i];if(!c||(X.D.punts||[]).includes(c)||!window.CATROOM)return;row.style.cursor="pointer";const L=row.querySelector(".gv.L"),Mi=row.querySelector(".gc"),Rr=row.querySelector(".gv.R");if(L)L.onclick=e=>{e.stopPropagation();CATROOM.open(c,"T-C")};if(Rr)Rr.onclick=e=>{e.stopPropagation();CATROOM.open(c,"T-C")};if(Mi)Mi.onclick=e=>{e.stopPropagation();CATROOM.open(c,"J-C")}})}}}
-return{after}})();
+
+function stick(el){if(!el||el.querySelector(".hdstk"))return;let nodes=[];const ah=el.querySelector(":scope>.ah>.ahtop");
+ if(ah)nodes=[ah];else{const f=el.firstElementChild;if(f&&(f.classList.contains("lt")||f.classList.contains("whtop")||f.classList.contains("th2"))){nodes=[f];const n=f.nextElementSibling;if(n&&(n.classList.contains("hd-otabs")||n.classList.contains("whtabs")))nodes.push(n)}}
+ if(!nodes.length)return;const w=document.createElement("div");w.className="hdstk";nodes[0].before(w);nodes.forEach(n=>w.appendChild(n))}
+return{after:(el,cur)=>{after(el,cur);try{stick(el)}catch(e){}}}})();
 </script><style>#views .whpick .lbl{flex-wrap:nowrap!important;gap:5px!important;padding-right:10px!important;margin-bottom:8px!important;white-space:nowrap}
 #views .whpick .lbl .lbt{font-size:9px!important;letter-spacing:.02em!important}
 #views .whpick .lbl .pgr i{width:4px!important}#views .whpick .lbl .pgr i.on{width:10px!important}
