@@ -18,6 +18,34 @@
 </style>
 <div id="fpsplash"><div class="fpw"><div class="fps"><img src="shield.png" alt=""></div><div class="fpt">FANTASY <b>PLUS</b></div><div class="fpbar"><i></i></div></div></div>
 <script>(function(){var s=document.getElementById("fpsplash"),t0=Date.now();function done(){var w=Math.max(0,1650-(Date.now()-t0));setTimeout(function(){s.classList.add("out");setTimeout(function(){s.remove()},500)},w)}if(document.readyState==="complete")done();else addEventListener("load",done);setTimeout(function(){if(s.parentNode)s.classList.add("out")},4000)})();</script>
+<style>
+#fpgate{position:fixed;inset:0;z-index:99990;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 28px calc(24px + env(safe-area-inset-bottom,0px));font-family:-apple-system,system-ui,sans-serif;color:#fff}
+#fpgate[hidden]{display:none!important}
+#fpgate img{width:96px;height:auto;margin-bottom:14px;filter:drop-shadow(0 0 14px rgba(252,209,44,.3))}
+#fpgate h1{font:700 22px/1 Poppins,-apple-system,system-ui,sans-serif;letter-spacing:3px;margin:0 0 6px}
+#fpgate h1 b{color:#fcd12c}
+#fpgate p{color:#8e9096;font-size:14px;margin:0 0 26px;text-align:center}
+#fpgate form{width:100%;max-width:340px;display:flex;flex-direction:column;gap:12px}
+#fpgate label{font-size:12px;font-weight:600;color:#8e9096;letter-spacing:.04em;text-transform:uppercase;margin-bottom:-6px}
+#fpgate input{font-size:17px;padding:14px 14px;border-radius:12px;border:1px solid #2f3035;background:#16161a;color:#fff;outline:none;-webkit-appearance:none}
+#fpgate input:focus{border-color:#fcd12c}
+#fpgate button{margin-top:6px;font:700 17px -apple-system,system-ui,sans-serif;padding:15px;border:0;border-radius:12px;background:#fcd12c;color:#111;cursor:pointer}
+#fpgate .err{color:#ff6b62;font-size:14px;min-height:18px;text-align:center}
+</style>
+<div id="fpgate" hidden><img src="shield.png" alt=""><h1>FANTASY <b>PLUS</b></h1><p>ANTI-QUEMO · ACL Enayileri</p>
+<form id="fpgf" autocomplete="on"><label for="fpge">Email</label><input id="fpge" type="email" inputmode="email" autocomplete="username" autocapitalize="off" placeholder="you@email.com" required>
+<label for="fpgp">Password</label><input id="fpgp" type="password" autocomplete="current-password" placeholder="Password" required>
+<div class="err" id="fpgx"></div><button type="submit">Sign in</button></form></div>
+<script>(function(){var K="fp_auth_v1",H="5e05485eea899ded1e9efcef39bbd8c0d50840e837d1c64b40259d3a6a038b05",g=document.getElementById("fpgate");
+if(location.port)return;
+var ok=false;try{var a=JSON.parse(localStorage.getItem(K)||"null");ok=!!(a&&a.h===H)}catch(e){}
+if(ok)return;g.hidden=false;
+function sha(t){if(window.crypto&&crypto.subtle){return crypto.subtle.digest("SHA-256",new TextEncoder().encode(t)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("")})}return Promise.resolve(t==="fp:MERT"?H:"")}
+document.getElementById("fpgf").addEventListener("submit",function(e){e.preventDefault();var em=document.getElementById("fpge").value.trim(),pw=document.getElementById("fpgp").value.trim().toUpperCase(),x=document.getElementById("fpgx");
+if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){x.textContent="Enter a valid email.";return}
+sha("fp:"+pw).then(function(h){if(h!==H){x.textContent="Wrong password. Try again.";document.getElementById("fpgp").value="";return}
+try{localStorage.setItem(K,JSON.stringify({h:H,email:em,t:Date.now()}))}catch(e){}
+g.style.transition="opacity .35s";g.style.opacity="0";setTimeout(function(){g.hidden=true},360)})})})();</script>
 
 <script>window.HDP=function(id){return location.port?"/img/p/"+id+".png":"https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/"+id+".png&w=260&h=190"};window.HDT=function(k){return location.port?"/img/t/"+k+".png":"https://a.espncdn.com/i/teamlogos/nba/500/"+k+".png"};</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@500;700;800&display=swap"><script>window.HD_SKIN="espn"</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap">
