@@ -32,19 +32,19 @@
 #fpgate button{margin-top:6px;font:700 17px -apple-system,system-ui,sans-serif;padding:15px;border:0;border-radius:12px;background:#fcd12c;color:#111;cursor:pointer}
 #fpgate .err{color:#ff6b62;font-size:14px;min-height:18px;text-align:center}
 </style>
-<div id="fpgate" hidden><img src="shield.png" alt=""><h1>FANTASY <b>PLUS</b></h1><p>ANTI-QUEMO · ACL Enayileri</p>
+<div id="fpgate" hidden><img src="shield.png" alt=""><h1>FANTASY <b>PLUS</b></h1><p>Sign in to your league</p>
 <form id="fpgf" autocomplete="on"><label for="fpge">Email</label><input id="fpge" type="email" inputmode="email" autocomplete="username" autocapitalize="off" placeholder="you@email.com" required>
 <label for="fpgp">Password</label><input id="fpgp" type="password" autocomplete="current-password" placeholder="Password" required>
 <div class="err" id="fpgx"></div><button type="submit">Sign in</button></form></div>
-<script>(function(){var K="fp_auth_v1",H="5e05485eea899ded1e9efcef39bbd8c0d50840e837d1c64b40259d3a6a038b05",g=document.getElementById("fpgate");
+<script>(function(){var K="fp_auth_v1",H="5e05485eea899ded1e9efcef39bbd8c0d50840e837d1c64b40259d3a6a038b05",ACC={"4a0529cd59678b8375b1c0330088753c4c3180a063cb1e82eb0c043be22fc724":"ACL Enayileri"},g=document.getElementById("fpgate");
 if(location.port)return;
-var ok=false;try{var a=JSON.parse(localStorage.getItem(K)||"null");ok=!!(a&&a.h===H)}catch(e){}
+var ok=false;try{var a=JSON.parse(localStorage.getItem(K)||"null");ok=!!(a&&(a.h===H||ACC[a.h]))}catch(e){}
 if(ok)return;g.hidden=false;
-function sha(t){if(window.crypto&&crypto.subtle){return crypto.subtle.digest("SHA-256",new TextEncoder().encode(t)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("")})}return Promise.resolve(t==="fp:MERT"?H:"")}
-document.getElementById("fpgf").addEventListener("submit",function(e){e.preventDefault();var em=document.getElementById("fpge").value.trim(),pw=document.getElementById("fpgp").value.trim().toUpperCase(),x=document.getElementById("fpgx");
+function sha(t){return crypto.subtle.digest("SHA-256",new TextEncoder().encode(t)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("")})}
+document.getElementById("fpgf").addEventListener("submit",function(e){e.preventDefault();var em=document.getElementById("fpge").value.trim().toLowerCase(),pw=document.getElementById("fpgp").value.trim().toUpperCase(),x=document.getElementById("fpgx");
 if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){x.textContent="Enter a valid email.";return}
-sha("fp:"+pw).then(function(h){if(h!==H){x.textContent="Wrong password. Try again.";document.getElementById("fpgp").value="";return}
-try{localStorage.setItem(K,JSON.stringify({h:H,email:em,t:Date.now()}))}catch(e){}
+sha("fp:"+em+":"+pw).then(function(h){if(!ACC[h]){x.textContent="Email or password is wrong.";document.getElementById("fpgp").value="";return}
+x.textContent="";try{localStorage.setItem(K,JSON.stringify({h:h,email:em,team:ACC[h],t:Date.now()}))}catch(e){}
 g.style.transition="opacity .35s";g.style.opacity="0";setTimeout(function(){g.hidden=true},360)})})})();</script>
 
 <script>window.HDP=function(id){return location.port?"/img/p/"+id+".png":"https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/"+id+".png&w=260&h=190"};window.HDT=function(k){return location.port?"/img/t/"+k+".png":"https://a.espncdn.com/i/teamlogos/nba/500/"+k+".png"};</script>
