@@ -1285,6 +1285,25 @@ html body .hdstk.fphd .fphtabs button{font-size:13.5px!important}
 #fpsv .srec{background:rgba(0,0,0,.3);border-radius:14px;padding:9px 11px;margin-bottom:10px}
 #fpsv .sno{color:rgba(255,255,255,.7);font-size:13px}
 .fptoast{position:fixed;left:50%;bottom:120px;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:999px;font:600 13px system-ui;z-index:9999}
+#fphc .nhcard{background:#0d0d0f;border:1px solid #232327;border-radius:16px;padding:12px 12px 6px;margin-bottom:14px}
+#fphc .nhh{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}#fphc .nhh b{font:800 18px "Roboto Condensed",sans-serif;text-transform:uppercase;letter-spacing:.02em}#fphc .nhh span{color:#8e9096;font-size:13px}
+#fphc .nhpl{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:8px}#fphc .nhpl::-webkit-scrollbar{display:none}
+#fphc .nhpl button{flex:none;border:0;border-radius:999px;padding:6px 12px;background:#232327;color:#a3a4a8;font:800 13px "Roboto Condensed",sans-serif;cursor:pointer}
+#fphc .nhpl button.on{background:#fff;color:#111}
+#fphc .nht .hr,#fphc .nht .tr{display:grid;grid-template-columns:minmax(0,1fr) repeat(6,28px) 50px;align-items:center;column-gap:4px;font-variant-numeric:tabular-nums}
+#fphc .nht .hr{font:700 10.5px system-ui;color:#8e9096;padding:4px 0 6px;border-bottom:1px solid #232327}
+#fphc .nht .hr span:not(:first-child),#fphc .nht .tr span:not(:first-child){text-align:right}
+#fphc .nht .tr{padding:8px 0;border-bottom:1px solid #1b1b1e;font:600 14px system-ui;color:#c9cacf}#fphc .nht .tr:last-child{border-bottom:0}
+#fphc .nht .pn{font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#fphc .nht .pn small{display:block;font:500 10.5px system-ui;color:#8e9096}
+#fphc .nht .tr.me .pn{color:#ffd766}#fphc .nht .tr.op .pn{color:#9fd0ff}
+#fphc .nht span.on{color:#fff;font-weight:800}#fphc .nht .hr span.on{color:#ffc62b}
+#fphc .nht .vl{color:#3fbf6f;font-weight:800}
+#fphc .nhlr{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid #1b1b1e}
+#fphc .nhlr .k{width:14px;color:#8e9096;font:700 14px system-ui}
+#fphc .nhlr img,#fphc .nhlr i{width:32px;height:32px;border-radius:50%;object-fit:cover;background:#2a2b30;flex:none}
+#fphc .nhlr b{font:700 16px system-ui;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#fphc .nhlr small{color:#8e9096;font-size:12px}
+#fphc .nhlr .v{font:900 20px "Roboto Condensed",sans-serif;min-width:36px;text-align:right}
+#fphc .nhlr.me b{color:#ffd766}#fphc .nhlr.op b{color:#9fd0ff}
 </style>
 <div class="stage">
  <aside class="side"><h1>Fantasy Plus <span>for iPhone</span></h1><p>Design of the iPhone app. Tap around, it all works: the tabs, the players, the trade builder.</p><ul><li><b>Home</b>: score, last night, this week's review, category ranks, waivers. Tap the score for the full game.</li><li><b>Team</b>: roster and player cards</li><li><b>Matchup</b>: ESPN-style category table with our ball logic</li><li><b>More</b>: rankings and settings</li><li><b>Trades</b>: your market and the builder</li></ul><p>Numbers are a snapshot of your Anti-Quemo league (preseason projections). Photos show as initials here; the app uses real headshots.</p><p>On your phone, open this link directly and it fills the screen.</p></aside>
@@ -2206,10 +2225,15 @@ async function scores(box_){const B=box_;clearInterval(timer);
  let all=[];await Promise.all(done.map(async r=>{try{const x=await box(r.id);all.push(...x)}catch(e){}}));if(!document.body.contains(B))return;
  if(!all.length){L.innerHTML='<p class="fhnote">Box scores aren\'t available yet.</p>';return}
  const cats=["PTS","REB","AST","STL","BLK","3PM"],cls=p=>O[p.id]===1?"me":O[p.id]===2?"op":"";
- L.innerHTML=`<div class="fhsec"><h3>Category leaders</h3><span>${DOFF===0?"tonight so far":dname(DOFF).split(" · ")[0].toLowerCase()}</span></div><div class="nhcats">${cats.map(c=>{const t=[...all].sort((a,b)=>b[c]-a[c]).slice(0,3);return `<div class="nhc"><div class="cap">${c}</div>${t.map((p,i)=>`<div class="r ${cls(p)}"><span class="k">${i+1}</span><b>${esc(last(p.n))}</b><span class="v">${p[c]}</span></div>`).join("")}</div>`}).join("")}</div>`;
- const best=[...all].sort((a,b)=>b.fv-a.fv).slice(0,8);
- BB.innerHTML=`<div class="fhsec"><h3>Best stat lines</h3><span>by fantasy score</span></div><div class="nhbl">${best.map((p,i)=>{const parts=[`${p.PTS} PTS`,p.REB>=5?`${p.REB} REB`:"",p.AST>=4?`${p.AST} AST`:"",p.STL>=2?`${p.STL} STL`:"",p.BLK>=2?`${p.BLK} BLK`:"",p["3PM"]>=3?`${p["3PM"]} 3PM`:""].filter(Boolean).join(" · ");const tg=O[p.id]===1?'<span class="tg me">yours</span>':O[p.id]===2?`<span class="tg op">${esc((HDX.D.opp||"opp").split(" ")[0])}</span>`:"";
-  return `<div class="nhb"><span class="k">${i+1}</span>${ph(p.id)?`<img src="${ph(p.id)}" alt="" onerror="this.remove()">`:`<i></i>`}<div class="m"><b>${esc(p.n)} ${tg}</b><small>${esc(p.t)} · ${parts}</small></div><span class="fv">+${p.fv}</span></div>`}).join("")}</div>`}
+ const pills=(cur,attr)=>`<div class="nhpl">${["VAL",...cats].map(c=>`<button ${attr}="${c}" class="${c===cur?"on":""}">${c}</button>`).join("")}</div>`;
+ const key=c=>c==="VAL"?"fv":c;
+ const drawTop=()=>{const c=window.__nhTop||"VAL",k=key(c),T=[...all].sort((a,b)=>b[k]-a[k]||b.fv-a.fv).slice(0,10);
+  BB.innerHTML=`<div class="nhcard"><div class="nhh"><b>Top performers</b><span>${DOFF===0?"tonight":"last night"}</span></div>${pills(c,"data-tp")}<div class="nht"><div class="hr"><span>Player</span>${cats.map(x=>`<span class="${x===c?"on":""}">${x}</span>`).join("")}<span class="${c==="VAL"?"on":""}">VAL</span></div>${T.map(p=>`<div class="tr ${cls(p)}"><span class="pn">${esc(last(p.n))}<small>${esc(p.t)}</small></span>${cats.map(x=>`<span class="${x===c?"on":""}">${p[x]}</span>`).join("")}<span class="vl ${c==="VAL"?"on":""}">+${p.fv}</span></div>`).join("")}</div></div>`;
+  BB.querySelectorAll("[data-tp]").forEach(b=>b.onclick=e=>{e.stopPropagation();window.__nhTop=b.dataset.tp;drawTop()})};
+ const drawLead=()=>{const c=window.__nhLd||"PTS",T=[...all].sort((a,b)=>b[c]-a[c]).slice(0,5);
+  L.innerHTML=`<div class="nhcard"><div class="nhh"><b>Leaders</b><span>top 5</span></div><div class="nhpl">${cats.map(x=>`<button data-ld="${x}" class="${x===c?"on":""}">${x}</button>`).join("")}</div>${T.map((p,i)=>`<div class="nhlr ${cls(p)}"><span class="k">${i+1}</span>${ph(p.id)?`<img src="${ph(p.id)}" alt="" onerror="this.remove()">`:`<i></i>`}<b>${esc(p.n)}</b><small>${esc(p.t)}</small><span class="v">${p[c]}</span></div>`).join("")}</div>`;
+  L.querySelectorAll("[data-ld]").forEach(b=>b.onclick=e=>{e.stopPropagation();window.__nhLd=b.dataset.ld;drawLead()})};
+ B.insertBefore(BB,L);drawTop();drawLead()}
 // ---------- League ----------
 function league(box){const D=HDX.D,st=[...(D.stand||[])].sort((a,b)=>a.place-b.place),pw=[...(D.power||[])].sort((a,b)=>a.place-b.place),od=D.odds||{},sp=D.spots||4;
  box.innerHTML=`<div class="fhsec"><h3>Standings</h3><span>top ${sp} make the playoffs</span></div><div class="fhcard"><div class="fhth"><span>#</span><span>Team</span><span>W-L-T</span><span>GB</span><span>Playoffs</span></div>${st.map((t,i)=>`<div class="fhtrow${t.id===D.my?" me":""}${i===sp-1?" cut":""}"><span>${t.place}</span><span class="tn">${tav(t.name,26)}<b>${esc(t.name)}</b></span><span>${t.w}-${t.l}-${t.t}</span><span>${t.gb||"–"}</span><span class="od">${od[t.id]!=null?od[t.id].odds+"%":"–"}</span></div>`).join("")}</div>
