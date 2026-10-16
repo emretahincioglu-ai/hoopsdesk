@@ -2358,7 +2358,7 @@ function fpLeagues(){const X=window.HDX,D=X.D;let ov=document.getElementById("fp
 function fpHead(el){const X=window.HDX;if(!X)return;const h=el.querySelector(".hdstk");if(!h||h.dataset.fpd)return;h.dataset.fpd=1;h.classList.add("fphd");
  const D=X.D,NM={home:"Home",team:"Team",matchup:"Matchup",waivers:"Waivers",trades:"Trades",more:"More"};
  const row=document.createElement("div");row.className="fprow";
- const ic=document.querySelector('#tabs button[data-tab="'+X.TAB+'"] svg');if(ic){const c=ic.cloneNode(true);c.removeAttribute("style");c.setAttribute("class","fpic");row.appendChild(c)}
+ const addIc=(n)=>{const ic=document.querySelector('#tabs button[data-tab="'+X.TAB+'"] svg');if(ic){const c=ic.cloneNode(true);c.removeAttribute("style");c.setAttribute("class","fpic");row.insertBefore(c,row.querySelector(".fptt"))}else if(n<20)setTimeout(()=>addIc(n+1),150)};addIc(0);
  const tt=document.createElement("span");tt.className="fptt";tt.textContent=NM[X.TAB]||"";row.appendChild(tt);
  const act=document.createElement("div");act.className="fpact";row.appendChild(act);const actL=document.createElement("div");actL.className="fpact l";row.appendChild(actL);
  const at=h.querySelector(".ahtop");if(at)at.classList.add("fphide");const lt=h.querySelector(".lt");
@@ -2423,6 +2423,8 @@ function ui(){if(!tune()){if(bar)bar.hidden=true;return}
 function toggle(btn){const on=!tune();try{localStorage.setItem("fp_tune",on?"1":"0")}catch(e){}const sw=btn&&btn.querySelector(".fpzsw");if(sw)sw.classList.toggle("on",on);ui()}
 setTimeout(()=>apply(),400);addEventListener("resize",()=>setTimeout(()=>apply(),150));
 return{apply,toggle,ui}})();
+
+;(function fpBoot(n){const go=()=>{const v=[...document.querySelectorAll("#views .view")].pop();if(!window.HDX||!v||!v.querySelector(".hdstk")){if(n<60)setTimeout(()=>fpBoot(n+1),100);return}try{fpHead(v)}catch(e){}try{window.FPZ&&FPZ.apply(v)}catch(e){}};go()})(0);
 </script><style>#views .whpick .lbl{flex-wrap:nowrap!important;gap:5px!important;padding-right:10px!important;margin-bottom:8px!important;white-space:nowrap}
 #views .whpick .lbl .lbt{font-size:9px!important;letter-spacing:.02em!important}
 #views .whpick .lbl .pgr i{width:4px!important}#views .whpick .lbl .pgr i.on{width:10px!important}
