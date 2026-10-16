@@ -1008,6 +1008,13 @@ html,body{background:#000!important}
 
 #tabs.nav2{padding-bottom:max(8px,calc(env(safe-area-inset-bottom,0px) - 14px))!important;height:auto!important;min-height:0!important}
 #tabs.nav2 .npill{height:58px!important}#tabs.nav2 .nhome{width:58px!important;height:58px!important}#tabs.nav2 button{height:50px!important}
+.gtab.espnr .grow{height:68px!important}
+.gtab.espnr .grow .gv{font-size:26px!important}
+.gtab.espnr .grow .gv.gl{font-size:32px!important}
+.gtab.espnr.hdmode .grow{grid-template-columns:1fr 132px 1fr!important}
+.gtab.espnr.hdmode .gct b,.gtab.espnr .grow .gc b{font-size:18px!important;color:#e2e3e6!important}
+.gtab .gct small.mvp{font:800 13px/19px system-ui!important;padding:0 6px!important;border-radius:4px!important}
+.gtab.espnr .gmid{height:5px!important}
 </style>
 <div class="stage">
  <aside class="side"><h1>Fantasy Plus <span>for iPhone</span></h1><p>Design of the iPhone app. Tap around, it all works: the tabs, the players, the trade builder.</p><ul><li><b>Home</b>: score, last night, this week's review, category ranks, waivers. Tap the score for the full game.</li><li><b>Team</b>: roster and player cards</li><li><b>Matchup</b>: ESPN-style category table with our ball logic</li><li><b>More</b>: rankings and settings</li><li><b>Trades</b>: your market and the builder</li></ul><p>Numbers are a snapshot of your Anti-Quemo league (preseason projections). Photos show as initials here; the app uses real headshots.</p><p>On your phone, open this link directly and it fills the screen.</p></aside>
@@ -2240,7 +2247,7 @@ function after(el,cur){const X=window.HDX;if(!X)return;
   const kids=[...el.children],first=kids.find(c=>!/ehdr|hdr|nav/.test(c.className)&&!c.classList.contains("lt"));
   const lt=el.querySelector(".lt");if(lt)lt.after(tb);else if(first)el.insertBefore(tb,first);else el.appendChild(tb);
   tb.querySelectorAll("[data-ot]").forEach(b=>b.onclick=e=>{e.stopPropagation();OT=b.dataset.ot==="1";X.go("matchup")});
-  if(OT){let past=false;[...el.children].forEach(c=>{if(c===tb){past=true;return}if(past)c.style.display="none"});const o=opp();el.appendChild(shadow(o.inner?o.inner():"",".lx{padding:0 0 30px}"));return}
+  if(OT){let past=false;[...el.children].forEach(c=>{if(c===tb){past=true;return}if(past)c.style.display="none"});const o=opp();el.appendChild(shadow(o.inner?o.inner():"",".lx{padding:0 0 30px;zoom:1.28}"));return}
   if(lt){lt.style.display="flex";lt.style.alignItems="center";const g=document.createElement("button");g.className="mvgear";g.setAttribute("aria-label","Customize matchup view");g.innerHTML=GEAR;g.onclick=e=>{e.stopPropagation();window.__mvOpen=false;mvSheet()};lt.appendChild(g)}
   const gt=el.querySelector(".gtab");if(gt){conf(X,gt);const cats=X.D.cats;el.querySelectorAll(".gtab .grow").forEach((row,i)=>{const c=cats[i];if(!c||(X.D.punts||[]).includes(c)||!window.CATROOM)return;row.style.cursor="pointer";const L=row.querySelector(".gv.L"),Mi=row.querySelector(".gc"),Rr=row.querySelector(".gv.R");if(L)L.onclick=e=>{e.stopPropagation();CATROOM.open(c,"T-C")};if(Rr)Rr.onclick=e=>{e.stopPropagation();CATROOM.open(c,"T-C")};if(Mi)Mi.onclick=e=>{e.stopPropagation();CATROOM.open(c,"J-C")}})}}}
 
