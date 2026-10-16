@@ -2447,6 +2447,7 @@ function fpHead(el){const X=window.HDX;if(!X)return;const h=el.querySelector(".h
   nb.onclick=e=>{e.preventDefault();e.stopPropagation();if((X.WH||{}).seg!=="all")cl.click()};
   tb.addEventListener("click",e=>{const b=e.target.closest("button[data-whtab]");if(b&&X.WH&&X.WH.seg==="all"){X.WH.seg="for"}},true);
   tb.appendChild(nb)}}
+window.__fpHead=fpHead;
 function after(el,cur){const X=window.HDX;if(!X)return;try{window.FPZ&&FPZ.apply(el)}catch(e){}
  if(X.TAB==='waivers'){try{const w=el.querySelector('#wmini');if(w&&window.__wmBind)window.__wmBind(w)}catch(e){}}
  if(X.TAB==='waivers'){try{goldGrid(el)}catch(e){console.warn(e)}}
@@ -2500,7 +2501,11 @@ function toggle(btn){const on=!tune();try{localStorage.setItem("fp_tune",on?"1":
 setTimeout(()=>apply(),400);addEventListener("resize",()=>setTimeout(()=>apply(),150));
 return{apply,toggle,ui}})();
 
-;(function fpBoot(n){const go=()=>{const v=[...document.querySelectorAll("#views .view")].pop();if(!window.HDX||!v||!v.querySelector(".hdstk")){if(n<60)setTimeout(()=>fpBoot(n+1),100);return}try{fpHead(v)}catch(e){}try{window.FPZ&&FPZ.apply(v)}catch(e){}};go()})(0);
+;(function fpBoot(n){const go=()=>{const v=[...document.querySelectorAll("#views .view")].pop();if(!window.HDX||!v||!v.querySelector(".hdstk")){if(n<60)setTimeout(()=>fpBoot(n+1),100);return}try{window.__fpHead&&__fpHead(v)}catch(e){}try{window.FPZ&&FPZ.apply(v)}catch(e){}};go()})(0);
+
+;(function fpWatch(){let q=0;const run=()=>{q=0;try{const v=[...document.querySelectorAll("#views .view")].pop();if(!window.HDX||!v)return;const h=v.querySelector(".hdstk");if(h&&!h.dataset.fpd&&window.__fpHead){__fpHead(v);window.FPZ&&FPZ.apply(v)}}catch(e){}};
+ const start=()=>{const V=document.getElementById("views");if(!V){setTimeout(start,100);return}new MutationObserver(()=>{if(!q)q=requestAnimationFrame(run)}).observe(V,{childList:true,subtree:true});run()};start();
+ addEventListener("pageshow",()=>setTimeout(run,50));document.addEventListener("visibilitychange",()=>{if(!document.hidden)setTimeout(run,50)})})();
 </script><style>#views .whpick .lbl{flex-wrap:nowrap!important;gap:5px!important;padding-right:10px!important;margin-bottom:8px!important;white-space:nowrap}
 #views .whpick .lbl .lbt{font-size:9px!important;letter-spacing:.02em!important}
 #views .whpick .lbl .pgr i{width:4px!important}#views .whpick .lbl .pgr i.on{width:10px!important}
