@@ -1047,6 +1047,14 @@ html body .ahtop .ahday{font-size:30px!important}
 #fpzt input{flex:1;accent-color:#ffc62b;height:28px}
 #fpzt .all{margin-top:8px;font:500 11.5px system-ui;color:#8e9096}
 .fpzsw{width:46px;height:28px;border-radius:14px;background:#3a3b40;position:relative;flex:none}.fpzsw::after{content:"";position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}.fpzsw.on{background:#3fcf6c}.fpzsw.on::after{left:20px}
+html body .hdstk .lt{margin:8px 0 2px!important;font:900 32px/1.05 var(--f-disp)!important}
+html body .hdstk .whtop{align-items:center!important}
+html body .hdstk .th2 b{font:900 32px/1.05 var(--f-disp)!important}
+html body .hdstk .th2 small{font-size:14px!important}
+html body .hdstk .th2 .rec{font:900 24px var(--f-disp)!important}
+html body .hdstk .th2{margin-top:8px!important;align-items:flex-start!important}
+html body .hdstk .th2>.av{width:50px!important;height:50px!important;min-width:50px!important;border-radius:12px!important}
+html body .hdstk .th2 .rec{align-self:center}
 </style>
 <div class="stage">
  <aside class="side"><h1>Fantasy Plus <span>for iPhone</span></h1><p>Design of the iPhone app. Tap around, it all works: the tabs, the players, the trade builder.</p><ul><li><b>Home</b>: score, last night, this week's review, category ranks, waivers. Tap the score for the full game.</li><li><b>Team</b>: roster and player cards</li><li><b>Matchup</b>: ESPN-style category table with our ball logic</li><li><b>More</b>: rankings and settings</li><li><b>Trades</b>: your market and the builder</li></ul><p>Numbers are a snapshot of your Anti-Quemo league (preseason projections). Photos show as initials here; the app uses real headshots.</p><p>On your phone, open this link directly and it fills the screen.</p></aside>
@@ -2289,16 +2297,16 @@ function after(el,cur){const X=window.HDX;if(!X)return;try{window.FPZ&&FPZ.apply
 function stick(el){if(!el||el.querySelector(".hdstk"))return;let nodes=[];const ah=el.querySelector(":scope>.ah>.ahtop");
  if(ah)nodes=[ah];else{const f=el.firstElementChild;if(f&&(f.classList.contains("lt")||f.classList.contains("whtop")||f.classList.contains("th2"))){nodes=[f];const n=f.nextElementSibling;if(n&&(n.classList.contains("hd-otabs")||n.classList.contains("whtabs")))nodes.push(n)}}
  if(!nodes.length)return;const w=document.createElement("div");w.className="hdstk";nodes[0].before(w);nodes.forEach(n=>w.appendChild(n))}
-return{after:(el,cur)=>{after(el,cur);try{stick(el)}catch(e){}}}})();
+return{after:(el,cur)=>{after(el,cur);try{stick(el)}catch(e){}try{window.FPZ&&FPZ.apply(el)}catch(e){}}}})();
 
 ;(function fpTabFix(){function fix(){try{var p=document.querySelector(".pp");if(!(p&&p.classList.contains("open")))document.body.classList.remove("pp-on");if(window.HDNAV&&window.HDX)HDNAV(HDX.TAB);var t=document.getElementById("tabs");if(t&&!t.classList.contains("nav2")&&window.HDNAV&&window.HDX)HDNAV(HDX.TAB)}catch(e){}}[300,1000,2500,5000].forEach(function(x){setTimeout(fix,x)});addEventListener("pageshow",fix);document.addEventListener("visibilitychange",function(){if(!document.hidden)setTimeout(fix,100)})})();
 
 window.FPZ=(function(){const BASE=.84,NAME={home:"Home",team:"Team",matchup:"Matchup",waivers:"Waivers",trades:"Trades",more:"More"};
-let Z={};try{Z=JSON.parse(localStorage.getItem("fp_zoom")||"{}")}catch(e){}
+const DEF={home:1.1,team:1.02,matchup:1,waivers:1.1,trades:1,more:1};let Z=Object.assign({},DEF);try{Object.assign(Z,JSON.parse(localStorage.getItem("fp_zoom")||"{}"))}catch(e){}
 const tune=()=>{try{return localStorage.getItem("fp_tune")==="1"}catch(e){return false}};
 const tab=()=>(window.HDX&&HDX.TAB)||"home",cur=()=>Z[tab()]||1;
 const view=()=>[...document.querySelectorAll("#views .view")].pop();
-function apply(el){el=el||view();if(!el)return;const z=cur();el.style.zoom=z===1?"":(BASE*z).toFixed(3);ui()}
+function apply(el){el=el||view();if(!el)return;const z=cur();el.style.zoom=z===1?"":(BASE*z).toFixed(3);el.style.setProperty("--fz",z);[...el.querySelectorAll(".hdstk")].slice(0,1).forEach(h=>{h.style.zoom=z===1?"":(1/z).toFixed(4);h.style.marginTop=h.style.marginLeft=h.style.marginRight=h.style.top="";if(z===1)return;requestAnimationFrame(()=>{try{const st=el.scrollTop;if(st>2)return;const r=h.getBoundingClientRect(),vr=el.getBoundingClientRect(),cs=getComputedStyle(h),k=r.width/h.offsetWidth||BASE;const dy=(r.top-vr.top)/k;h.style.setProperty("margin-top",(parseFloat(cs.marginTop)-dy)+"px","important");h.style.setProperty("top",(parseFloat(cs.top)-dy)+"px","important");h.style.setProperty("margin-left",(parseFloat(cs.marginLeft)-(r.left-vr.left)/k)+"px","important");h.style.setProperty("margin-right",(parseFloat(cs.marginRight)-(vr.right-r.right)/k)+"px","important")}catch(e){}})});ui()}
 let bar=null;
 function ui(){if(!tune()){if(bar)bar.hidden=true;return}
  if(!bar){bar=document.createElement("div");bar.id="fpzt";document.body.appendChild(bar);
@@ -2312,7 +2320,7 @@ function ui(){if(!tune()){if(bar)bar.hidden=true;return}
  bar.hidden=false;const p=Math.round(cur()*100);bar.querySelector(".nm").textContent=(NAME[tab()]||tab())+" size";bar.querySelector(".pc").textContent=p+"%";bar.querySelector("input").value=p;
  bar.querySelector(".all").textContent="Saved per page · "+Object.keys(NAME).map(k=>NAME[k]+" "+Math.round((Z[k]||1)*100)+"%").join(" · ")}
 function toggle(btn){const on=!tune();try{localStorage.setItem("fp_tune",on?"1":"0")}catch(e){}const sw=btn&&btn.querySelector(".fpzsw");if(sw)sw.classList.toggle("on",on);ui()}
-setTimeout(()=>apply(),400);
+setTimeout(()=>apply(),400);addEventListener("resize",()=>setTimeout(()=>apply(),150));
 return{apply,toggle,ui}})();
 </script><style>#views .whpick .lbl{flex-wrap:nowrap!important;gap:5px!important;padding-right:10px!important;margin-bottom:8px!important;white-space:nowrap}
 #views .whpick .lbl .lbt{font-size:9px!important;letter-spacing:.02em!important}
