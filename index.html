@@ -2355,13 +2355,13 @@ function fpLeagues(){const X=window.HDX,D=X.D;let ov=document.getElementById("fp
  const L=(D.leagues&&D.leagues.length?D.leagues:[{name:D.league,team:D.me,logo:u,cur:true}]);
  ov.innerHTML='<div class="fpls" role="dialog" aria-label="Your leagues"><div class="gr"></div><div class="hd">Your leagues</div>'+L.map(l=>'<div class="it'+(l.cur?' on':'')+'">'+(l.logo?'<img alt="" src="'+l.logo+'">':'<i>'+String(l.team||"?").slice(0,2)+'</i>')+'<div class="m"><b>'+(l.team||"")+'</b><small>'+(l.name||"")+' · ESPN</small></div>'+(l.cur?'<span class="ck">✓</span>':'')+'</div>').join("")+'<div class="it add"><i>+</i><div class="m"><b>Add a league</b><small>Connect another ESPN league</small></div><span class="soon">Soon</span></div></div>';
  ov.onclick=e=>{if(e.target===ov)ov.remove()};document.body.appendChild(ov)}
-function fpHead(el){const X=window.HDX;if(!X||X.TAB==="home")return;const h=el.querySelector(".hdstk");if(!h||h.dataset.fpd)return;h.dataset.fpd=1;h.classList.add("fphd");
- const D=X.D,NM={team:"Team",matchup:"Matchup",waivers:"Waivers",trades:"Trades",more:"More"};
+function fpHead(el){const X=window.HDX;if(!X)return;const h=el.querySelector(".hdstk");if(!h||h.dataset.fpd)return;h.dataset.fpd=1;h.classList.add("fphd");
+ const D=X.D,NM={home:"Home",team:"Team",matchup:"Matchup",waivers:"Waivers",trades:"Trades",more:"More"};
  const row=document.createElement("div");row.className="fprow";
  const ic=document.querySelector('#tabs button[data-tab="'+X.TAB+'"] svg');if(ic){const c=ic.cloneNode(true);c.removeAttribute("style");c.setAttribute("class","fpic");row.appendChild(c)}
  const tt=document.createElement("span");tt.className="fptt";tt.textContent=NM[X.TAB]||"";row.appendChild(tt);
  const act=document.createElement("div");act.className="fpact";row.appendChild(act);const actL=document.createElement("div");actL.className="fpact l";row.appendChild(actL);
- const lt=h.querySelector(".lt");
+ const at=h.querySelector(".ahtop");if(at)at.classList.add("fphide");const lt=h.querySelector(".lt");
  if(lt){const top=lt.closest(".whtop")||lt;[...top.querySelectorAll("button")].forEach(b=>(b.classList.contains("whclassic")?actL:act).appendChild(b));top.classList.add("fphide")}
  h.insertBefore(row,h.firstChild);
  const tb=h.querySelector(".whtabs,.hd-otabs");if(tb)tb.classList.add("fptabs");
