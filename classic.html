@@ -1059,14 +1059,16 @@ html body .ah>.hdstk+*{margin-top:12px!important}
 html body .hdstk.fphd{background:#000!important;padding-top:calc(var(--sat,0px) + 2px)!important}
 html body .hdstk.fphd>*{background:transparent!important}
 html body .hdstk.fphd .fphide{display:none!important}
-html body .hdstk.fphd .fprow{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;height:52px;margin:0 -4px}
-html body .hdstk.fphd .fphl{width:34px;height:34px;border-radius:9px;object-fit:cover;flex:none}
-html body .hdstk.fphd .fptt{font:800 29px/1 "Roboto Condensed","Arial Narrow",sans-serif;color:#fff;letter-spacing:.005em;white-space:nowrap}
+html body .hdstk.fphd .fprow{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;height:46px;margin:0 -4px}
+html body .hdstk.fphd .fphl{width:28px;height:28px;border-radius:8px;object-fit:cover;flex:none}
+html body .hdstk.fphd .fptt{font:800 25px/1 "Roboto Condensed","Arial Narrow",sans-serif;color:#fff;letter-spacing:.005em;white-space:nowrap}
 html body .hdstk.fphd .fpact.l{right:auto;left:0}
+html body .hdstk.fphd .fpapp{width:26px;height:auto;display:block}
+html body .hdstk.fphd .fptabs:has(>button:nth-child(4)) button{font-size:13.5px!important;letter-spacing:0!important}
 html body .hdstk.fphd .fpact.l .whclassic{margin:0!important;font-size:12px!important;padding:7px 11px!important}
 html body .hdstk.fphd .fpact{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:8px}
 html body .hdstk.fphd .fptabs{display:flex!important;gap:0!important;margin:4px -18px 0!important;padding:0!important;border-bottom:0!important}
-html body .hdstk.fphd .fptabs button{flex:1 1 0;text-align:center;font:600 17px -apple-system,system-ui,sans-serif!important;text-transform:uppercase;letter-spacing:.01em;color:#a3a4a8!important;padding:12px 0 13px!important;border:0!important;border-bottom:4px solid transparent!important;box-shadow:none!important;background:none!important;margin:0!important}
+html body .hdstk.fphd .fptabs button{flex:1 1 0;text-align:center;font:600 15px -apple-system,system-ui,sans-serif!important;text-transform:uppercase;letter-spacing:.01em;color:#a3a4a8!important;padding:11px 0 12px!important;border:0!important;border-bottom:3px solid transparent!important;white-space:nowrap;box-shadow:none!important;background:none!important;margin:0!important}
 html body .hdstk.fphd .fptabs button.on,html body .hdstk.fphd .hd-otabs button[style*="inset 0 -2.5px"]{color:#fff!important;border-bottom-color:#ffc62b!important}
 html body .hdstk.fphd .th2{margin-top:6px!important}
 </style>
@@ -2294,7 +2296,14 @@ function fpHead(el){const X=window.HDX;if(!X||X.TAB==="home")return;const h=el.q
  const lt=h.querySelector(".lt");
  if(lt){const top=lt.closest(".whtop")||lt;[...top.querySelectorAll("button")].forEach(b=>(b.classList.contains("whclassic")?actL:act).appendChild(b));top.classList.add("fphide")}
  h.insertBefore(row,h.firstChild);
- const tb=h.querySelector(".whtabs,.hd-otabs");if(tb)tb.classList.add("fptabs")}
+ const tb=h.querySelector(".whtabs,.hd-otabs");if(tb)tb.classList.add("fptabs");
+ const sh=document.createElement("img");sh.className="fpapp";sh.alt="";sh.src="shield.png";sh.onerror=function(){this.remove()};actL.appendChild(sh);
+ const cl=row.querySelector(".whclassic");if(cl&&!tb&&X.TAB==="waivers"){cl.style.display="none";const t2=document.createElement("div");t2.className="whtabs fptabs";[["this","This week"],["next","Next week"],["long","Long term"]].forEach(([k,l])=>{const b=document.createElement("button");b.textContent=l;b.onclick=e=>{e.preventDefault();e.stopPropagation();if(X.WH)X.WH.tab=k;cl.click()};t2.appendChild(b)});const c2=document.createElement("button");c2.textContent="ESPN Classic";c2.className="on";t2.appendChild(c2);h.appendChild(t2)}
+ if(cl&&tb){cl.style.display="none";const W=X.WH||{},isC=W.seg==="all";const nb=document.createElement("button");nb.textContent="ESPN Classic";nb.className=isC?"on":"";
+  if(isC)tb.querySelectorAll("button").forEach(b=>b.classList.remove("on"));
+  nb.onclick=e=>{e.preventDefault();e.stopPropagation();if((X.WH||{}).seg!=="all")cl.click()};
+  tb.addEventListener("click",e=>{const b=e.target.closest("button[data-whtab]");if(b&&X.WH&&X.WH.seg==="all"){X.WH.seg="for"}},true);
+  tb.appendChild(nb)}}
 function after(el,cur){const X=window.HDX;if(!X)return;try{window.FPZ&&FPZ.apply(el)}catch(e){}
  if(X.TAB==='waivers'){try{const w=el.querySelector('#wmini');if(w&&window.__wmBind)window.__wmBind(w)}catch(e){}}
  if(X.TAB==='waivers'){try{goldGrid(el)}catch(e){console.warn(e)}}
