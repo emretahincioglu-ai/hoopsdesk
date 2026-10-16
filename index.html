@@ -1115,7 +1115,18 @@ html body .hdstk.fphd .fprow{position:relative;display:flex;align-items:center;j
 html body .hdstk.fphd .fphl{width:28px;height:28px;border-radius:8px;object-fit:cover;flex:none}
 html body .hdstk.fphd .fptt{font:800 25px/1 "Roboto Condensed","Arial Narrow",sans-serif;color:#fff;letter-spacing:.005em;white-space:nowrap}
 html body .hdstk.fphd .fpact.l{right:auto;left:0}
-html body .hdstk.fphd .fpapp{width:26px;height:auto;display:block}
+html body .hdstk.fphd .fpic{width:24px;height:24px;stroke:#ffc62b;flex:none}
+html body .hdstk.fphd .fplg{display:flex;align-items:center;gap:4px;border:0;background:none;padding:0;color:#8e9096;cursor:pointer}
+html body .hdstk.fphd .fplg img,html body .hdstk.fphd .fplg i{width:30px;height:30px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1.5px rgba(255,255,255,.25);display:grid;place-items:center;font:800 11px system-ui;font-style:normal;color:#fff;background:#333}
+#fplov{position:fixed;inset:0;z-index:950;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center}
+#fplov .fpls{width:100%;max-width:520px;background:#1c1d21;border-radius:20px 20px 0 0;border-top:1px solid #333;padding:10px 16px calc(22px + env(safe-area-inset-bottom,0px));font-family:-apple-system,system-ui,sans-serif;color:#ececee;animation:mvup .28s cubic-bezier(.2,.8,.2,1)}
+#fplov .gr{width:38px;height:4px;border-radius:2px;background:#444;margin:0 auto 12px}
+#fplov .hd{font:800 19px "Roboto Condensed",sans-serif;margin-bottom:8px}
+#fplov .it{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:#232428;margin-bottom:8px;border:1px solid #2f3035}
+#fplov .it.on{border-color:#ffc62b}
+#fplov .it img,#fplov .it i{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:none;display:grid;place-items:center;font:800 14px system-ui;font-style:normal;background:#333;color:#fff}
+#fplov .it .m{flex:1;min-width:0}#fplov .it b{display:block;font:700 16px system-ui}#fplov .it small{color:#8e9096;font-size:13px}
+#fplov .ck{color:#ffc62b;font:800 18px system-ui}#fplov .it.add{opacity:.6}#fplov .soon{font:700 11px system-ui;color:#8e9096;border:1px solid #3a3b40;border-radius:999px;padding:3px 8px}
 html body .hdstk.fphd .fptabs:has(>button:nth-child(4)) button{font-size:13.5px!important;letter-spacing:0!important}
 html body .hdstk.fphd .fpact.l .whclassic{margin:0!important;font-size:12px!important;padding:7px 11px!important}
 html body .hdstk.fphd .fpact{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:8px}
@@ -2339,17 +2350,22 @@ function wvSheet(el){const X=window.HDX;document.querySelectorAll(".mvov,.mvsh")
  sh.querySelectorAll("[data-lay]").forEach(b=>b.onclick=()=>{const want=b.dataset.lay;if((X.WH.seg==="all")!==(want==="all")){const t=document.querySelector("#views .view [data-whseg]");if(t)t.click()}setTimeout(()=>{wvSheet();document.querySelector(".mvsh").style.animation="none"},60)});
  sh.querySelector("[data-col]").onclick=()=>{localStorage.setItem("hd_wvcol",col?"0":"1");document.querySelectorAll("#views .view").forEach(v=>v.classList.toggle("wvnc",col));wvSheet();document.querySelector(".mvsh").style.animation="none"}}
 function goldGrid(el){el.querySelectorAll('.whc').forEach(w=>{const R=[...w.querySelectorAll(':scope > .lvg')];if(!R.length)return;const hot=new Set([...el.querySelectorAll('.ahl,.whsec')].length?[]:[]);const cats=[...R[0].querySelectorAll('.gsq span')].map(x=>x.dataset.c);cats.forEach((c,j)=>{const cells=R.map(r=>r.querySelectorAll('.gsq span')[j]).filter(Boolean);const key=x=>x.textContent.trim()==='–'?-1e9:+x.dataset.z;const vals=[...new Set(cells.map(x=>x.textContent.trim()==='–'?null:x.dataset.v).filter(v=>v!=null))];const zv={};cells.forEach(x=>{if(x.textContent.trim()!=='–')zv[x.dataset.v]=Math.max(zv[x.dataset.v]??-1e9,+x.dataset.z)});vals.sort((a,b)=>zv[b]-zv[a]);cells.forEach(x=>{x.classList.remove('g1','g2','g0','b1','b2');const t=x.textContent.trim();if(t==='–'){x.classList.add('g0');return}const r=vals.indexOf(x.dataset.v),L=vals.length;if(L<2)return;if(r===0)x.classList.add('g1');else if(r===1&&L>=4)x.classList.add('g2');else if(r===L-1)x.classList.add('b1');else if(r===L-2&&L>=4)x.classList.add('b2')})});if(!w.querySelector(':scope > .lvgh')){const h=document.createElement('div');h.className='lvgh';h.style.setProperty('--n',cats.length);h.innerHTML='<span></span><div>'+cats.map(c=>'<span>'+c+'</span>').join('')+'</div>';w.insertBefore(h,R[0])}})}
+function fpLeagues(){const X=window.HDX,D=X.D;let ov=document.getElementById("fplov");if(ov){ov.remove();return}
+ ov=document.createElement("div");ov.id="fplov";let u=(D.logos||{})[D.me];if(u&&location.port&&!String(u).startsWith("data:"))u="/img/l?u="+encodeURIComponent(u);
+ const L=(D.leagues&&D.leagues.length?D.leagues:[{name:D.league,team:D.me,logo:u,cur:true}]);
+ ov.innerHTML='<div class="fpls" role="dialog" aria-label="Your leagues"><div class="gr"></div><div class="hd">Your leagues</div>'+L.map(l=>'<div class="it'+(l.cur?' on':'')+'">'+(l.logo?'<img alt="" src="'+l.logo+'">':'<i>'+String(l.team||"?").slice(0,2)+'</i>')+'<div class="m"><b>'+(l.team||"")+'</b><small>'+(l.name||"")+' · ESPN</small></div>'+(l.cur?'<span class="ck">✓</span>':'')+'</div>').join("")+'<div class="it add"><i>+</i><div class="m"><b>Add a league</b><small>Connect another ESPN league</small></div><span class="soon">Soon</span></div></div>';
+ ov.onclick=e=>{if(e.target===ov)ov.remove()};document.body.appendChild(ov)}
 function fpHead(el){const X=window.HDX;if(!X||X.TAB==="home")return;const h=el.querySelector(".hdstk");if(!h||h.dataset.fpd)return;h.dataset.fpd=1;h.classList.add("fphd");
  const D=X.D,NM={team:"Team",matchup:"Matchup",waivers:"Waivers",trades:"Trades",more:"More"};
  const row=document.createElement("div");row.className="fprow";
- let u=(D.logos||{})[D.me];if(u){if(location.port&&!String(u).startsWith("data:"))u="/img/l?u="+encodeURIComponent(u);const im=document.createElement("img");im.className="fphl";im.alt="";im.src=u;im.onerror=function(){this.remove()};row.appendChild(im)}
+ const ic=document.querySelector('#tabs button[data-tab="'+X.TAB+'"] svg');if(ic){const c=ic.cloneNode(true);c.removeAttribute("style");c.setAttribute("class","fpic");row.appendChild(c)}
  const tt=document.createElement("span");tt.className="fptt";tt.textContent=NM[X.TAB]||"";row.appendChild(tt);
  const act=document.createElement("div");act.className="fpact";row.appendChild(act);const actL=document.createElement("div");actL.className="fpact l";row.appendChild(actL);
  const lt=h.querySelector(".lt");
  if(lt){const top=lt.closest(".whtop")||lt;[...top.querySelectorAll("button")].forEach(b=>(b.classList.contains("whclassic")?actL:act).appendChild(b));top.classList.add("fphide")}
  h.insertBefore(row,h.firstChild);
  const tb=h.querySelector(".whtabs,.hd-otabs");if(tb)tb.classList.add("fptabs");
- const sh=document.createElement("img");sh.className="fpapp";sh.alt="";sh.src="shield.png";sh.onerror=function(){this.remove()};actL.appendChild(sh);
+ const lb=document.createElement("button");lb.className="fplg";lb.setAttribute("aria-label","Switch league");let u=(D.logos||{})[D.me];if(u&&location.port&&!String(u).startsWith("data:"))u="/img/l?u="+encodeURIComponent(u);lb.innerHTML=(u?'<img alt="" src="'+u+'" onerror="this.remove()">':'<i>'+String(D.me||"?").slice(0,2)+'</i>')+'<svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';lb.onclick=e=>{e.stopPropagation();fpLeagues()};actL.insertBefore(lb,actL.firstChild);
  const cl=row.querySelector(".whclassic");if(cl&&!tb&&X.TAB==="waivers"){cl.style.display="none";const t2=document.createElement("div");t2.className="whtabs fptabs";[["this","This week"],["next","Next week"],["long","Long term"]].forEach(([k,l])=>{const b=document.createElement("button");b.textContent=l;b.onclick=e=>{e.preventDefault();e.stopPropagation();if(X.WH)X.WH.tab=k;cl.click()};t2.appendChild(b)});const c2=document.createElement("button");c2.textContent="ESPN Classic";c2.className="on";t2.appendChild(c2);h.appendChild(t2)}
  if(cl&&tb){cl.style.display="none";const W=X.WH||{},isC=W.seg==="all";const nb=document.createElement("button");nb.textContent="ESPN Classic";nb.className=isC?"on":"";
   if(isC)tb.querySelectorAll("button").forEach(b=>b.classList.remove("on"));
