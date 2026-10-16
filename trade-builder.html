@@ -402,5 +402,8 @@ function search(side){const inp=side==="send"?qs:qg,s=inp.value.trim().toLowerCa
  res.querySelectorAll("[data-st]").forEach(x=>x.onclick=()=>{const t=+x.dataset.st;if(S.partner!==t)S.get=[];S.partner=t;qg.value="";res.classList.remove("on");render()});
  res.querySelectorAll("[data-sp]").forEach(x=>x.onclick=()=>{const p=P(x.dataset.sp);if(side==="send"){S.send.push(p.n);qs.value=""}else{if(S.partner!==p.team){S.get=[];S.partner=p.team}S.get.push(p.n);qg.value=""}res.classList.remove("on");render();(side==="get"&&!S.send.length?qs:side==="send"&&!S.get.length?qg:inp).focus()})}
 qs.oninput=()=>search("send");qg.oninput=()=>search("get");document.addEventListener("click",e=>{if(!e.target.closest(".srch2"))res.classList.remove("on")});
+(()=>{try{const q=new URLSearchParams(location.search);if(!q.has("p")&&!q.has("s")&&!q.has("g"))return;const byId=id=>ALL.find(p=>String(p.id)===String(id));
+ const pp=q.get("p");if(pp)S.partner=+pp;(q.get("s")||"").split(",").filter(Boolean).forEach(id=>{const p=byId(id);if(p&&p.team===ME&&!S.send.includes(p.n))S.send.push(p.n)});
+ (q.get("g")||"").split(",").filter(Boolean).forEach(id=>{const p=byId(id);if(p&&p.team!==ME){if(S.partner!==p.team){S.partner=p.team;S.get=[]}if(!S.get.includes(p.n))S.get.push(p.n)}})}catch(e){}})();
 render();
 </script></body></html>
