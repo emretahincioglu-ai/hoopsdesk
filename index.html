@@ -1716,7 +1716,7 @@ S.builder=()=>{if(BS.pid==null){const f=finder()[0];BS.pid=f.pid;BS.out=[...f.ou
 S.finder=()=>`<div class="lt" style="margin-top:2px">Win-win finder</div><div class="eb" style="margin:6px 4px 10px">Trades where you climb and they don't drop</div><div class="list">${finder().slice(0,12).map((e,i)=>`<button class="cell" data-deal="${i}" style="align-items:flex-start"><div class="m"><b>${esc(e.out.map(sh).join(" + "))} ⇄ ${esc(e.inn.map(sh).join(" + "))}</b><small>${esc(TN[e.pid])} · ${e.acc}% accept · them ${e.them.d>=0?"+":""}${e.them.d}</small></div><div class="r"><b style="font:900 18px var(--f-disp);color:var(--win)">+${e.me.d}</b></div><span class="chev">›</span></button>`).join("")}</div>`;
 S.rules=()=>`<div class="inmore">${whSettings()}</div>`;
 S.more=()=>`<div class="lt" style="margin-top:8px">More</div><div class="list" style="margin-top:12px"><button class="cell" data-push="rankings"><div class="av" style="background:var(--acc-soft);color:var(--acc)">📊</div><div class="m"><b>Rankings</b><small>Standings, power rankings, category leaders</small></div><span class="chev">›</span></button></div><div class="sec"><h2>League</h2></div><div class="list"><div class="cell" style="cursor:default"><div class="av">AQ</div><div class="m"><b>${esc(D.league)}</b><small>ESPN · 12 teams · H2H most categories</small></div></div><button class="cell" data-push="rules"><div class="m"><b>League rules</b><small>Adds, waivers lock, aggressiveness, punts, never drop</small></div><span class="chev">›</span></button><div class="cell" style="cursor:default"><div class="m"><b>Punted categories</b><small>${D.punts.join(", ")||"none"}</small></div><span class="chev">›</span></div><div class="cell" style="cursor:default"><div class="m"><b>Projections</b><small>Basketball Monster</small></div><span class="chev">›</span></div></div>
- <div class="sec"><h2>App</h2></div><div class="list"><button class="cell" onclick="this.querySelector('svg').classList.add('fpspin');location.replace(location.pathname+'?v='+Date.now()+location.hash)"><div class="av" style="background:var(--acc-soft);color:var(--acc)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></div><div class="m"><b>Refresh app</b><small>Load the latest version and data</small></div><span class="chev">›</span></button><button class="cell" onclick="window.FPZ&&FPZ.toggle(this)"><div class="av" style="background:var(--acc-soft);color:var(--acc);font:800 15px system-ui">Aa</div><div class="m"><b>Page size</b><small>Show a size slider on every page</small></div><span class="fpzsw ${(()=>{try{return localStorage.getItem('fp_tune')==='1'?'on':''}catch(e){return ''}})()}"></span></button><div class="cell" style="cursor:default"><div class="m"><b>Notifications</b><small>Lineup locks, injuries, trade offers</small></div><span class="chev">›</span></div><div class="cell" style="cursor:default"><div class="m"><b>Appearance</b><small>Follows your iPhone (light / dark)</small></div><span class="chev">›</span></div></div><p style="color:var(--mute);font-size:12px;text-align:center;margin-top:20px">Fantasy Plus · design preview</p>`;
+ <div class="sec"><h2>App</h2></div><div class="list"><button class="cell" onclick="this.querySelector('svg').classList.add('fpspin');location.replace(location.pathname+'?v='+Date.now()+location.hash)"><div class="av" style="background:var(--acc-soft);color:var(--acc)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></div><div class="m"><b>Refresh app</b><small>Load the latest version and data</small></div><span class="chev">›</span></button><button class="cell" onclick="location.href='customize.html'"><div class="av" style="background:var(--acc-soft);color:var(--acc);font:800 13px system-ui">2K</div><div class="m"><b>Card style</b><small>Customize the 2K player card</small></div><span class="chev">›</span></button><button class="cell" onclick="window.FPZ&&FPZ.toggle(this)"><div class="av" style="background:var(--acc-soft);color:var(--acc);font:800 15px system-ui">Aa</div><div class="m"><b>Page size</b><small>Show a size slider on every page</small></div><span class="fpzsw ${(()=>{try{return localStorage.getItem('fp_tune')==='1'?'on':''}catch(e){return ''}})()}"></span></button><div class="cell" style="cursor:default"><div class="m"><b>Notifications</b><small>Lineup locks, injuries, trade offers</small></div><span class="chev">›</span></div><div class="cell" style="cursor:default"><div class="m"><b>Appearance</b><small>Follows your iPhone (light / dark)</small></div><span class="chev">›</span></div></div><p style="color:var(--mute);font-size:12px;text-align:center;margin-top:20px">Fantasy Plus · design preview</p>`;
 /* ---------- shell ---------- */
 const STACK={home:["home"],team:["team"],matchup:["game"],waivers:["waivers"],trades:["trades"],more:["more"]};let TAB="home";
 const TITLES={rules:"League rules",builder:"Trade builder",finder:"Win-win finder",game:"Matchup",rankings:"Rankings"};
@@ -2289,6 +2289,52 @@ window.FPTS=function(){const D=(window.HDX&&HDX.D)||{};const esc=s=>String(s??""
  <div><small>STANDING</small><b>${st.place?ord(st.place):"–"}</b><span>of ${N}</span></div>
  <div><small>VS ${esc(oi)}</small><b class="${w>l?"up":w<l?"dn":""}">${w}-${l}-${t}</b><span class="${wp>=50?"wn":"ls"}">${wp!=null?wp+"% win":""}</span></div>
  <div class="${inj.length?"al":""}"><small>INJURED</small><b>${inj.length}</b><span>${inj.length?esc(inj.slice(0,2).map(r=>last(r.name)).join(", "))+(inj.length>2?` +${inj.length-2}`:""):"all healthy"}</span></div></div>`};
+
+/* Applies 2K card settings saved by customize.html (localStorage cc2k) */
+(function(){
+const TN={gd:"GOLD",hof:"HOF",leg:"LEGEND",goat:"GOAT"};
+function mix(c,p){return `color-mix(in srgb,${c} ${p}%,transparent)`}
+function css(S){
+ const F=".pp .fpov[class*=ot-]:not(.ot-base)";let o="";
+ ["gd","hof","leg","goat"].forEach(k=>{const c=S["c_"+k];
+  o+=`.pp .fpov.ot-${k}{--tc:${c}}${k==="goat"&&c==="#d8dae0"&&S.bars!=="mono"?"":`.pp .fpov .sgm i.${k}{background:${S.bars==="mono"?S.seg1:c}}`}.pp .fpov .al b.${k}{color:${S.bars==="mono"?"#fff":c}}.pp .fpov .bg.${k} .hb{background:${c}}.pp .fpov .bg.${k} u{color:${c}}`});
+ o+=`.pp .fpov .sgm i{background:${S.seg0}}.pp .fpov .sgm i.on{background:${S.seg1}}`;
+ ["gd","hof","leg","goat"].filter(k=>!(k==="goat"&&S.c_goat==="#d8dae0"&&S.bars!=="mono")).forEach(k=>o+=`.pp .fpov .sgm i.on.${k}{background:${S.bars==="mono"?S.seg1:S["c_"+k]}}`);
+ o+=`.pp .fpov .nk{color:${S.nick}}.pp .fpov .bg{background:${S.tile}}.pp .fpov .ats,.pp .fpov .bdg{border-color:${S.line2}}`;
+ o+=`${F}{border-radius:${S.rad}px;background:${S.wash?`linear-gradient(180deg,${mix("var(--tc)",S.wash)},transparent 70%),`:""}${S.cbg}}`;
+ // outline
+ let sh="none";
+ if(S.outline==="thin"||S.outline==="gradient")sh=`inset 0 0 0 ${S.olW}px ${mix("var(--tc)",S.outline==="gradient"?90:70)}`;
+ if(S.outline==="glow")sh=`inset 0 0 0 ${S.olW}px ${mix("var(--tc)",80)},0 0 ${S.glow}px ${mix("var(--tc)",55)}`;
+ o+=`${F}{box-shadow:${sh};overflow:${S.outline==="glow"?"visible":"hidden"}}`;
+ if(S.outline==="glow")o+=`${F} .tp{border-radius:${S.rad}px ${S.rad}px 0 0}`;
+ // band
+ const k=S.bandA;let b="none";
+ if(S.band==="tint")b=mix("var(--tc)",k);
+ if(S.band==="gradient")b=`linear-gradient(180deg,${mix("var(--tc)",Math.min(100,k*1.3))},${mix("var(--tc)",k*.4)})`;
+ if(S.band==="full")b=`linear-gradient(135deg,${mix("var(--tc)",Math.min(100,k*1.8))},${mix("var(--tc)",k*.6)})`;
+ o+=`${F} .tp{background:${b};border-bottom:1px solid ${S.band==="off"?S.line2:mix("var(--tc)",55)}}`;
+ // hexagon
+ if(S.hex==="white")o+=`${F} .hx{background:#fff;color:#111}${F} .hx::before{display:none}`;
+ if(S.hex==="tier")o+=`${F} .hx{background:linear-gradient(160deg,color-mix(in srgb,var(--tc) 55%,#fff),var(--tc));color:#1a0d10}${F} .hx::before{display:none}`;
+ if(S.hex==="outline")o+=`${F} .hx{background:var(--tc);color:var(--tc)}${F} .hx::before{display:block;background:${S.cbg}}`;
+ if(S.hex==="dark")o+=`${F} .hx{background:#0e0f12;color:#fff;box-shadow:none}${F} .hx::before{display:none}`;
+ // pill
+ if(S.pill==="on")Object.keys(TN).forEach(t=>o+=`.pp .fpov.ot-${t} .tp{position:relative}.pp .fpov.ot-${t} .tp::after{content:"${TN[t]}";position:absolute;top:10px;right:12px;font:800 9px system-ui;letter-spacing:.12em;padding:3px 7px;border-radius:6px;color:var(--tc);border:1px solid var(--tc);background:${mix("var(--tc)",18)}}`);
+ // stripe + brackets
+ if(S.stripe!=="off")o+=`${F}::before{content:"";position:absolute;left:0;top:0;bottom:0;width:${S.stW}px;z-index:2;pointer-events:none;background:${S.stripe==="solid"?"var(--tc)":`linear-gradient(180deg,var(--tc),${mix("var(--tc)",15)})`}}`;
+ if(S.brk==="on"){const c=S.crMode==="tier"?"var(--tc)":S.crc,s=S.crS+"px",w=S.crW+"px",i=S.crI+"px";
+  const g=(x,y,W,H)=>`linear-gradient(${c},${c}) ${x} ${y}/${W} ${H} no-repeat`;
+  o+=`${F}::after{content:"";position:absolute;inset:${i};z-index:2;pointer-events:none;background:${[g("left","top",s,w),g("left","top",w,s),g("right","top",s,w),g("right","top",w,s),g("left","bottom",s,w),g("left","bottom",w,s),g("right","bottom",s,w),g("right","bottom",w,s)].join(",")}}`}
+ return o}
+function apply(){let S=null;try{S=JSON.parse(localStorage.getItem("cc2k")||"null")}catch(e){}
+ let el=document.getElementById("fpcc");if(!S){if(el)el.remove();return}
+ if(!el){el=document.createElement("style");el.id="fpcc";document.head.appendChild(el)}
+ try{el.textContent=css(S)}catch(e){}}
+window.FPCC={apply};apply();
+addEventListener("storage",e=>{if(e.key==="cc2k")apply()});
+addEventListener("pageshow",apply);document.addEventListener("visibilitychange",()=>{if(!document.hidden)apply()});
+})();
 
 ;(function(){
 const SITE="https://site.api.espn.com/apis/site/v2/sports/basketball/nba";
