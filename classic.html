@@ -2130,7 +2130,7 @@ function windows(j){const ok=j&&j.ok;const lg=ok?(j.logs||[]):[];const reg=lg.fi
  const R={s25:{lab:ls?ls.season.replace(/^20(\d\d)-(\d\d)$/,"$1-$2"):"25-26",full:ls?("NBA "+ls.season):"NBA 25-26",line:ls?{...ls,MIN:ls.min,n:ls.gp}:null},l4:{lab:"L1M",full:"Last month",line:avg(cut(30))},l2:{lab:"L2W",full:"Last 2 weeks",line:avg(cut(14))},l1:{lab:"L1W",full:"Last week",line:avg(cut(7))}};
  Object.values(R).forEach(x=>{if(x.line){x.z=zs(x.line);x.v=val(x.z);x.rank=likeRank(x.v)}});R.thru=last;R.reg=reg;return R}
 function info(r,j){const b=find(r.name);if(!b)return null;const z=zs(sLine(b));const rk=b.rank||likeRank(val(z));
- const pct=1-(likeRank(val(z))-1)/Math.max(1,poolVals.length);const ovr=Math.max(60,Math.min(99,Math.round(62+37*pct)));
+ const ovr=rk<=150?Math.round(99-(rk-1)*24/149):Math.max(60,Math.round(75-(rk-150)*.1));
  return{b,z,rk,ovr,fit:fitOf(z),pr:posRank(b,r.pos),W:windows(j)}}
 const mv=(a,b)=>a==null||b==null?"":b<a?`<em class="up">▲${a-b}</em>`:b>a?`<em class="dn">▼${b-a}</em>`:`<em>–</em>`;
 function strip(r,j){const I=info(r,j);if(!I)return null;const W=I.W;
@@ -2143,9 +2143,10 @@ function role(r,z){const p=(r.pos||[]).join("/");const g=/C/.test(p)&&!/G/.test(
  const top=CATS.filter(c=>!punts().includes(c)).sort((a,b)=>z[b]-z[a]);const lead={PTS:"Scoring","3PM":"Shooting",REB:"Rebounding",AST:"Playmaking",STL:"Two-way",BLK:"Rim-protecting","FG%":"Efficient","FT%":"Scoring"}[top[0]]||"";
  return `${lead} ${g}`.trim()+" · "+top.slice(0,2).join(" · ")}
 const AT=[["Scoring","PTS"],["Three-Point","3PM"],["Rebounding","REB"],["Playmaking","AST"],["Steals","STL"],["Rim Protect","BLK"],["Efficiency","FG%"],["Free Throw","FT%"]];
-const rate=z=>Math.max(35,Math.min(99,Math.round(72+12*z)));
+let RP=null;function rpool(){if(RP)return RP;const d=D(),L=[];Object.values(d.rost||{}).flat().forEach(p=>{const b=find(p.n);if(b&&b.s)L.push(b)});RP=L.length>=60?L:pool;return RP}
+const rateC=(c,b)=>{const P=rpool(),x=zOf(c,b.s[CI[c]]),below=P.filter(p=>zOf(c,p.s[CI[c]])<x).length;return Math.max(25,Math.min(99,Math.round(100*below/Math.max(1,P.length))))};
 function ovrCard(r,I){const z=I.z,top=CATS.filter(c=>!punts().includes(c)&&z[c]>.3).sort((a,b)=>z[b]-z[a]).slice(0,4);
- const bar=([n,c])=>{const v=rate(z[c]);return `<div class="at"><span>${n}</span><b class="${v>=90?"gd":v>=78?"gr":""}">${v}</b><i><u class="${v>=90?"gd":v>=78?"gr":""}" style="width:${v}%"></u></i></div>`};
+ const bar=([n,c])=>{const v=rateC(c,I.b);return `<div class="at"><span>${n}</span><b class="${v>=90?"gd":v>=78?"gr":""}">${v}</b><i><u class="${v>=90?"gd":v>=78?"gr":""}" style="width:${v}%"></u></i></div>`};
  return `<section class="fpov"><div class="tp"><div class="hx"><small>OVR</small><b>${I.ovr}</b></div><div class="m"><b>${esc(r.name)}</b><span class="ro">${esc(role(r,z)).toUpperCase()}</span><span class="su">Team fit ${I.fit!=null?I.fit:"–"} · #${I.rk} overall</span></div></div>
  <div class="ats">${AT.map(bar).join("")}</div>${top.length?`<div class="bdg">${top.map(c=>{const t=tier(z[c]);return `<div class="bg ${t[1]}"><div class="hb">${c}</div><b>${BN[c]}</b><small>${t[0]}</small></div>`}).join("")}</div>`:""}</section>`}
 const ordn=n=>n+(["th","st","nd","rd"][(n%100-20)%10]||["th","st","nd","rd"][n%100]||"th");
