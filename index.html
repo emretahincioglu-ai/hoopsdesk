@@ -1335,6 +1335,33 @@ html body .hdstk.fphd .fphtabs button{font-size:13.5px!important}
 #fphc .nht .pn .nm{font-size:13.5px}
 #fphc .nht .hr span:first-child{padding-left:36px}
 #fphc .nht .pn{overflow:visible}#fphc .nht .pn .nm small{text-align:left}
+#fphc .nhstand .nsc{margin-top:6px}
+#fphc .nhstand .nsch{font:900 15px "Roboto Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#ffc62b;padding:10px 0 4px}
+#fphc .nhstand .nsr{display:grid;grid-template-columns:18px 22px minmax(0,1fr) 22px 22px 36px 30px 34px;column-gap:4px;align-items:center;padding:7px 0;border-top:1px solid #1b1b1e;font:600 13px system-ui;color:#c9cacf;font-variant-numeric:tabular-nums}
+#fphc .nhstand .nsr>span:nth-child(n+4){text-align:right}
+#fphc .nhstand .nsr.hd{font:700 10.5px system-ui;color:#8e9096;border-top:0;padding:2px 0 4px}
+#fphc .nhstand .nsr .nsk{color:#8e9096;font-weight:700}
+#fphc .nhstand .nsr span,#fphc .nhstand .nsr em{background:none;border-radius:0;padding:0;min-width:0;height:auto;box-shadow:none}#fphc .nhstand .nsr em{font:800 10px system-ui;font-style:normal;text-align:left}
+#fphc .nhstand em.up{color:#3fbf6f}#fphc .nhstand em.dn{color:#ff6b62}
+#fphc .nhstand .nst{display:flex;align-items:center;gap:7px;min-width:0}
+#fphc .nhstand .nst img{width:22px;height:22px;object-fit:contain;flex:none}
+#fphc .nhstand .nst b{color:#fff;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#fphc .nhstand i.w,#fphc .nhstand i.l{font:800 9px system-ui;font-style:normal;border-radius:4px;padding:1px 4px;flex:none}
+#fphc .nhstand i.w{background:rgba(63,191,111,.18);color:#3fbf6f}#fphc .nhstand i.l{background:rgba(255,107,98,.15);color:#ff6b62}
+#fphc .nhstand .nsr.mup{background:linear-gradient(90deg,rgba(63,191,111,.14),transparent 70%)}
+#fphc .nhstand .nsr.mdn{background:linear-gradient(90deg,rgba(255,107,98,.12),transparent 70%)}
+#fphc .nhstand .sk{font-size:12px}
+#fphc .nhstand .nscut{position:relative;border-top:2px solid #ffc62b;margin:0 0 0;height:0}
+#fphc .nhstand .nscut.pi{border-top:2px dashed rgba(255,198,43,.55)}
+#fphc .nhstand .nscut span{position:absolute;right:0;top:-8px;background:#0d0d0f;padding:0 0 0 6px;font:800 9px/14px system-ui;letter-spacing:.1em;text-transform:uppercase;color:#ffc62b}
+#fphc .nhstand .nscut.pi span{color:rgba(255,198,43,.75)}
+#fphc .nhstand .nscut+.nsr{border-top:0}
+#fphc .nhstand .nslg{display:flex;gap:12px;flex-wrap:wrap;font:600 11px system-ui;color:#8e9096;margin:2px 0 4px}
+#fphc .nhstand .nslg i{margin-right:2px}
+#fphc .nhstand .nscut{display:flex;align-items:center;gap:6px;height:16px;border:0!important;line-height:normal}
+#fphc .nhstand .nscut::before{content:"";flex:1;border-top:2px solid #ffc62b}
+#fphc .nhstand .nscut.pi::before{border-top:2px dashed rgba(255,198,43,.55)}
+#fphc .nhstand .nscut span{position:static;padding:0;background:none}
 </style>
 <div class="stage">
  <aside class="side"><h1>Fantasy Plus <span>for iPhone</span></h1><p>Design of the iPhone app. Tap around, it all works: the tabs, the players, the trade builder.</p><ul><li><b>Home</b>: score, last night, this week's review, category ranks, waivers. Tap the score for the full game.</li><li><b>Team</b>: roster and player cards</li><li><b>Matchup</b>: ESPN-style category table with our ball logic</li><li><b>More</b>: rankings and settings</li><li><b>Trades</b>: your market and the builder</li></ul><p>Numbers are a snapshot of your Anti-Quemo league (preseason projections). Photos show as initials here; the app uses real headshots.</p><p>On your phone, open this link directly and it fills the screen.</p></aside>
@@ -2234,10 +2261,10 @@ function spread(c){const o=(c.odds||[])[0];if(!o||!o.details)return"";const m=St
 function myMap(){const D=HDX.D,m={};(D.team.rows||[]).filter(r=>r.slot!=="IR").forEach(r=>{(m[nb(r.nba)]=m[nb(r.nba)]||[]).push({n:r.name,id:r.id,me:1})});((D.opTeam||{}).rows||[]).forEach(r=>{(m[nb(r.nba)]=m[nb(r.nba)]||[]).push({n:r.name,id:r.id,me:0})});return m}
 function own(){const D=HDX.D,m={};(D.team.rows||[]).forEach(r=>m[String(r.id)]=1);((D.opTeam||{}).rows||[]).forEach(r=>m[String(r.id)]=2);return m}
 async function scores(box_){const B=box_;clearInterval(timer);
- B.innerHTML=`<div class="nhdb"><button data-o="-1" aria-label="Previous day">‹</button><b>${dname(DOFF)}</b><button data-o="1" aria-label="Next day">›</button></div><div class="nhsum"><p class="fhnote">Loading games…</p></div><div class="nhgrid"></div><div class="nhlead"></div><div class="nhbest"></div>`;
+ B.innerHTML=`<div class="nhdb"><button data-o="-1" aria-label="Previous day">‹</button><b>${dname(DOFF)}</b><button data-o="1" aria-label="Next day">›</button></div><div class="nhsum"><p class="fhnote">Loading games…</p></div><div class="nhgrid"></div><div class="nhlead"></div><div class="nhbest"></div><div class="nhstd"></div>`;
  B.querySelectorAll("[data-o]").forEach(b=>b.onclick=e=>{e.stopPropagation();DOFF+=+b.dataset.o;scores(B)});
- let j;try{j=await (await fetch(`${SITE}/scoreboard?dates=${ymd(DOFF)}`)).json()}catch(e){B.querySelector(".nhsum").innerHTML='<p class="fhnote">Couldn\'t reach ESPN. Check your connection and try again.</p>';return}
- if(!document.body.contains(B))return;
+ let j;try{j=await (await fetch(`${SITE}/scoreboard?dates=${ymd(DOFF)}`)).json()}catch(e){B.querySelector(".nhsum").innerHTML='<p class="fhnote">Couldn\'t reach ESPN. Check your connection and try again.</p>';nbaStand(B,[]);return}
+ if(!document.body.contains(B))return;nbaStand(B,j.events||[]);
  const ev=j.events||[],O=own(),M=myMap();let live=0,withMine=0;
  const S=B.querySelector(".nhsum"),G=B.querySelector(".nhgrid");
  if(!ev.length){S.innerHTML='<p class="fhnote">No NBA games this day.</p>';return}
@@ -2267,6 +2294,26 @@ async function scores(box_){const B=box_;clearInterval(timer);
   L.innerHTML=`<div class="nhcard"><div class="nhh"><b>Leaders</b><span>top 5</span></div><div class="nhpl">${cats.map(x=>`<button data-ld="${x}" class="${x===c?"on":""}">${x}</button>`).join("")}</div>${T.map((p,i)=>`<div class="nhlr ${cls(p)}"><span class="k">${i+1}</span>${ph(p.id)?`<img src="${ph(p.id)}" alt="" onerror="this.remove()">`:`<i></i>`}<div class="m"><b>${esc(p.n)} <small>${esc(p.t)}</small></b><div class="ls">${[["MIN",p.MIN],["PTS",p.PTS],["REB",p.REB],["AST",p.AST],["STL",p.STL],["BLK",p.BLK],["3PM",p["3PM"]],["FG",p.FG||"0-0"],["FT",p.FT||"0-0"],["TO",p.TO]].map(([k,v])=>`<span class="${k===c?"on":""}"><b>${v}</b>${k}</span>`).join("")}</div></div><span class="v">${p[c]}</span></div>`).join("")}</div>`;
   L.querySelectorAll("[data-ld]").forEach(b=>b.onclick=e=>{e.stopPropagation();window.__nhLd=b.dataset.ld;drawLead()})};
  B.insertBefore(BB,L);drawTop();drawLead()}
+// ---------- NBA standings with cut lines + day movement ----------
+let STC=null,STT=0;
+async function nbaStand(B,ev){const X=B.querySelector(".nhstd");if(!X)return;
+ try{if(!STC||Date.now()-STT>3e5){STC=await (await fetch("https://site.api.espn.com/apis/v2/sports/basketball/nba/standings")).json();STT=Date.now()}}catch(e){X.innerHTML="";return}
+ if(!document.body.contains(B))return;
+ const st=(e,n)=>(e.stats||[]).find(x=>x.name===n||x.type===n)||{},sv=(e,n)=>{const x=st(e,n);return +(x.value??x.displayValue??0)||0},sd=(e,n)=>st(e,n).displayValue??"";
+ const res={};(ev||[]).forEach(e=>{if(((e.season||{}).type||2)!==2)return;const c=(e.competitions||[])[0]||{};if((((c.status||{}).type)||{}).state!=="post")return;const cs=c.competitors||[];if(cs.length!==2)return;
+  const w=cs.find(t=>t.winner)||(+cs[0].score>+cs[1].score?cs[0]:cs[1]);cs.forEach(t=>{res[nb((t.team||{}).abbreviation)]={r:t===w?"W":"L",o:nb(((cs.find(x=>x!==t)||{}).team||{}).abbreviation),sc:`${t.score}-${(cs.find(x=>x!==t)||{}).score}`}})});
+ const moveOK=DOFF>=-1&&Object.keys(res).length>0;
+ const confs=(STC.children||[]).map(cf=>{let E=((cf.standings||{}).entries||[]).map(e=>{const T=e.team||{},a=nb(T.abbreviation),w=sv(e,"wins"),l=sv(e,"losses");return{a,n:T.shortDisplayName||T.name||a,lg:((T.logos||[])[0]||{}).href||"",w,l,pct:w+l?w/(w+l):0,gb:sd(e,"gamesBehind"),sk:sd(e,"streak"),l10:"",seed:sv(e,"playoffSeed")}});
+  E.sort((x,y)=>(x.seed&&y.seed)?x.seed-y.seed:(y.pct-x.pct||y.w-x.w));E.forEach((t,i)=>t.rk=i+1);
+  if(moveOK){const P=E.map(t=>{const r=res[t.a];return{t,w:t.w-(r&&r.r==="W"?1:0),l:t.l-(r&&r.r==="L"?1:0)}});P.forEach(p=>p.pct=p.w+p.l?p.w/(p.w+p.l):0);
+   P.sort((x,y)=>y.pct-x.pct||y.w-x.w||x.t.rk-y.t.rk);P.forEach((p,i)=>p.t.mv=(i+1)-p.t.rk)}
+  return{name:(cf.name||"").replace(" Conference",""),E}});
+ if(!confs.length){X.innerHTML="";return}
+ const started=confs.some(c=>c.E.some(t=>t.w+t.l>0));
+ const moved=moveOK?confs.reduce((n,c)=>n+c.E.filter(t=>t.mv).length,0):0;
+ const row=t=>{const r=moveOK&&res[t.a];const mv=t.mv>0?`<em class="nmv up">▲${t.mv}</em>`:t.mv<0?`<em class="nmv dn">▼${-t.mv}</em>`:`<em class="nmv"></em>`;
+  return `<div class="nsr${r?" pl":""}${t.mv>0?" mup":t.mv<0?" mdn":""}${t.rk===6?" cut6":""}${t.rk===10?" cut10":""}"><span class="nsk">${t.rk}</span>${mv}<span class="nst">${t.lg?`<img src="${esc(t.lg)}" alt="" onerror="this.style.visibility='hidden'">`:""}<b>${esc(t.n)}</b>${r?`<i class="${r.r==="W"?"w":"l"}" title="${esc(r.r+" "+r.sc+" vs "+r.o)}">${r.r}</i>`:""}</span><span>${t.w}</span><span>${t.l}</span><span>${(t.pct).toFixed(3).replace(/^0/,"")}</span><span>${t.gb&&t.gb!=="0"?esc(t.gb):"–"}</span><span class="sk">${esc(t.sk||"–")}</span></div>${t.rk===6?'<div class="nscut"><span>Playoffs</span></div>':""}${t.rk===10?'<div class="nscut pi"><span>Play-in</span></div>':""}`};
+ X.innerHTML=`<div class="nhcard nhstand"><div class="nhh"><b>NBA standings</b><span>${moveOK?`${moved} moves after ${dname(DOFF).toLowerCase()==="today"?"today":"these"} results`:started?"current":"season not started"}</span></div>${!started?'<p class="fhnote">Everyone is 0-0. Standings start moving once the regular season tips off.</p>':""}${moveOK?'<div class="nslg"><span><em class="nmv up">▲</em> moved up</span><span><em class="nmv dn">▼</em> moved down</span><span><i class="w">W</i><i class="l">L</i> played</span></div>':""}${confs.map(c=>`<div class="nsc"><div class="nsch">${esc(c.name)}</div><div class="nsr hd"><span>#</span><em class="nmv"></em><span class="nst">Team</span><span>W</span><span>L</span><span>PCT</span><span>GB</span><span>STRK</span></div>${c.E.map(row).join("")}</div>`).join("")}</div>`}
 // ---------- League ----------
 function league(box){const D=HDX.D,st=[...(D.stand||[])].sort((a,b)=>a.place-b.place),pw=[...(D.power||[])].sort((a,b)=>a.place-b.place),od=D.odds||{},sp=D.spots||4;
  box.innerHTML=`<div class="fhsec"><h3>Standings</h3><span>top ${sp} make the playoffs</span></div><div class="fhcard"><div class="fhth"><span>#</span><span>Team</span><span>W-L-T</span><span>GB</span><span>Playoffs</span></div>${st.map((t,i)=>`<div class="fhtrow${t.id===D.my?" me":""}${i===sp-1?" cut":""}"><span>${t.place}</span><span class="tn">${tav(t.name,26)}<b>${esc(t.name)}</b></span><span>${t.w}-${t.l}-${t.t}</span><span>${t.gb||"–"}</span><span class="od">${od[t.id]!=null?od[t.id].odds+"%":"–"}</span></div>`).join("")}</div>
