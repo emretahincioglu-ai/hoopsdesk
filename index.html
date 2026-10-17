@@ -2182,8 +2182,21 @@ function windows(j){const ok=j&&j.ok;const lg=ok?(j.logs||[]):[];const reg=lg.fi
  const R={s25:{lab:ls?ls.season.replace(/^20(\d\d)-(\d\d)$/,"$1-$2"):"25-26",full:ls?("NBA "+ls.season):"NBA 25-26",line:ls?{...ls,MIN:ls.min,n:ls.gp}:null},l4:{lab:"L1M",full:"Last month",line:avg(cut(30))},l2:{lab:"L2W",full:"Last 2 weeks",line:avg(cut(14))},l1:{lab:"L1W",full:"Last week",line:avg(cut(7))}};
  Object.values(R).forEach(x=>{if(x.line){x.z=zs(x.line);x.v=val(x.z);x.rank=likeRank(x.v)}});R.thru=last;R.reg=reg;return R}
 function info(r,j){const b=find(r.name);if(!b)return null;const z=zs(sLine(b));const rk=b.rank||likeRank(val(z));
- const ovr=rk<=150?Math.round(99-(rk-1)*24/149):Math.max(60,Math.round(75-(rk-150)*.1));
- return{b,z,rk,ovr,fit:fitOf(z),pr:posRank(b,r.pos),W:windows(j)}}
+ const W=windows(j),o=ovrOf(val(z),W);
+ return{b,z,rk,ovr:o.ovr,ob:o.basis,fit:fitOf(z),pr:posRank(b,r.pos),W}}
+// OVR = fantasy value on a 60-99 scale. Preseason: 60% last season actual + 40% projection.
+// In season: current-season actual takes over as games pile up (full weight at 25 games).
+const V1=poolVals[0],V150=poolVals[Math.min(149,poolVals.length-1)];
+const PV=k=>poolVals[Math.min(k,poolVals.length)-1];
+const ANC=[[PV(1),99],[PV(10),93],[PV(25),89],[PV(55),84],[PV(100),79],[PV(150),75],[PV(150)-1.5*(PV(100)-PV(150)),60]];
+const toOvr=v=>{if(v>=ANC[0][0])return 99;for(let i=1;i<ANC.length;i++){const[a,oa]=ANC[i-1],[b,ob]=ANC[i];if(v>=b)return Math.round(ob+(oa-ob)*(v-b)/((a-b)||1))}return 60};
+function ovrOf(vProj,W){const cur=W.reg&&/2026-27|26-27/.test(W.reg.label)&&W.reg.games.length?avg(W.reg.games):null;
+ const vLast=W.s25&&W.s25.v!=null?W.s25.v:null;let v,basis;
+ if(cur){const vc=val(zs(cur)),w=Math.min(1,cur.n/25),pre=vLast!=null?.6*vLast+.4*vProj:vProj;v=w*vc+(1-w)*pre;basis=w>=1?`${cur.n} games this season`:`${cur.n} games + preseason`}
+ else if(vLast!=null){v=.6*vLast+.4*vProj;basis="last season + projection"}
+ else{v=vProj;basis="projection"}
+ return{ovr:toOvr(v),basis}}
+window.__ovrScale=()=>[1,10,25,55,100,150].map(k=>[k,toOvr(poolVals[k-1])]);
 const mv=(a,b)=>a==null||b==null?"":b<a?`<em class="up">▲${a-b}</em>`:b>a?`<em class="dn">▼${b-a}</em>`:`<em>–</em>`;
 function strip(r,j){const I=info(r,j);if(!I)return null;const W=I.W;
  const cell=k=>{const x=W[k];return `<div class="${x.rank==null?"":x.rank<I.rk?"g":x.rank>I.rk?"b":""}"><small>${x.lab}</small><b>${x.rank!=null?"#"+x.rank:"–"}</b>${mv(I.rk,x.rank)}</div>`};
@@ -2199,7 +2212,7 @@ let RP=null;function rpool(){if(RP)return RP;const d=D(),L=[];Object.values(d.ro
 const rateC=(c,b)=>{const P=rpool(),x=zOf(c,b.s[CI[c]]),below=P.filter(p=>zOf(c,p.s[CI[c]])<x).length;return Math.max(25,Math.min(99,Math.round(100*below/Math.max(1,P.length))))};
 function ovrCard(r,I){const z=I.z,pr={};CATS.forEach(c=>pr[c]=rateC(c,I.b));const ptier=v=>v>=97?["HOF","h"]:v>=90?["GOLD","g"]:v>=80?["SILVER","s"]:["BRONZE","b"];const top=CATS.filter(c=>!punts().includes(c)&&pr[c]>=70).sort((a,b)=>pr[b]-pr[a]).slice(0,4);
  const bar=([n,c])=>{const v=rateC(c,I.b);return `<div class="at"><span>${n}</span><b class="${v>=90?"gd":v>=78?"gr":""}">${v}</b><i><u class="${v>=90?"gd":v>=78?"gr":""}" style="width:${v}%"></u></i></div>`};
- return `<section class="fpov"><div class="tp"><div class="hx"><small>OVR</small><b>${I.ovr}</b></div><div class="m"><b>${esc(r.name)}</b><span class="ro">${esc(role(r,z)).toUpperCase()}</span><span class="su">Team fit ${I.fit!=null?I.fit:"–"} · #${I.rk} overall</span></div></div>
+ return `<section class="fpov"><div class="tp"><div class="hx"><small>OVR</small><b>${I.ovr}</b></div><div class="m"><b>${esc(r.name)}</b><span class="ro">${esc(role(r,z)).toUpperCase()}</span><span class="su">OVR from ${I.ob} · #${I.rk} proj</span></div></div>
  <div class="ats">${AT.map(bar).join("")}</div>${top.length?`<div class="bdg">${top.map(c=>{const t=ptier(pr[c]);return `<div class="bg ${t[1]}"><div class="hb">${c}</div><b>${BN[c]}</b><small>${t[0]}</small></div>`}).join("")}</div>`:""}</section>`}
 const ordn=n=>n+(["th","st","nd","rd"][(n%100-20)%10]||["th","st","nd","rd"][n%100]||"th");
 const NM={PTS:"points","3PM":"threes",REB:"rebounds",AST:"assists",STL:"steals",BLK:"blocks","FG%":"FG%","FT%":"FT%",TO:"turnovers"};
