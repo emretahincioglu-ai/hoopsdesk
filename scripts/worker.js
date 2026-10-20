@@ -2,6 +2,23 @@ const STAT = {0:"PTS",1:"BLK",2:"STL",3:"AST",6:"REB",11:"TO",13:"FGM",14:"FGA",
 const PCT = {19:[13,14],20:[15,16],21:[17,18]};
 const CORS = {"Access-Control-Allow-Origin":"*","Access-Control-Allow-Methods":"GET, OPTIONS"};
 const TTL = 15;
+const PRO = {1:"ATL",2:"BOS",3:"NO",4:"CHI",5:"CLE",6:"DAL",7:"DEN",8:"DET",9:"GS",10:"HOU",11:"IND",12:"LAC",13:"LAL",14:"MIA",15:"MIL",16:"MIN",17:"BKN",18:"NY",19:"ORL",20:"PHI",21:"PHX",22:"POR",23:"SAC",24:"SA",25:"OKC",26:"UTAH",27:"WSH",28:"TOR",29:"MEM",30:"CHA"};
+const SLOT = {0:"PG",1:"SG",2:"SF",3:"PF",4:"C",5:"G",6:"F",7:"SG/SF",8:"G/F",9:"PF/C",10:"F/C",11:"UTIL",12:"BE",13:"IR"};
+const PS = {0:"PTS",1:"BLK",2:"STL",3:"AST",6:"REB",11:"TO",13:"FGM",14:"FGA",15:"FTM",16:"FTA",17:"3PM",18:"3PA",40:"MIN"};
+function players(t, sp){
+const out = [];
+for(const e of ((t.roster||{}).entries||[])){
+const p = (e.playerPoolEntry||{}).player || {};
+const st = (p.stats||[]).find(s => s.scoringPeriodId === sp && s.statSourceId === 0);
+if(!st) continue;
+const r = st.stats || {};
+if(!((r[42]||0) > 0 || (r[40]||0) > 0)) continue;
+const s = {}; for(const [k,n] of Object.entries(PS)) s[n] = Math.round((r[k]||0)*10)/10;
+out.push({id:p.id, n:p.fullName, tm:PRO[p.proTeamId]||"", slot:SLOT[e.lineupSlotId]||"", fp:Math.round((st.appliedTotal||0)*10)/10, s});
+}
+return out.sort((a,b)=>b.fp-a.fp || b.s.PTS-a.s.PTS);
+}
+function allPlayers(raw, sp){ const P = {}; for(const t of raw.teams||[]) P[t.id] = players(t, sp); return P; }
 function today(x, sp){
 const t = {}; let pts = 0;
 for(const e of ((x.rosterForCurrentScoringPeriod||{}).entries||[])){
@@ -49,7 +66,8 @@ if(cat) score(h, a, items);
 if(h) delete h.raw; if(a) delete a.raw;
 return {h, a, win:x.winner};
 });
-return {lid:String(raw.id), period:per, sp, type:sc.scoringType, teams, rec, m, ts:Math.floor(Date.now()/1000)};
+const mp = (((raw.settings||{}).scheduleSettings||{}).matchupPeriods||{})[per] || [sp];
+return {lid:String(raw.id), period:per, sp, days:mp, type:sc.scoringType, teams, rec, m, P:allPlayers(raw, sp), ts:Math.floor(Date.now()/1000)};
 }
 async function espn(L, lid, extra){
 const swid = (L.swid||"").trim(), q = ["mMatchupScore","mLiveScoring","mScoreboard","mStatus","mTeam","mSettings","mRoster"].map(v=>"view="+v).join("&");
@@ -62,11 +80,21 @@ const url = new URL(req.url), lid = url.searchParams.get("lid");
 let leagues = JSON.parse(env.LEAGUES_JSON || "[]"); if(!Array.isArray(leagues)) leagues = leagues.leagues || [];
 const L = leagues.find(x => String(x.league_id) === lid);
 if(!L) return new Response(JSON.stringify({error:"unknown league"}), {status:404, headers:{...CORS,"Content-Type":"application/json"}});
-const cache = caches.default, key = new Request("https://fp-cache/live2/"+lid);
-const hit = await cache.match(key); if(hit) return hit;
+const cache = caches.default, key = new Request("https://fp-cache/live3/"+lid);
+const want = url.searchParams.get("sp");
+const hit = want ? null : await cache.match(key); if(hit) return hit;
 const spKey = new Request("https://fp-cache/sp/"+lid);
 let sp = null; const sph = await cache.match(spKey); if(sph) sp = await sph.text();
 if(!sp){ const r0 = await espn(L, lid, ""); if(!r0.ok) return new Response(JSON.stringify({error:"espn "+r0.status}), {status:502, headers:{...CORS,"Content-Type":"application/json"}}); const j0 = await r0.json(); sp = String(j0.scoringPeriodId || ((j0.status||{}).latestScoringPeriod) || 1); ctx.waitUntil(cache.put(spKey, new Response(sp, {headers:{"Cache-Control":"public, max-age=300"}}))); }
+if(want && want !== sp){
+const dk = new Request("https://fp-cache/day3/"+lid+"/"+want), dh = await cache.match(dk); if(dh) return dh;
+const rd = await espn(L, lid, "&scoringPeriodId="+want);
+if(!rd.ok) return new Response(JSON.stringify({error:"espn "+rd.status}), {status:502, headers:{...CORS,"Content-Type":"application/json"}});
+const jd = await rd.json();
+const od = new Response(JSON.stringify({lid, sp:+want, P:allPlayers(jd, +want), ts:Math.floor(Date.now()/1000)}), {headers:{...CORS,"Content-Type":"application/json","Cache-Control":`public, max-age=${+want < +sp ? 1800 : 60}`}});
+ctx.waitUntil(cache.put(dk, od.clone()));
+return od;
+}
 const r = await espn(L, lid, "&scoringPeriodId="+sp);
 if(!r.ok) return new Response(JSON.stringify({error:"espn "+r.status}), {status:502, headers:{...CORS,"Content-Type":"application/json"}});
 const j = await r.json(); j.scoringPeriodId = +sp;
