@@ -1,4 +1,38 @@
-[{"k":"aq","p":"","n":"ANTI-QUEMO","t":"Category","team":"ACL Enayileri · with Mert","i":"AQ","c":"#9C6B3F"},
-{"k":"anomaly","p":"anomaly/","n":"Swish Kebabs","t":"Category","team":"The Anomaly · with Alp","i":"SK","c":"#2F63B0"},
-{"k":"jemre","p":"jemre/","n":"James's league","t":"Points","team":"Built different","i":"JL","c":"#5B2F8E","soon":1},
-{"k":"pts2","p":"pts2/","n":"Points league 2","t":"Points","team":"","i":"P2","c":"#3a3b40","soon":1}]
+[
+{
+"k": "aq",
+"p": "",
+"n": "ANTI-QUEMO",
+"t": "Category",
+"team": "ACL Enayileri · with Mert",
+"i": "AQ",
+"c": "#9C6B3F"
+},
+{
+"k": "anomaly",
+"p": "anomaly/",
+"n": "Swish Kebabs",
+"t": "Category",
+"team": "The Anomaly · with Alp",
+"i": "SK",
+"c": "#2F63B0"
+},
+{
+"k": "james",
+"p": "dyn-scary27/",
+"n": "James's league",
+"t": "Points",
+"team": "James's Scary Team",
+"i": "JL",
+"c": "#5B2F8E"
+},
+{
+"k": "pts2",
+"p": "pts2/",
+"n": "Siyonist Lig",
+"t": "Points",
+"team": "Real Mardin",
+"i": "SL",
+"c": "#9E2A36"
+}
+]
