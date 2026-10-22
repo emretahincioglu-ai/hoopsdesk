@@ -97,12 +97,14 @@ if(!L) return new Response(JSON.stringify({error:"unknown league"}), {status:404
 const cache = caches.default, key = new Request("https://fp-cache/live3/"+lid);
 const want = url.searchParams.get("sp");
 if(url.searchParams.get("r")){
-const rk = new Request("https://fp-cache/rost/"+lid), rh = await cache.match(rk); if(rh) return rh;
+const rk = new Request("https://fp-cache/rost2/"+lid), rh = await cache.match(rk); if(rh) return rh;
 const swid = (L.swid||"").trim();
-const rr = await fetch(`https://lm-api-reads.fantasy.espn.com/apis/v3/games/fba/seasons/${L.season}/segments/0/leagues/${lid}?view=mRoster&view=mTeam`, {headers:{"User-Agent":"Mozilla/5.0 (Fantasy Plus live)", "Cookie":`SWID=${swid.startsWith("{")?swid:"{"+swid+"}"}; espn_s2=${(L.espn_s2||"").trim()}`}});
+const rr = await fetch(`https://lm-api-reads.fantasy.espn.com/apis/v3/games/fba/seasons/${L.season}/segments/0/leagues/${lid}?view=mRoster&view=mTeam&view=mSettings&view=mStatus`, {headers:{"User-Agent":"Mozilla/5.0 (Fantasy Plus live)", "Cookie":`SWID=${swid.startsWith("{")?swid:"{"+swid+"}"}; espn_s2=${(L.espn_s2||"").trim()}`}});
 if(!rr.ok) return new Response(JSON.stringify({error:"espn "+rr.status}), {status:502, headers:{...CORS,"Content-Type":"application/json"}});
 const jr = await rr.json();
-const orr = new Response(JSON.stringify({lid, R:rosters(jr), ts:Math.floor(Date.now()/1000)}), {headers:{...CORS,"Content-Type":"application/json","Cache-Control":"public, max-age=120"}});
+const per = (jr.status||{}).currentMatchupPeriod || 1, A = {lim:(((jr.settings||{}).acquisitionSettings)||{}).matchupAcquisitionLimit ?? -1, per, used:{}};
+for(const t of jr.teams||[]) A.used[t.id] = (((t.transactionCounter||{}).matchupAcquisitionTotals)||{})[per] || 0;
+const orr = new Response(JSON.stringify({lid, R:rosters(jr), A, ts:Math.floor(Date.now()/1000)}), {headers:{...CORS,"Content-Type":"application/json","Cache-Control":"public, max-age=120"}});
 ctx.waitUntil(cache.put(rk, orr.clone()));
 return orr;
 }
