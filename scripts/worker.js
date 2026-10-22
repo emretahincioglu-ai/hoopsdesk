@@ -18,6 +18,20 @@ out.push({id:p.id, n:p.fullName, tm:PRO[p.proTeamId]||"", slot:SLOT[e.lineupSlot
 }
 return out.sort((a,b)=>b.fp-a.fp || b.s.PTS-a.s.PTS);
 }
+const AV = {0:"PTS",1:"BLK",2:"STL",3:"AST",6:"REB",11:"TO",13:"FGM",14:"FGA",15:"FTM",16:"FTA",17:"3PM",40:"MIN"};
+function rosters(raw){
+const R = {};
+for(const t of raw.teams||[]){
+R[t.id] = ((t.roster||{}).entries||[]).map(e => {
+const p = (e.playerPoolEntry||{}).player || {}, ss = p.stats||[];
+const pick = ss.find(x => x.statSourceId === 0 && x.statSplitTypeId === 0 && x.seasonId === raw.seasonId && x.averageStats && (x.averageStats[42]||0) > 0) || ss.find(x => x.statSourceId === 1 && x.statSplitTypeId === 0 && x.averageStats);
+const a = {}; if(pick){ for(const [k,n] of Object.entries(AV)) a[n] = Math.round((pick.averageStats[k]||0)*10)/10; a.GP = (pick.stats||{})[42]||0; }
+const pos = (p.eligibleSlots||[]).filter(x => x <= 4).map(x => SLOT[x]);
+return {id:p.id, n:p.fullName, tm:PRO[p.proTeamId]||"", slot:SLOT[e.lineupSlotId]||"", inj:p.injuryStatus||"ACTIVE", pos, a};
+});
+}
+return R;
+}
 function allPlayers(raw, sp){ const P = {}; for(const t of raw.teams||[]) P[t.id] = players(t, sp); return P; }
 function today(x, sp){
 const t = {}; let pts = 0;
@@ -82,6 +96,16 @@ const L = leagues.find(x => String(x.league_id) === lid);
 if(!L) return new Response(JSON.stringify({error:"unknown league"}), {status:404, headers:{...CORS,"Content-Type":"application/json"}});
 const cache = caches.default, key = new Request("https://fp-cache/live3/"+lid);
 const want = url.searchParams.get("sp");
+if(url.searchParams.get("r")){
+const rk = new Request("https://fp-cache/rost/"+lid), rh = await cache.match(rk); if(rh) return rh;
+const swid = (L.swid||"").trim();
+const rr = await fetch(`https://lm-api-reads.fantasy.espn.com/apis/v3/games/fba/seasons/${L.season}/segments/0/leagues/${lid}?view=mRoster&view=mTeam`, {headers:{"User-Agent":"Mozilla/5.0 (Fantasy Plus live)", "Cookie":`SWID=${swid.startsWith("{")?swid:"{"+swid+"}"}; espn_s2=${(L.espn_s2||"").trim()}`}});
+if(!rr.ok) return new Response(JSON.stringify({error:"espn "+rr.status}), {status:502, headers:{...CORS,"Content-Type":"application/json"}});
+const jr = await rr.json();
+const orr = new Response(JSON.stringify({lid, R:rosters(jr), ts:Math.floor(Date.now()/1000)}), {headers:{...CORS,"Content-Type":"application/json","Cache-Control":"public, max-age=120"}});
+ctx.waitUntil(cache.put(rk, orr.clone()));
+return orr;
+}
 const hit = want ? null : await cache.match(key); if(hit) return hit;
 const spKey = new Request("https://fp-cache/sp/"+lid);
 let sp = null; const sph = await cache.match(spKey); if(sph) sp = await sph.text();
