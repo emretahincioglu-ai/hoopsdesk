@@ -92,7 +92,8 @@ async fetch(req, env, ctx){
 if(req.method === "OPTIONS") return new Response(null, {headers:CORS});
 const url = new URL(req.url), lid = url.searchParams.get("lid");
 let leagues = JSON.parse(env.LEAGUES_JSON || "[]"); if(!Array.isArray(leagues)) leagues = leagues.leagues || [];
-const L = leagues.find(x => String(x.league_id) === lid);
+const ALIAS = {"1463568079":"1546386063"};
+const L = leagues.find(x => String(x.league_id) === (ALIAS[lid] || lid));
 if(!L) return new Response(JSON.stringify({error:"unknown league"}), {status:404, headers:{...CORS,"Content-Type":"application/json"}});
 const cache = caches.default, key = new Request("https://fp-cache/live3/"+lid);
 const want = url.searchParams.get("sp");

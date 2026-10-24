@@ -4,7 +4,7 @@
 "p": "",
 "n": "ANTI-QUEMO",
 "t": "Category",
-"team": "ACL Enayileri · with Mert",
+"team": "ACL Enayileri \u00b7 with Mert",
 "i": "AQ",
 "c": "#9C6B3F"
 },
@@ -13,7 +13,7 @@
 "p": "anomaly/",
 "n": "Swish Kebabs",
 "t": "Category",
-"team": "The Anomaly · with Alp",
+"team": "The Anomaly \u00b7 with Alp",
 "i": "SK",
 "c": "#2F63B0"
 },
@@ -34,5 +34,14 @@
 "team": "Real Mardin",
 "i": "SL",
 "c": "#9E2A36"
+},
+{
+"k": "bd",
+"p": "bd/",
+"n": "The 82-0 Delusion",
+"t": "Points",
+"team": "Built Different",
+"i": "82",
+"c": "#2F7D5B"
 }
 ]
