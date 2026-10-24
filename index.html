@@ -4,7 +4,7 @@ document.documentElement.classList.add("fpwide");
 document.write('<style>html.fpwide,html.fpwide body{margin:0;height:100%;background:#000;overflow:hidden}#fpwrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 40%,#1a1b1f 0,#000 70%)}#fpdev{width:402px;height:874px;flex:none;border-radius:56px;padding:12px;background:#0d0d0f;box-shadow:0 0 0 2px #2b2c30,0 30px 80px rgba(0,0,0,.6);overflow:hidden;box-sizing:content-box}#fpdev iframe{display:block;width:1px;min-width:100%;max-width:100%;height:874px;border:0;border-radius:46px;background:#000}#fpsplash,#fpgate{display:none!important}</style><div id="fpwrap"><div id="fpdev"><iframe src="./?frame=1" scrolling="no" title="Fantasy Plus" allow="clipboard-write"></iframe></div></div>');
 function fit(){var d=document.getElementById("fpdev");if(!d)return;var s=Math.min(1.25,(innerHeight-32)/898,(innerWidth-32)/426);if("zoom" in d.style)d.style.zoom=s;else d.style.transform="scale("+s+")"}
 fit();addEventListener("resize",fit);addEventListener("orientationchange",function(){setTimeout(fit,300)});
-window.__fpwide=1})();</script><script>(function(){if(window.__fpwide)return;var K="fpsp0",now=Date.now(),t0=now;try{var v=+sessionStorage.getItem(K);if(v&&now-v<6000)t0=v;else sessionStorage.setItem(K,String(now))}catch(e){}window.__fpsp0=t0;document.documentElement.style.setProperty("--el",((now-t0)/1000)+"s")})();</script>
+window.__fpwide=1})();</script><script>(function(){if(window.__fpwide)return;var IN={"Emre":"tatum"},u=null,q=(location.search.match(/[?&]intro=(\w+)/)||[])[1];try{var a=JSON.parse(localStorage.getItem("fp_user")||"null");if(a)u=a.h==="e939639e56c8f7a123699de6c8f2f9f41146dd4ddd192dd3ad8c4e00688978a0"?"Emre":(a.u||null)}catch(e){}try{if(q)sessionStorage.setItem("fpintro",q);else q=sessionStorage.getItem("fpintro")}catch(e){}var ik=q||IN[u];if(ik&&ik!=="none"){document.documentElement.classList.add("fpi-"+ik);window.__fpintro=ik;window.__fpuser=u}var K="fpsp0",now=Date.now(),t0=now;try{var v=+sessionStorage.getItem(K);if(v&&now-v<(ik?10000:6000))t0=v;else sessionStorage.setItem(K,String(now))}catch(e){}window.__fpsp0=t0;document.documentElement.style.setProperty("--el",((now-t0)/1000)+"s")})();</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap">
 <style>
 /* Swish intro: ball arcs in, drops through the net, the hoop turns into the shield, +3 floats up.
@@ -63,15 +63,114 @@ html,body{background:#000}
 <div class="tx">FANTASY <b>PLUS</b></div>
 <div class="bar"><i></i></div>
 </div></div>
-<script>(function(){var s=document.getElementById("fpsplash"),K="fpsp0",t0=window.__fpsp0||Date.now();
+<script>(function(){var I=window.__fpintro?document.getElementById("fpintro"):null,s=I||document.getElementById("fpsplash"),K="fpsp0",t0=window.__fpsp0||Date.now(),MIN=I?6300:2300,MAX=I?10000:6000;if(I){var o=document.getElementById("fpsplash");if(o)o.remove()}
 /* the loader page only starts the intro: the app page finishes it */
 if(document.documentElement.classList.contains("fpshell"))return;
 var gone=false;function out(){if(gone||!s.parentNode)return;gone=true;try{sessionStorage.removeItem(K)}catch(e){}s.classList.add("out");setTimeout(function(){s.remove()},450)}
 function ready(){var v=document.querySelector("#views>.view");return !!(v&&v.firstElementChild)}
-function done(){var w=Math.max(0,2300-(Date.now()-t0));setTimeout(function wait(){if(!ready()&&Date.now()-t0<5000){setTimeout(wait,80);return}
+if(I)I.addEventListener("click",function(){if(ready())out()});
+function done(){var w=Math.max(0,MIN-(Date.now()-t0));setTimeout(function wait(){if(!ready()&&Date.now()-t0<MAX-1000){setTimeout(wait,80);return}
  /* two frames after the app has drawn, so it's already settled when the curtain lifts */
  requestAnimationFrame(function(){requestAnimationFrame(out)})},w)}
-if(document.readyState==="complete")done();else addEventListener("load",done);setTimeout(out,6000)})();</script>
+if(document.readyState==="complete")done();else addEventListener("load",done);setTimeout(out,MAX)})();</script>
+<style>
+/* Personal intro: "Banner 18". Celtics spotlight on the parquet, a gold #0 burns in, Tatum's silhouette lights up,
+   the step-back three drops, the 2024 banner falls, then "Welcome back". ~6s, tap to skip.
+   Same trick as the swish intro: every delay is minus --el so the loader page and the app page share one timeline. */
+#fpintro{display:none;position:fixed;inset:0;z-index:100000;background:#020604;overflow:hidden;contain:strict;transition:opacity .45s ease;font-family:Poppins,-apple-system,system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+html.fpi-tatum #fpintro{display:block}
+html.fpi-tatum #fpsplash{display:none!important}
+#fpintro.out{opacity:0;pointer-events:none}
+#fpintro *{animation-fill-mode:both!important;box-sizing:border-box}
+#fpintro .spot{position:absolute;inset:0;background:radial-gradient(ellipse 60% 75% at 50% -8%,rgba(0,166,81,.62),rgba(0,122,51,.22) 45%,transparent 72%);transform-origin:50% 0;animation:tiSpot .9s cubic-bezier(.2,.8,.2,1) calc(0s - var(--el)),tiFlick 2.6s ease-in-out calc(1s - var(--el))}
+#fpintro .pq{position:absolute;left:-40%;right:-40%;bottom:0;height:52%;transform:perspective(700px) rotateX(48deg);transform-origin:50% 100%;
+ background:repeating-linear-gradient(90deg,#4a2c15 0 26px,#5c3719 26px 52px,#4f2f16 52px 78px),#4a2c15;animation:tiFloor 1s ease calc(.15s - var(--el))}
+#fpintro .pq:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 2px,transparent 2px 70px),radial-gradient(ellipse 50% 70% at 50% 0%,rgba(0,166,81,.35),transparent 70%),linear-gradient(180deg,#020604 0%,rgba(2,6,4,.6) 25%,transparent 60%)}
+#fpintro .pq i{position:absolute;left:50%;top:18%;width:320px;height:320px;margin-left:-160px;border:3px solid rgba(255,255,255,.55);border-radius:50%;opacity:.6}
+#fpintro .st{position:absolute;left:50%;top:44%;width:0;height:0}
+#fpintro .zero{position:absolute;left:-88px;top:-196px;width:176px;height:236px;overflow:visible;animation:tiZeroOut .8s ease calc(4.75s - var(--el))}
+#fpintro .zero ellipse{fill:none;stroke:#f4c542;stroke-width:24;stroke-linecap:round;stroke-dasharray:560;stroke-dashoffset:560;filter:drop-shadow(0 0 14px rgba(244,197,66,.85));animation:tiDraw 1.1s cubic-bezier(.6,.05,.25,1) calc(.75s - var(--el)),tiZeroGlow 1.6s ease-in-out calc(1.9s - var(--el))}
+#fpintro .zero .z2{stroke:#fff6c8;stroke-width:5;filter:none;opacity:.9}
+#fpintro .sp{position:absolute;left:0;top:-78px;width:0;height:0}
+#fpintro .sp i{position:absolute;left:-3px;top:-3px;width:6px;height:6px;border-radius:50%;background:#ffe27a;box-shadow:0 0 8px #ffd34d;opacity:0;animation:tiSpark 1s cubic-bezier(.1,.7,.3,1) calc(1.8s - var(--el))}
+#fpintro .hs{position:absolute;left:-140px;top:-128px;width:280px;height:204px;animation:tiRise 1.25s cubic-bezier(.2,.8,.2,1) calc(1.95s - var(--el)),tiHsOut .8s ease calc(4.75s - var(--el))}
+#fpintro .hs img{display:block;width:100%;height:100%;object-fit:contain;object-position:50% 100%;animation:tiReveal 1.4s ease calc(2.05s - var(--el))}
+#fpintro .hs:after{content:"";position:absolute;left:8%;right:8%;bottom:-2px;height:24px;background:linear-gradient(0deg,#020604,transparent)}
+#fpintro .nm{position:absolute;left:-180px;width:360px;top:84px;text-align:center;white-space:nowrap;font:800 33px/1 Poppins,-apple-system,system-ui,sans-serif;letter-spacing:3px;color:#fff;text-shadow:0 0 18px rgba(0,166,81,.85),0 2px 0 #000;animation:tiNmOut .7s ease calc(4.75s - var(--el))}
+#fpintro .nm span{display:inline-block;opacity:0;animation:tiLetter .5s cubic-bezier(.2,.9,.3,1.3) calc(var(--d) - var(--el))}
+#fpintro .sub{position:absolute;left:-150px;width:300px;top:126px;text-align:center;font:700 12px/1 Poppins,-apple-system,system-ui,sans-serif;letter-spacing:5px;color:#f4c542;animation:tiUp .5s ease calc(3.25s - var(--el)),tiNmOut .7s ease calc(4.75s - var(--el))}
+#fpintro .hp{position:absolute;left:84px;top:-262px;width:84px;height:120px;animation:tiFade .4s ease calc(3.05s - var(--el)),tiNmOut .6s ease calc(4.75s - var(--el))}
+#fpintro .hp .bb{position:absolute;left:-2px;top:0;width:88px;height:58px;border:2.5px solid rgba(255,255,255,.85);border-radius:4px}
+#fpintro .hp .bb:after{content:"";position:absolute;left:26px;top:22px;width:32px;height:24px;border:2px solid rgba(255,255,255,.85);border-bottom:0}
+#fpintro .hp .rm{position:absolute;left:12px;top:50px;width:60px;height:13px;border-radius:50%;border:3px solid #f97316}
+#fpintro .hp svg{position:absolute;left:12px;top:57px;width:60px;height:44px;transform-origin:50% 0;animation:tiSwish .55s cubic-bezier(.3,.7,.3,1) calc(4.18s - var(--el))}
+#fpintro .bx{position:absolute;left:0;top:0;opacity:0;animation:tiBX 1s linear calc(3.2s - var(--el)),tiAppear 1s linear calc(3.2s - var(--el))}
+#fpintro .by{position:absolute;left:-17px;top:-17px;width:34px;height:34px;animation:tiBY 1s linear calc(3.2s - var(--el))}
+#fpintro .by svg{display:block;width:34px;height:34px;animation:tiSpin .5s linear calc(3.2s - var(--el)) 2}
+#fpintro .fl{position:absolute;inset:0;background:radial-gradient(circle at 72% 22%,rgba(255,255,255,.9),rgba(255,255,255,0) 60%);opacity:0;animation:tiFlash .7s ease-out calc(4.2s - var(--el))}
+#fpintro .p3{position:absolute;left:150px;top:-300px;font:900 30px/1 Poppins,-apple-system,system-ui,sans-serif;color:#f4c542;text-shadow:0 0 16px rgba(244,197,66,.8);opacity:0;animation:tiPts 1.1s ease-out calc(4.22s - var(--el))}
+#fpintro .bn{position:absolute;left:-168px;top:-330px;width:92px;height:142px;transform-origin:50% 0;animation:tiBanner 1s cubic-bezier(.3,1.5,.5,1) calc(3.55s - var(--el)),tiNmOut .6s ease calc(4.75s - var(--el))}
+#fpintro .bn div{width:100%;height:100%;background:#fff;clip-path:polygon(0 0,100% 0,100% 84%,50% 100%,0 84%);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:12px;box-shadow:inset 0 0 0 5px #007a33}
+#fpintro .bn b{font:900 44px/1 Poppins,-apple-system,system-ui,sans-serif;color:#007a33;letter-spacing:-1px}
+#fpintro .bn small{font:800 8.5px/1.25 Poppins,-apple-system,system-ui,sans-serif;color:#007a33;letter-spacing:1.5px;text-align:center;margin-top:4px}
+#fpintro .bn:before{content:"";position:absolute;left:50%;top:-400px;width:2px;height:400px;background:rgba(255,255,255,.35)}
+#fpintro .wl{position:absolute;left:-170px;width:340px;top:-36px;text-align:center;animation:tiWel .7s cubic-bezier(.2,.9,.3,1.1) calc(5.0s - var(--el))}
+#fpintro .wl small{display:block;font:700 12px/1 Poppins,-apple-system,system-ui,sans-serif;letter-spacing:6px;color:#8fd6ac}
+#fpintro .wl b{display:block;margin-top:10px;font:800 36px/1 Poppins,-apple-system,system-ui,sans-serif;letter-spacing:2px;color:#fff;text-shadow:0 0 22px rgba(0,166,81,.8)}
+#fpintro .wl em{display:block;margin-top:14px;font:700 14px/1 Poppins,-apple-system,system-ui,sans-serif;font-style:normal;letter-spacing:5px;color:#fff}
+#fpintro .wl em i{font-style:normal;color:#f4c542}
+#fpintro .bar{position:absolute;left:-60px;top:76px;width:120px;height:3px;border-radius:3px;background:#0e2116;overflow:hidden;animation:tiUp .4s ease calc(5.2s - var(--el))}
+#fpintro .bar i{display:block;height:100%;width:100%;transform-origin:0 0;background:linear-gradient(90deg,#007a33,#f4c542);animation:tiLoad 1s ease calc(5.25s - var(--el))}
+#fpintro .cam{position:absolute;inset:0 0 45% 0}#fpintro .cam i{position:absolute;width:10px;height:10px;margin:-5px;border-radius:50%;background:radial-gradient(circle,#fff 0,#fff 25%,rgba(255,255,255,0) 70%);box-shadow:0 0 14px 4px rgba(255,255,255,.55);opacity:0;animation:tiCam .9s ease-out calc(var(--d) - var(--el))}
+#fpintro .skip{position:absolute;right:16px;bottom:calc(18px + env(safe-area-inset-bottom,0px));font:600 11px -apple-system,system-ui,sans-serif;color:rgba(255,255,255,.35);letter-spacing:.5px;animation:tiFade .5s ease calc(1.2s - var(--el))}
+@keyframes tiSpot{0%{opacity:0;transform:scaleY(.2)}100%{opacity:1;transform:none}}
+@keyframes tiFlick{0%,100%{opacity:1}8%{opacity:.75}12%{opacity:1}50%{opacity:.9}}
+@keyframes tiFloor{0%{opacity:0;transform:perspective(700px) rotateX(62deg) translateY(40px)}100%{opacity:1;transform:perspective(700px) rotateX(48deg)}}
+@keyframes tiDraw{to{stroke-dashoffset:0}}
+@keyframes tiZeroGlow{0%,100%{filter:drop-shadow(0 0 14px rgba(244,197,66,.85))}50%{filter:drop-shadow(0 0 34px rgba(244,197,66,1))}}
+@keyframes tiZeroOut{to{opacity:0;transform:scale(1.35)}}
+@keyframes tiSpark{0%{opacity:1;transform:rotate(var(--a)) translateY(0) scale(1)}100%{opacity:0;transform:rotate(var(--a)) translateY(calc(-1 * var(--r))) scale(.4)}}
+@keyframes tiRise{0%{opacity:0;transform:translateY(70px) scale(.92)}100%{opacity:1;transform:none}}
+@keyframes tiReveal{0%{filter:brightness(0) drop-shadow(0 0 0 rgba(0,166,81,0))}45%{filter:brightness(0) drop-shadow(0 0 16px rgba(0,200,100,.95))}100%{filter:brightness(1) drop-shadow(0 0 12px rgba(0,166,81,.55))}}
+@keyframes tiHsOut{to{opacity:0;transform:translateY(-20px) scale(.9)}}
+@keyframes tiLetter{0%{opacity:0;transform:translateY(22px) scale(.6) rotate(-8deg);filter:blur(4px)}100%{opacity:1;transform:none;filter:none}}
+@keyframes tiNmOut{to{opacity:0;transform:translateY(-12px)}}
+@keyframes tiUp{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:none}}
+@keyframes tiFade{0%{opacity:0}100%{opacity:1}}
+@keyframes tiAppear{0%{opacity:0}2%,100%{opacity:1}}
+@keyframes tiCam{0%{opacity:0;transform:scale(.3)}10%{opacity:1;transform:scale(1)}35%{opacity:0;transform:scale(1.6)}100%{opacity:0}}
+@keyframes tiBX{0%{transform:translateX(-170px)}100%{transform:translateX(126px)}}
+@keyframes tiBY{0%{transform:translateY(240px);animation-timing-function:cubic-bezier(.2,.75,.45,1)}45%{transform:translateY(-330px);animation-timing-function:cubic-bezier(.55,0,.8,.45)}82%{transform:translateY(-212px);opacity:1}100%{transform:translateY(-170px) scale(.85);opacity:0}}
+@keyframes tiSpin{to{transform:rotate(-360deg)}}
+@keyframes tiSwish{0%{transform:scaleY(1)}35%{transform:scaleY(1.35) scaleX(.88)}70%{transform:scaleY(.94)}100%{transform:scaleY(1)}}
+@keyframes tiFlash{0%{opacity:0}15%{opacity:.55}100%{opacity:0}}
+@keyframes tiPts{0%{opacity:0;transform:translateY(16px) scale(.6)}25%{opacity:1;transform:scale(1.15)}70%{opacity:1;transform:translateY(-8px)}100%{opacity:0;transform:translateY(-26px)}}
+@keyframes tiBanner{0%{opacity:0;transform:translateY(-260px) rotate(-6deg)}60%{opacity:1}100%{opacity:1;transform:none}}
+@keyframes tiWel{0%{opacity:0;transform:scale(.7);filter:blur(6px)}100%{opacity:1;transform:none;filter:none}}
+@keyframes tiLoad{0%{transform:scaleX(0)}100%{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){html.fpi-tatum #fpintro{--el:5.9s!important}}
+</style>
+<div id="fpintro" aria-hidden="true">
+<div class="spot"></div>
+<div class="pq"><i></i></div>
+<div class="cam"><i style="left:34%;top:12%;--d:3.55s"></i><i style="left:11%;top:34%;--d:2.70s"></i><i style="left:9%;top:32%;--d:1.71s"></i><i style="left:44%;top:8%;--d:1.87s"></i><i style="left:43%;top:50%;--d:1.97s"></i><i style="left:25%;top:39%;--d:4.44s"></i><i style="left:57%;top:26%;--d:4.53s"></i><i style="left:8%;top:52%;--d:2.47s"></i><i style="left:17%;top:11%;--d:2.53s"></i><i style="left:79%;top:14%;--d:3.34s"></i><i style="left:63%;top:25%;--d:3.24s"></i><i style="left:10%;top:7%;--d:2.22s"></i><i style="left:67%;top:28%;--d:2.54s"></i><i style="left:58%;top:29%;--d:2.50s"></i><i style="left:77%;top:43%;--d:2.33s"></i><i style="left:57%;top:33%;--d:4.23s"></i><i style="left:71%;top:20%;--d:4.54s"></i><i style="left:15%;top:27%;--d:3.87s"></i><i style="left:18%;top:31%;--d:1.72s"></i><i style="left:65%;top:47%;--d:3.32s"></i><i style="left:85%;top:22%;--d:3.69s"></i><i style="left:59%;top:36%;--d:2.97s"></i></div>
+<div class="st">
+<svg class="zero" viewBox="0 0 176 236"><ellipse cx="88" cy="118" rx="62" ry="94"/><ellipse class="z2" cx="88" cy="118" rx="62" ry="94"/></svg>
+<div class="sp"><i style="--a:0deg;--r:150px"></i><i style="--a:30deg;--r:120px"></i><i style="--a:60deg;--r:165px"></i><i style="--a:90deg;--r:135px"></i><i style="--a:120deg;--r:150px"></i><i style="--a:150deg;--r:115px"></i><i style="--a:180deg;--r:160px"></i><i style="--a:210deg;--r:125px"></i><i style="--a:240deg;--r:155px"></i><i style="--a:270deg;--r:140px"></i><i style="--a:300deg;--r:165px"></i><i style="--a:330deg;--r:120px"></i><i style="--a:15deg;--r:200px"></i><i style="--a:105deg;--r:210px"></i><i style="--a:195deg;--r:190px"></i><i style="--a:285deg;--r:205px"></i></div>
+<div class="hs"><img src="https://a.espncdn.com/i/headshots/nba/players/full/4065648.png" alt="" onerror="this.parentNode.style.display='none'"></div>
+<div class="nm"><span style="--d:2.55s">J</span><span style="--d:2.6s">A</span><span style="--d:2.65s">Y</span><span style="--d:2.7s">S</span><span style="--d:2.75s">O</span><span style="--d:2.8s">N</span>&nbsp;<span style="--d:2.9s">T</span><span style="--d:2.95s">A</span><span style="--d:3.0s">T</span><span style="--d:3.05s">U</span><span style="--d:3.1s">M</span></div>
+<div class="sub">#0 · BOSTON</div>
+<div class="bn"><div><b>18</b><small>WORLD<br>CHAMPIONS<br>2024</small></div></div>
+<div class="hp"><div class="bb"></div><svg viewBox="0 0 60 44"><g fill="none" stroke="rgba(255,255,255,.85)" stroke-width="1.4" stroke-linecap="round"><path d="M1 1L14 43M11 2L21 43M21 3L27 43M30 3V43M39 3L33 43M49 2L39 43M59 1L46 43"/><path d="M4 11Q30 17 56 11M8 23Q30 28 52 23M12 34Q30 38 48 34M14 43H46"/></g></svg><div class="rm"></div></div>
+<div class="bx"><div class="by"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="21" fill="#ea6a1f"/><circle cx="22" cy="22" r="21" fill="none" stroke="#7c2d12" stroke-width="1.6"/><path d="M1 22h42M22 1v42M7 7c6 6 6 24 0 30M37 7c-6 6-6 24 0 30" fill="none" stroke="#7c2d12" stroke-width="1.6"/></svg></div></div>
+<div class="p3">+3</div>
+<div class="wl"><small>WELCOME BACK</small><b class="fpwn">CHAMP</b><em>FANTASY <i>PLUS</i></em></div>
+<div class="bar"><i></i></div>
+</div>
+<div class="fl"></div>
+<div class="skip">tap to skip</div>
+</div>
+<script>(function(){var n=window.__fpuser;if(n){var e=document.querySelector("#fpintro .fpwn");if(e)e.textContent=String(n).toUpperCase()}})();</script>
 <style>
 #fpgate{position:fixed;inset:0;z-index:99990;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 28px calc(24px + env(safe-area-inset-bottom,0px));font-family:-apple-system,system-ui,sans-serif;color:#fff}
 #fpgate[hidden]{display:none!important}
@@ -89,11 +188,11 @@ if(document.readyState==="complete")done();else addEventListener("load",done);se
 <div id="fpgate" hidden><img src="shield.png" alt=""><h1>FANTASY <b>PLUS</b></h1><p>Enter your code to open your league</p>
 <form id="fpgf" autocomplete="off"><input id="fpgp" type="password" autocomplete="current-password" autocapitalize="characters" placeholder="Code" required>
 <div class="err" id="fpgx"></div><button type="submit">Enter</button></form></div>
-<script>(function(){if(window.__fpwide)return;var K="fp_user",U={"e939639e56c8f7a123699de6c8f2f9f41146dd4ddd192dd3ad8c4e00688978a0": {"u": "Emre", "s": ["aq", "anomaly", "james", "pts2", "bd"]}, "5e05485eea899ded1e9efcef39bbd8c0d50840e837d1c64b40259d3a6a038b05": {"u": "Mert", "s": ["aq"]}, "fe27d9f63f930385a50633b87a66467f3abfb8a12533c5a6bd9a73539fb13ed5": {"u": "Alp", "s": ["anomaly"]}, "b62b695c4d9322b4b042b8d7b8282c5a21bafc869bd58d9006fca055c020ac35": {"u": "Ali", "s": ["ali"]}, "bb3ddb828b746fe69971971f9e5c064f7dde7bb9fc8bb549aed52f6260d6b572": {"u": "James", "s": ["james"]}},V="1792822280",g=document.getElementById("fpgate");
+<script>(function(){if(window.__fpwide)return;var K="fp_user",U={"e939639e56c8f7a123699de6c8f2f9f41146dd4ddd192dd3ad8c4e00688978a0": {"u": "Emre", "s": ["aq", "anomaly", "james", "pts2", "bd"]}, "5e05485eea899ded1e9efcef39bbd8c0d50840e837d1c64b40259d3a6a038b05": {"u": "Mert", "s": ["aq"]}, "fe27d9f63f930385a50633b87a66467f3abfb8a12533c5a6bd9a73539fb13ed5": {"u": "Alp", "s": ["anomaly"]}, "b62b695c4d9322b4b042b8d7b8282c5a21bafc869bd58d9006fca055c020ac35": {"u": "Ali", "s": ["ali"]}, "bb3ddb828b746fe69971971f9e5c064f7dde7bb9fc8bb549aed52f6260d6b572": {"u": "James", "s": ["james"]}},V="1792825161",g=document.getElementById("fpgate");
 function load(s){fetch("l/"+s+".html?v="+V,{cache:"no-cache"}).then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(h){document.open();document.write(h);document.close()}).catch(function(){g.hidden=false;document.getElementById("fpgx").textContent="Couldn't load your league. Try again."})}
 function pick(u){var s=null;try{s=localStorage.getItem("fp_lg")}catch(e){}if(u.s.indexOf(s)<0)s=u.s[0];try{localStorage.setItem("fp_lg",s)}catch(e){}load(s)}
 var a=null;try{a=JSON.parse(localStorage.getItem(K)||"null")}catch(e){}var u=a&&U[a.h];if(u){pick(u);return}
-var sp=document.getElementById("fpsplash");if(sp)sp.remove();g.hidden=false;
+var sp=document.getElementById("fpsplash");if(sp)sp.remove();sp=document.getElementById("fpintro");if(sp)sp.remove();g.hidden=false;
 function sha(t){return crypto.subtle.digest("SHA-256",new TextEncoder().encode(t)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("")})}
 document.getElementById("fpgf").addEventListener("submit",function(e){e.preventDefault();var pw=document.getElementById("fpgp").value.trim().toUpperCase(),x=document.getElementById("fpgx");
 sha("fp:"+pw).then(function(h){var v=U[h];if(!v){x.textContent="That code doesn't match.";document.getElementById("fpgp").value="";return}
