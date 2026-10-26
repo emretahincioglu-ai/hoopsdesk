@@ -1,6 +1,6 @@
 const STAT = {0:"PTS",1:"BLK",2:"STL",3:"AST",6:"REB",11:"TO",13:"FGM",14:"FGA",15:"FTM",16:"FTA",17:"3PM",19:"FG%",20:"FT%",21:"3P%",4:"OREB",5:"DREB",37:"DD",38:"TD"};
 const PCT = {19:[13,14],20:[15,16],21:[17,18]};
-const CORS = {"Access-Control-Allow-Origin":"*","Access-Control-Allow-Methods":"GET, OPTIONS"};
+const CORS = {"Access-Control-Allow-Origin":"*","Access-Control-Allow-Methods":"GET, PUT, OPTIONS","Access-Control-Allow-Headers":"Content-Type"};
 const TTL = 15;
 const PRO = {1:"ATL",2:"BOS",3:"NO",4:"CHI",5:"CLE",6:"DAL",7:"DEN",8:"DET",9:"GS",10:"HOU",11:"IND",12:"LAC",13:"LAL",14:"MIA",15:"MIL",16:"MIN",17:"BKN",18:"NY",19:"ORL",20:"PHI",21:"PHX",22:"POR",23:"SAC",24:"SA",25:"OKC",26:"UTAH",27:"WSH",28:"TOR",29:"MEM",30:"CHA"};
 const SLOT = {0:"PG",1:"SG",2:"SF",3:"PF",4:"C",5:"G",6:"F",7:"SG/SF",8:"G/F",9:"PF/C",10:"F/C",11:"UTIL",12:"BE",13:"IR"};
@@ -101,6 +101,10 @@ return fetch(`https://lm-api-reads.fantasy.espn.com/apis/v3/games/fba/seasons/${
 export default {
 async fetch(req, env, ctx){
 if(req.method === "OPTIONS") return new Response(null, {headers:CORS});
+const pu = new URL(req.url);
+if(pu.pathname === "/plan"){ const lid0 = pu.searchParams.get("lid")||""; if(!env.PLANS) return new Response(JSON.stringify({error:"plan sync off"}), {status:501, headers:{...CORS,"Content-Type":"application/json"}});
+if(req.method === "PUT"){ const body = await req.text(); if(body.length > 200000) return new Response("too big", {status:413, headers:CORS}); await env.PLANS.put("plan:"+lid0, body); return new Response("{}", {headers:{...CORS,"Content-Type":"application/json"}}); }
+const v = await env.PLANS.get("plan:"+lid0); return new Response(v || "{}", {headers:{...CORS,"Content-Type":"application/json","Cache-Control":"no-store"}}); }
 const url = new URL(req.url), lid = url.searchParams.get("lid");
 let leagues = JSON.parse(env.LEAGUES_JSON || "[]"); if(!Array.isArray(leagues)) leagues = leagues.leagues || [];
 const ALIAS = {"1463568079":"1546386063"};
