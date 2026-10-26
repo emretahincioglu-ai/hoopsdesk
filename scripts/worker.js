@@ -80,8 +80,19 @@ if(cat) score(h, a, items);
 if(h) delete h.raw; if(a) delete a.raw;
 return {h, a, win:x.winner};
 });
+const ST = {};
+for(const x of (raw.schedule||[]).filter(x => x.matchupPeriodId <= per)){
+for(const y of [x.home, x.away]){
+if(!y) continue;
+const sd = side(y, x.matchupPeriodId === per ? sp : -1, items);
+const T = ST[y.teamId] = ST[y.teamId] || {FP:0, GP:0};
+T.FP += sd.pts || 0;
+for(const [k,v] of Object.entries(sd.raw||{})){ const n = STAT[+k] || ({18:"3PA",13:"FGM",14:"FGA",15:"FTM",16:"FTA"})[+k]; if(n && !n.endsWith("%")) T[n] = Math.round(((T[n]||0) + v)*10)/10; }
+}
+}
+for(const T of Object.values(ST)){ T["FG%"] = T.FGA ? Math.round(T.FGM/T.FGA*10000)/10000 : 0; T["FT%"] = T.FTA ? Math.round(T.FTM/T.FTA*10000)/10000 : 0; T.FP = Math.round(T.FP*10)/10; }
 const mp = (((raw.settings||{}).scheduleSettings||{}).matchupPeriods||{})[per] || [sp];
-return {lid:String(raw.id), period:per, sp, days:mp, type:sc.scoringType, teams, rec, m, P:allPlayers(raw, sp), ts:Math.floor(Date.now()/1000)};
+return {lid:String(raw.id), period:per, sp, days:mp, type:sc.scoringType, teams, rec, m, ST, P:allPlayers(raw, sp), ts:Math.floor(Date.now()/1000)};
 }
 async function espn(L, lid, extra){
 const swid = (L.swid||"").trim(), q = ["mMatchupScore","mLiveScoring","mScoreboard","mStatus","mTeam","mSettings","mRoster"].map(v=>"view="+v).join("&");
