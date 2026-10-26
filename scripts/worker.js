@@ -116,7 +116,7 @@ if(!rr.ok) return new Response(JSON.stringify({error:"espn "+rr.status}), {statu
 const jr = await rr.json();
 const per = (jr.status||{}).currentMatchupPeriod || 1, A = {lim:(((jr.settings||{}).acquisitionSettings)||{}).matchupAcquisitionLimit ?? -1, per, used:{}};
 for(const t of jr.teams||[]) A.used[t.id] = (((t.transactionCounter||{}).matchupAcquisitionTotals)||{})[per] || 0;
-const orr = new Response(JSON.stringify({lid, R:rosters(jr), A, ts:Math.floor(Date.now()/1000)}), {headers:{...CORS,"Content-Type":"application/json","Cache-Control":"public, max-age=120"}});
+const orr = new Response(JSON.stringify({lid, R:rosters(jr), A, ts:Math.floor(Date.now()/1000)}), {headers:{...CORS,"Content-Type":"application/json","Cache-Control":"public, max-age=30"}});
 ctx.waitUntil(cache.put(rk, orr.clone()));
 return orr;
 }
