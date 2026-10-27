@@ -4,7 +4,7 @@
 "p": "",
 "n": "ANTI-QUEMO",
 "t": "Category",
-"team": "ACL Enayileri \u00b7 with Mert",
+"team": "ACL Enayileri · with Mert",
 "i": "AQ",
 "c": "#9C6B3F"
 },
@@ -13,7 +13,7 @@
 "p": "anomaly/",
 "n": "Swish Kebabs",
 "t": "Category",
-"team": "The Anomaly \u00b7 with Alp",
+"team": "The Anomaly · with Alp",
 "i": "SK",
 "c": "#2F63B0"
 },
@@ -24,7 +24,11 @@
 "t": "Points",
 "team": "James's Scary Team",
 "i": "JL",
-"c": "#5B2F8E"
+"c": "#5B2F8E",
+"users": [
+"Emre",
+"James"
+]
 },
 {
 "k": "pts2",
@@ -43,5 +47,17 @@
 "team": "Built Different",
 "i": "82",
 "c": "#2F7D5B"
+},
+{
+"k": "kny",
+"p": "",
+"n": "Swish Kebabs",
+"t": "Category",
+"team": "King of New York",
+"i": "SK",
+"c": "#2F63B0",
+"only": [
+"James"
+]
 }
 ]
