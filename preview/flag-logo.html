@@ -1,0 +1,270 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Flag + logo placement</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>html,body{background:#0b0b0c;margin:0}*{box-sizing:border-box}body{margin:0}
+.op .lab{display:flex;gap:10px;margin-bottom:10px;min-height:44px}.op .lab>b{font:800 22px "Roboto Condensed";color:#e9c25b}.op .lab span{display:block;font:700 15px Inter;color:#fff}.op .lab small{display:block;font:500 11.5px Inter;color:#9a9ca2;margin-top:2px}
+.tile{width:330px;border-radius:22px;background:#0d0d0f;border:1px solid #2a2b30;padding:16px 12px}.tile .big-w{display:flex;justify-content:center;padding:6px 0 14px;background:radial-gradient(120% 80% at 50% 30%,#2a3b30,#18241d);border-radius:14px;box-shadow:inset 0 0 0 5px #5b3f22}.tile .row{display:flex;justify-content:space-between;margin-top:12px}
+.tc{--w:70px;position:relative;width:var(--w);height:calc(var(--w)*1.42);border-radius:calc(var(--w)*.08);overflow:hidden;color:#fff;font-family:Inter}.tc.big{--w:200px;margin-top:8px}
+.tc>i{position:absolute;display:block}.tc .bg{inset:0;background:linear-gradient(150deg,#0a0a0a 0%,#15110a 45%,#3d2e10 80%,#8a6a22 100%)}
+.tc .gl{top:0;bottom:0;width:55%;left:20%;background:linear-gradient(105deg,transparent,rgba(255,220,130,.16) 45%,rgba(255,255,255,.05) 50%,transparent);transform:skewX(-8deg)}
+.tc .st{left:0;right:0;top:0;height:4.5%;background:linear-gradient(180deg,var(--c1) 0 45%,rgba(255,255,255,.85) 45% 60%,var(--c2) 60%)}
+.tc::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(233,194,91,.6);pointer-events:none}
+.tc .ov{position:absolute;z-index:3;top:8%;left:5%;width:calc(var(--w)*.28);height:calc(var(--w)*.28);border-radius:50%;background:#fff;border:2px solid var(--c1);display:grid;place-items:center}.tc .ov span{font:900 calc(var(--w)*.14) "Roboto Condensed";color:var(--c1);line-height:1}
+.tc .po{position:absolute;z-index:3;top:calc(8% + var(--w)*.3);left:5%;width:calc(var(--w)*.28);text-align:center;font:900 calc(var(--w)*.075) Inter;color:#e9c25b}
+.tc .fl,.tc .lg{position:absolute;z-index:3;top:calc(8% + var(--w)*.41);display:flex;justify-content:center;align-items:center;height:calc(var(--w)*.12)}.tc .fl{left:5%}.tc .lg{left:calc(5% + var(--w)*.15)}
+.tc .fl{font-size:calc(var(--w)*.11);line-height:1}.tc .lg{width:calc(var(--w)*.12)}.tc .lg .tb{position:absolute;inset:0;border-radius:50%;background:var(--c1);color:#fff;display:grid;place-items:center;font:900 calc(var(--w)*.038) Inter;font-style:normal;box-shadow:0 0 0 1px var(--c2)}.tc .lg img{position:relative;width:calc(var(--w)*.12);height:calc(var(--w)*.12);object-fit:contain}
+.tc .pw{position:absolute;z-index:4;top:13%;right:5%;font:900 calc(var(--w)*.075) Inter;font-style:normal;background:#e9c25b;color:#111;border-radius:3px;padding:1px 3px}
+.tc .ph{position:absolute;left:14%;right:8%;top:7%;height:58%;overflow:hidden}.tc .ph em{position:absolute;inset:0;display:grid;place-items:center;font:900 calc(var(--w)*.2) "Roboto Condensed";font-style:normal;color:rgba(233,194,91,.35)}.tc .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.tc .nb{position:absolute;z-index:3;left:6%;right:6%;top:67%;height:11%;background:var(--c1);display:flex;align-items:center;justify-content:center;font:900 calc(var(--w)*.125) "Roboto Condensed";letter-spacing:.03em;box-shadow:0 0 0 1px rgba(255,255,255,.15)}.tc .nb i{font-style:normal}
+.tc .s6{position:absolute;z-index:3;left:4%;right:4%;top:82%;display:grid;grid-template-columns:repeat(6,1fr)}.tc .s6 span{text-align:center;line-height:1.05}.tc .s6 u{display:block;text-decoration:none;font:800 calc(var(--w)*.05) "Roboto Condensed";color:#e9c25b;letter-spacing:.03em}.tc .s6 b{display:block;font:800 calc(var(--w)*.075) "Roboto Condensed";color:#f3e3b0}
+.tc .ft{position:absolute;z-index:4;top:7.5%;right:5%;font:800 calc(var(--w)*.045) Inter;color:#a8935c;letter-spacing:.1em}
+.tc.mvp{box-shadow:0 0 0 1.5px #e9c25b,0 0 16px rgba(233,194,91,.7)}
+.tc:not(.big) .s6 u{font-size:4.5px}.tc:not(.big) .s6 b{font-size:6px}
+
+.pA .fl,.pA .lg{top:auto;bottom:2.5%}.pA .fl{left:5%}.pA .lg{left:auto;right:5%}.pA .s6{top:79%}
+.pB .fl,.pB .lg{top:67%;height:11%;z-index:5}.pB .fl{left:8%}.pB .lg{left:auto;right:8%}
+.pC .fl,.pC .lg{left:auto;right:5%}.pC .lg{top:7%}.pC .fl{top:calc(7% + var(--w)*.14)}.pC .ft{top:calc(8% + var(--w)*.42);right:auto;left:5%;width:calc(var(--w)*.28);text-align:center}.pC .pw{top:calc(8% + var(--w)*.5);right:auto;left:5%}
+.pD .fl,.pD .lg{top:78.5%;height:calc(var(--w)*.08)}.pD .fl{left:40%}.pD .lg{left:52%}.pD .fl{font-size:calc(var(--w)*.08)}.pD .lg,.pD .lg img{width:calc(var(--w)*.08)!important;height:calc(var(--w)*.08)!important}.pD .s6{top:84%}
+.pE .lg{left:50%;top:14%;transform:translateX(-50%);width:calc(var(--w)*.7)!important;height:calc(var(--w)*.7)!important;opacity:.16;z-index:1}.pE .lg img{width:100%!important;height:100%!important}.pE .lg .tb{display:none}.pE .fl{top:calc(8% + var(--w)*.3);left:calc(5% + var(--w)*.19)}.pE .po{width:calc(var(--w)*.18)}
+.pF .fl,.pF .lg{top:calc(7% + var(--w)*.68);width:calc(var(--w)*.15);height:calc(var(--w)*.15);border-radius:50%;background:#000;box-shadow:0 0 0 1.5px #e9c25b;justify-content:center;z-index:5}.pF .fl{left:16%}.pF .lg{left:auto;right:10%}.pF .lg img{width:80%;height:80%}
+</style></head><body>
+<div style="padding:20px 16px 4px;font:800 20px Inter;color:#e9c25b">Where should the flag + team logo go?<div style="font:500 13px Inter;color:#9a9ca2;margin-top:4px">Same card, 6 placements. Tell me the letter.</div></div>
+<div style="box-sizing:border-box;padding:16px;display:grid;grid-template-columns:repeat(auto-fill,330px);gap:28px;justify-content:center"><div class="op"><div class="lab"><b>A</b><div><span>Bottom corners</span><small>Flag bottom-left, logo bottom-right, under the stats</small></div></div><div class="tile"><div class="big-w"><div class="tc v1 pA big mvp" style="--c1:#552583;--c2:#FDB927">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>97</span></b><small class="po">G</small>
+<span class="fl">🇸🇮</span><span class="lg"><i class="tb">LAL</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/lal.png" alt="" onerror="this.remove()"></span><em class="pw">POTW</em>
+<span class="ph"><em>LD</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3945274.png" onerror="this.remove()"></span>
+<span class="nb"><i>DONCIC</i></span>
+<div class="s6"><span><u>PTS</u><b>34</b></span><span><u>REB</u><b>7.3</b></span><span><u>AST</u><b>8</b></span><span><u>STL</u><b>1.7</b></span><span><u>BLK</u><b>0.3</b></span><span><u>3PM</u><b>5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div></div><div class="row"><div class="tc v1 pA" style="--c1:#0E2240;--c2:#FEC524">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>98</span></b><small class="po">C</small>
+<span class="fl">🇷🇸</span><span class="lg"><i class="tb">DEN</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/den.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>NJ</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3112335.png" onerror="this.remove()"></span>
+<span class="nb"><i>JOKIC</i></span>
+<div class="s6"><span><u>PTS</u><b>24</b></span><span><u>REB</u><b>11</b></span><span><u>AST</u><b>7.5</b></span><span><u>STL</u><b>1.5</b></span><span><u>BLK</u><b>2</b></span><span><u>3PM</u><b>2</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pA" style="--c1:#007A33;--c2:#BA9653">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>90</span></b><small class="po">F</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">BOS</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/bos.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>PG</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4251.png" onerror="this.remove()"></span>
+<span class="nb"><i>GEORGE</i></span>
+<div class="s6"><span><u>PTS</u><b>26</b></span><span><u>REB</u><b>6</b></span><span><u>AST</u><b>2.5</b></span><span><u>STL</u><b>3.5</b></span><span><u>BLK</u><b>0</b></span><span><u>3PM</u><b>5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pA" style="--c1:#00538C;--c2:#B8C4CA">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>90</span></b><small class="po">F</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">DAL</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/dal.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>CF</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/5041939.png" onerror="this.remove()"></span>
+<span class="nb"><i>FLAGG</i></span>
+<div class="s6"><span><u>PTS</u><b>23</b></span><span><u>REB</u><b>5</b></span><span><u>AST</u><b>4</b></span><span><u>STL</u><b>3</b></span><span><u>BLK</u><b>1</b></span><span><u>3PM</u><b>1.5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pA" style="--c1:#5D76A9;--c2:#12173F">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>84</span></b><small class="po">G</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">MEM</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/mem.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>TJ</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4065733.png" onerror="this.remove()"></span>
+<span class="nb"><i>JEROME</i></span>
+<div class="s6"><span><u>PTS</u><b>35</b></span><span><u>REB</u><b>4.3</b></span><span><u>AST</u><b>5.7</b></span><span><u>STL</u><b>0.7</b></span><span><u>BLK</u><b>0.3</b></span><span><u>3PM</u><b>3</b></span></div>
+<div class="ft">TOTW 1</div>
+</div></div></div></div><div class="op"><div class="lab"><b>B</b><div><span>Name bar ends</span><small>Flag on the left end of the name bar, logo on the right end</small></div></div><div class="tile"><div class="big-w"><div class="tc v1 pB big mvp" style="--c1:#552583;--c2:#FDB927">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>97</span></b><small class="po">G</small>
+<span class="fl">🇸🇮</span><span class="lg"><i class="tb">LAL</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/lal.png" alt="" onerror="this.remove()"></span><em class="pw">POTW</em>
+<span class="ph"><em>LD</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3945274.png" onerror="this.remove()"></span>
+<span class="nb"><i>DONCIC</i></span>
+<div class="s6"><span><u>PTS</u><b>34</b></span><span><u>REB</u><b>7.3</b></span><span><u>AST</u><b>8</b></span><span><u>STL</u><b>1.7</b></span><span><u>BLK</u><b>0.3</b></span><span><u>3PM</u><b>5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div></div><div class="row"><div class="tc v1 pB" style="--c1:#0E2240;--c2:#FEC524">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>98</span></b><small class="po">C</small>
+<span class="fl">🇷🇸</span><span class="lg"><i class="tb">DEN</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/den.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>NJ</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3112335.png" onerror="this.remove()"></span>
+<span class="nb"><i>JOKIC</i></span>
+<div class="s6"><span><u>PTS</u><b>24</b></span><span><u>REB</u><b>11</b></span><span><u>AST</u><b>7.5</b></span><span><u>STL</u><b>1.5</b></span><span><u>BLK</u><b>2</b></span><span><u>3PM</u><b>2</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pB" style="--c1:#007A33;--c2:#BA9653">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>90</span></b><small class="po">F</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">BOS</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/bos.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>PG</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4251.png" onerror="this.remove()"></span>
+<span class="nb"><i>GEORGE</i></span>
+<div class="s6"><span><u>PTS</u><b>26</b></span><span><u>REB</u><b>6</b></span><span><u>AST</u><b>2.5</b></span><span><u>STL</u><b>3.5</b></span><span><u>BLK</u><b>0</b></span><span><u>3PM</u><b>5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pB" style="--c1:#00538C;--c2:#B8C4CA">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>90</span></b><small class="po">F</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">DAL</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/dal.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>CF</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/5041939.png" onerror="this.remove()"></span>
+<span class="nb"><i>FLAGG</i></span>
+<div class="s6"><span><u>PTS</u><b>23</b></span><span><u>REB</u><b>5</b></span><span><u>AST</u><b>4</b></span><span><u>STL</u><b>3</b></span><span><u>BLK</u><b>1</b></span><span><u>3PM</u><b>1.5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pB" style="--c1:#5D76A9;--c2:#12173F">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>84</span></b><small class="po">G</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">MEM</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/mem.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>TJ</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4065733.png" onerror="this.remove()"></span>
+<span class="nb"><i>JEROME</i></span>
+<div class="s6"><span><u>PTS</u><b>35</b></span><span><u>REB</u><b>4.3</b></span><span><u>AST</u><b>5.7</b></span><span><u>STL</u><b>0.7</b></span><span><u>BLK</u><b>0.3</b></span><span><u>3PM</u><b>3</b></span></div>
+<div class="ft">TOTW 1</div>
+</div></div></div></div><div class="op"><div class="lab"><b>C</b><div><span>Top-right stack</span><small>Logo + flag stacked top-right; TOTW 1 / POTW move under the overall</small></div></div><div class="tile"><div class="big-w"><div class="tc v1 pC big mvp" style="--c1:#552583;--c2:#FDB927">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>97</span></b><small class="po">G</small>
+<span class="fl">🇸🇮</span><span class="lg"><i class="tb">LAL</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/lal.png" alt="" onerror="this.remove()"></span><em class="pw">POTW</em>
+<span class="ph"><em>LD</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3945274.png" onerror="this.remove()"></span>
+<span class="nb"><i>DONCIC</i></span>
+<div class="s6"><span><u>PTS</u><b>34</b></span><span><u>REB</u><b>7.3</b></span><span><u>AST</u><b>8</b></span><span><u>STL</u><b>1.7</b></span><span><u>BLK</u><b>0.3</b></span><span><u>3PM</u><b>5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div></div><div class="row"><div class="tc v1 pC" style="--c1:#0E2240;--c2:#FEC524">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>98</span></b><small class="po">C</small>
+<span class="fl">🇷🇸</span><span class="lg"><i class="tb">DEN</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/den.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>NJ</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3112335.png" onerror="this.remove()"></span>
+<span class="nb"><i>JOKIC</i></span>
+<div class="s6"><span><u>PTS</u><b>24</b></span><span><u>REB</u><b>11</b></span><span><u>AST</u><b>7.5</b></span><span><u>STL</u><b>1.5</b></span><span><u>BLK</u><b>2</b></span><span><u>3PM</u><b>2</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pC" style="--c1:#007A33;--c2:#BA9653">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>90</span></b><small class="po">F</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">BOS</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/bos.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>PG</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4251.png" onerror="this.remove()"></span>
+<span class="nb"><i>GEORGE</i></span>
+<div class="s6"><span><u>PTS</u><b>26</b></span><span><u>REB</u><b>6</b></span><span><u>AST</u><b>2.5</b></span><span><u>STL</u><b>3.5</b></span><span><u>BLK</u><b>0</b></span><span><u>3PM</u><b>5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pC" style="--c1:#00538C;--c2:#B8C4CA">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>90</span></b><small class="po">F</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">DAL</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/dal.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>CF</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/5041939.png" onerror="this.remove()"></span>
+<span class="nb"><i>FLAGG</i></span>
+<div class="s6"><span><u>PTS</u><b>23</b></span><span><u>REB</u><b>5</b></span><span><u>AST</u><b>4</b></span><span><u>STL</u><b>3</b></span><span><u>BLK</u><b>1</b></span><span><u>3PM</u><b>1.5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pC" style="--c1:#5D76A9;--c2:#12173F">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>84</span></b><small class="po">G</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">MEM</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/mem.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>TJ</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4065733.png" onerror="this.remove()"></span>
+<span class="nb"><i>JEROME</i></span>
+<div class="s6"><span><u>PTS</u><b>35</b></span><span><u>REB</u><b>4.3</b></span><span><u>AST</u><b>5.7</b></span><span><u>STL</u><b>0.7</b></span><span><u>BLK</u><b>0.3</b></span><span><u>3PM</u><b>3</b></span></div>
+<div class="ft">TOTW 1</div>
+</div></div></div></div><div class="op"><div class="lab"><b>D</b><div><span>Centered under name</span><small>Small flag · logo pair centred between name bar and stats</small></div></div><div class="tile"><div class="big-w"><div class="tc v1 pD big mvp" style="--c1:#552583;--c2:#FDB927">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>97</span></b><small class="po">G</small>
+<span class="fl">🇸🇮</span><span class="lg"><i class="tb">LAL</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/lal.png" alt="" onerror="this.remove()"></span><em class="pw">POTW</em>
+<span class="ph"><em>LD</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3945274.png" onerror="this.remove()"></span>
+<span class="nb"><i>DONCIC</i></span>
+<div class="s6"><span><u>PTS</u><b>34</b></span><span><u>REB</u><b>7.3</b></span><span><u>AST</u><b>8</b></span><span><u>STL</u><b>1.7</b></span><span><u>BLK</u><b>0.3</b></span><span><u>3PM</u><b>5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div></div><div class="row"><div class="tc v1 pD" style="--c1:#0E2240;--c2:#FEC524">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>98</span></b><small class="po">C</small>
+<span class="fl">🇷🇸</span><span class="lg"><i class="tb">DEN</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/den.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>NJ</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3112335.png" onerror="this.remove()"></span>
+<span class="nb"><i>JOKIC</i></span>
+<div class="s6"><span><u>PTS</u><b>24</b></span><span><u>REB</u><b>11</b></span><span><u>AST</u><b>7.5</b></span><span><u>STL</u><b>1.5</b></span><span><u>BLK</u><b>2</b></span><span><u>3PM</u><b>2</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pD" style="--c1:#007A33;--c2:#BA9653">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>90</span></b><small class="po">F</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">BOS</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/bos.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>PG</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4251.png" onerror="this.remove()"></span>
+<span class="nb"><i>GEORGE</i></span>
+<div class="s6"><span><u>PTS</u><b>26</b></span><span><u>REB</u><b>6</b></span><span><u>AST</u><b>2.5</b></span><span><u>STL</u><b>3.5</b></span><span><u>BLK</u><b>0</b></span><span><u>3PM</u><b>5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pD" style="--c1:#00538C;--c2:#B8C4CA">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>90</span></b><small class="po">F</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">DAL</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/dal.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>CF</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/5041939.png" onerror="this.remove()"></span>
+<span class="nb"><i>FLAGG</i></span>
+<div class="s6"><span><u>PTS</u><b>23</b></span><span><u>REB</u><b>5</b></span><span><u>AST</u><b>4</b></span><span><u>STL</u><b>3</b></span><span><u>BLK</u><b>1</b></span><span><u>3PM</u><b>1.5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pD" style="--c1:#5D76A9;--c2:#12173F">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>84</span></b><small class="po">G</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">MEM</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/mem.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>TJ</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4065733.png" onerror="this.remove()"></span>
+<span class="nb"><i>JEROME</i></span>
+<div class="s6"><span><u>PTS</u><b>35</b></span><span><u>REB</u><b>4.3</b></span><span><u>AST</u><b>5.7</b></span><span><u>STL</u><b>0.7</b></span><span><u>BLK</u><b>0.3</b></span><span><u>3PM</u><b>3</b></span></div>
+<div class="ft">TOTW 1</div>
+</div></div></div></div><div class="op"><div class="lab"><b>E</b><div><span>Logo watermark</span><small>Big faint team logo behind the player, flag next to the position</small></div></div><div class="tile"><div class="big-w"><div class="tc v1 pE big mvp" style="--c1:#552583;--c2:#FDB927">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>97</span></b><small class="po">G</small>
+<span class="fl">🇸🇮</span><span class="lg"><i class="tb">LAL</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/lal.png" alt="" onerror="this.remove()"></span><em class="pw">POTW</em>
+<span class="ph"><em>LD</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3945274.png" onerror="this.remove()"></span>
+<span class="nb"><i>DONCIC</i></span>
+<div class="s6"><span><u>PTS</u><b>34</b></span><span><u>REB</u><b>7.3</b></span><span><u>AST</u><b>8</b></span><span><u>STL</u><b>1.7</b></span><span><u>BLK</u><b>0.3</b></span><span><u>3PM</u><b>5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div></div><div class="row"><div class="tc v1 pE" style="--c1:#0E2240;--c2:#FEC524">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>98</span></b><small class="po">C</small>
+<span class="fl">🇷🇸</span><span class="lg"><i class="tb">DEN</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/den.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>NJ</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3112335.png" onerror="this.remove()"></span>
+<span class="nb"><i>JOKIC</i></span>
+<div class="s6"><span><u>PTS</u><b>24</b></span><span><u>REB</u><b>11</b></span><span><u>AST</u><b>7.5</b></span><span><u>STL</u><b>1.5</b></span><span><u>BLK</u><b>2</b></span><span><u>3PM</u><b>2</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pE" style="--c1:#007A33;--c2:#BA9653">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>90</span></b><small class="po">F</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">BOS</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/bos.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>PG</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4251.png" onerror="this.remove()"></span>
+<span class="nb"><i>GEORGE</i></span>
+<div class="s6"><span><u>PTS</u><b>26</b></span><span><u>REB</u><b>6</b></span><span><u>AST</u><b>2.5</b></span><span><u>STL</u><b>3.5</b></span><span><u>BLK</u><b>0</b></span><span><u>3PM</u><b>5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pE" style="--c1:#00538C;--c2:#B8C4CA">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>90</span></b><small class="po">F</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">DAL</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/dal.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>CF</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/5041939.png" onerror="this.remove()"></span>
+<span class="nb"><i>FLAGG</i></span>
+<div class="s6"><span><u>PTS</u><b>23</b></span><span><u>REB</u><b>5</b></span><span><u>AST</u><b>4</b></span><span><u>STL</u><b>3</b></span><span><u>BLK</u><b>1</b></span><span><u>3PM</u><b>1.5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pE" style="--c1:#5D76A9;--c2:#12173F">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>84</span></b><small class="po">G</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">MEM</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/mem.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>TJ</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4065733.png" onerror="this.remove()"></span>
+<span class="nb"><i>JEROME</i></span>
+<div class="s6"><span><u>PTS</u><b>35</b></span><span><u>REB</u><b>4.3</b></span><span><u>AST</u><b>5.7</b></span><span><u>STL</u><b>0.7</b></span><span><u>BLK</u><b>0.3</b></span><span><u>3PM</u><b>3</b></span></div>
+<div class="ft">TOTW 1</div>
+</div></div></div></div><div class="op"><div class="lab"><b>F</b><div><span>On the photo</span><small>Round flag + logo badges sitting on the bottom corners of the photo</small></div></div><div class="tile"><div class="big-w"><div class="tc v1 pF big mvp" style="--c1:#552583;--c2:#FDB927">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>97</span></b><small class="po">G</small>
+<span class="fl">🇸🇮</span><span class="lg"><i class="tb">LAL</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/lal.png" alt="" onerror="this.remove()"></span><em class="pw">POTW</em>
+<span class="ph"><em>LD</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3945274.png" onerror="this.remove()"></span>
+<span class="nb"><i>DONCIC</i></span>
+<div class="s6"><span><u>PTS</u><b>34</b></span><span><u>REB</u><b>7.3</b></span><span><u>AST</u><b>8</b></span><span><u>STL</u><b>1.7</b></span><span><u>BLK</u><b>0.3</b></span><span><u>3PM</u><b>5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div></div><div class="row"><div class="tc v1 pF" style="--c1:#0E2240;--c2:#FEC524">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>98</span></b><small class="po">C</small>
+<span class="fl">🇷🇸</span><span class="lg"><i class="tb">DEN</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/den.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>NJ</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3112335.png" onerror="this.remove()"></span>
+<span class="nb"><i>JOKIC</i></span>
+<div class="s6"><span><u>PTS</u><b>24</b></span><span><u>REB</u><b>11</b></span><span><u>AST</u><b>7.5</b></span><span><u>STL</u><b>1.5</b></span><span><u>BLK</u><b>2</b></span><span><u>3PM</u><b>2</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pF" style="--c1:#007A33;--c2:#BA9653">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>90</span></b><small class="po">F</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">BOS</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/bos.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>PG</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4251.png" onerror="this.remove()"></span>
+<span class="nb"><i>GEORGE</i></span>
+<div class="s6"><span><u>PTS</u><b>26</b></span><span><u>REB</u><b>6</b></span><span><u>AST</u><b>2.5</b></span><span><u>STL</u><b>3.5</b></span><span><u>BLK</u><b>0</b></span><span><u>3PM</u><b>5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pF" style="--c1:#00538C;--c2:#B8C4CA">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>90</span></b><small class="po">F</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">DAL</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/dal.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>CF</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/5041939.png" onerror="this.remove()"></span>
+<span class="nb"><i>FLAGG</i></span>
+<div class="s6"><span><u>PTS</u><b>23</b></span><span><u>REB</u><b>5</b></span><span><u>AST</u><b>4</b></span><span><u>STL</u><b>3</b></span><span><u>BLK</u><b>1</b></span><span><u>3PM</u><b>1.5</b></span></div>
+<div class="ft">TOTW 1</div>
+</div><div class="tc v1 pF" style="--c1:#5D76A9;--c2:#12173F">
+<i class="bg"></i><i class="st"></i><i class="gl"></i><i class="fx"></i>
+<b class="ov"><span>84</span></b><small class="po">G</small>
+<span class="fl">🇺🇸</span><span class="lg"><i class="tb">MEM</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/mem.png" alt="" onerror="this.remove()"></span>
+<span class="ph"><em>TJ</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4065733.png" onerror="this.remove()"></span>
+<span class="nb"><i>JEROME</i></span>
+<div class="s6"><span><u>PTS</u><b>35</b></span><span><u>REB</u><b>4.3</b></span><span><u>AST</u><b>5.7</b></span><span><u>STL</u><b>0.7</b></span><span><u>BLK</u><b>0.3</b></span><span><u>3PM</u><b>3</b></span></div>
+<div class="ft">TOTW 1</div>
+</div></div></div></div></div></body></html>
