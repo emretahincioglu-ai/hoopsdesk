@@ -1,0 +1,78 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Monday Setup — preview</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@600;700;800;900&family=Inter:wght@500;600;700;800&display=swap">
+<style>
+:root{--sc:#151517;--box:#1d1e21;--c2:#26272b;--sep:#2a2b30;--ink:#ececee;--sub:#8e9096;--acc:#ffc62b;--win:#3fcf6c;--lose:#ff5f5f;--blu:#5b9bff;--ui:"Inter",-apple-system,system-ui,sans-serif;--d:"Roboto Condensed","Arial Narrow",sans-serif;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:#0b0b0c;color:var(--ink);font:14px/1.4 var(--ui);padding:20px max(14px,env(safe-area-inset-left)) 60px;display:flex;flex-wrap:wrap;gap:28px;justify-content:center}
+.ph{width:400px;max-width:100%;background:var(--sc);border:1px solid #232428;border-radius:28px;overflow:hidden}
+.note{max-width:440px;color:var(--sub);line-height:1.55}.note h1{font:900 30px/1 var(--d);color:var(--ink);margin:0 0 10px}.note b{color:var(--ink)}.note ol{padding-left:18px}
+.hd{background:#000;padding:14px 14px 12px;border-bottom:1px solid #222}.hd .bk{color:var(--acc);font:600 12px var(--ui)}.hd h2{font:900 26px/1 var(--d);margin:4px 0 2px}.hd small{color:var(--sub);font:600 12px var(--ui)}
+.sc{padding:12px 14px 16px;display:flex;flex-direction:column;gap:12px}
+.lab{font:800 10.5px var(--ui);letter-spacing:.09em;color:var(--sub);text-transform:uppercase}
+.row{display:flex;align-items:center;gap:8px;min-width:0}.sp{flex:1}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dy{background:var(--box);border-radius:10px;padding:6px 0;text-align:center}.dy b{display:block;font:900 18px/1 var(--d)}.dy small{display:block;font:700 9.5px var(--ui);color:var(--sub);margin-top:3px}.dy i{display:block;font:800 9px var(--ui);font-style:normal;margin-top:3px}
+.dy.over i{color:var(--lose)}.dy.open i{color:var(--win)}.dy.none{opacity:.35}
+.cd{background:var(--box);border-radius:16px;padding:12px}
+.av{width:34px;height:34px;border-radius:50%;background:#2f3035;overflow:hidden;position:relative;flex:none;display:grid;place-items:center;font:800 11px var(--ui);color:#999}.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.nm{font:700 14px var(--ui);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nt{font:500 11.5px var(--ui);color:var(--sub)}
+.tag{font:800 9.5px var(--ui);letter-spacing:.05em;padding:2px 6px;border-radius:5px}.t-dtd{background:rgba(255,198,43,.16);color:var(--acc)}.t-out{background:rgba(255,95,95,.16);color:var(--lose)}.t-b2b{background:rgba(91,155,255,.16);color:var(--blu)}.t-mg{background:rgba(255,198,43,.16);color:var(--acc)}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.ch{border-radius:9px;padding:5px 8px;font:700 11.5px var(--ui);background:#2b2c31;border:1.5px solid transparent;text-align:center;min-width:52px}
+.ch small{display:block;font:600 9.5px var(--ui);color:var(--sub)}
+.ch.on{border-color:var(--win);background:rgba(63,207,108,.12)}.ch.off{opacity:.45;text-decoration:line-through}
+.grid{background:var(--box);border-radius:16px;overflow:hidden}
+.gr{display:grid;grid-template-columns:96px repeat(7,1fr);align-items:center;border-top:1px solid var(--sep);min-height:40px}.gr:first-child{border-top:0}
+.gr.h{min-height:30px;background:#232428}.gr.h span{font:800 10px var(--ui);color:var(--sub);text-align:center}
+.gn{display:flex;align-items:center;gap:6px;padding:0 6px 0 10px;min-width:0}.gn b{font:700 12px var(--ui);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gc{text-align:center;font:700 10px var(--ui);padding:4px 0}
+.gc .g{display:inline-block;padding:4px 3px;border-radius:6px;background:#2b2c31;min-width:34px}
+.gc .g.off{opacity:.4;text-decoration:line-through}.gc .g.bn{background:transparent;color:var(--sub);border:1px dashed #444}
+.gr.out{opacity:.4}
+.rule{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:#202125}
+.sw{width:36px;height:22px;border-radius:11px;background:var(--win);position:relative;flex:none}.sw:after{content:"";position:absolute;right:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center}.sum b{display:block;font:900 22px/1 var(--d)}.sum small{color:var(--sub);font:600 10.5px var(--ui)}
+.cta{padding:13px;border-radius:14px;background:var(--acc);color:#111;text-align:center;font:800 14px var(--ui)}
+.seg{display:flex;background:var(--c2);border-radius:999px;padding:3px}.seg span{flex:1;text-align:center;padding:6px;border-radius:999px;font:700 12px var(--ui);color:var(--sub)}.seg span.on{background:var(--ink);color:#111}
+</style></head><body>
+<div class="note"><h1>Monday Setup · preview</h1>
+<p>Your real ANTI-QUEMO roster and the real NBA schedule for <b>next week (Nov 2–8)</b>. One screen you go through once a week, about 2 minutes, before the projections run.</p>
+<ol><li><b>Day strip:</b> how many of your players play each day against your 10 starting spots. Red = players will sit on your bench, green = open spots to stream.</li>
+<li><b>Needs your call:</b> only the players where a decision matters (day-to-day, injury management, back-to-backs). Tap the games he'll play.</li>
+<li><b>Rest rules:</b> set once, applied every week (e.g. Embiid skips the 2nd night of a back-to-back).</li>
+<li><b>Everyone else:</b> the full week grid. Tap any game to sit him. "BN" = he plays, but you have more players than spots that day, so he likely sits your bench.</li>
+<li><b>Opponent tab:</b> same screen for their roster.</li></ol>
+<p>Once you save, every projection (matchup, win %, waiver picks) uses your calls instead of "everyone plays every game". Then we backtest: model alone vs model plus your picks.</p></div>
+<div class="ph" id="ph"></div>
+<script>
+const M={"days": ["2026-11-02", "2026-11-03", "2026-11-04", "2026-11-05", "2026-11-06", "2026-11-07", "2026-11-08"], "R": [{"n": "Tyrese Maxey", "id": 4431678, "t": "PHI", "p": "PG", "inj": "", "note": "", "g": ["vCHI", null, "@DET", null, "@CLE", null, "@CHI"]}, {"n": "Austin Reaves", "id": 4066457, "t": "LAL", "p": "SG", "inj": "", "note": "", "g": ["vMIA", null, "@SAC", null, "vPOR", null, "@DET"]}, {"n": "Trae Young", "id": 4277905, "t": "WSH", "p": "PG", "inj": "", "note": "", "g": ["@ORL", null, "vATL", null, "@ATL", "@OKC", null]}, {"n": "Matas Buzelis", "id": 4433621, "t": "CHI", "p": "SF", "inj": "", "note": "", "g": ["@PHI", null, "@NY", null, null, null, "vPHI"]}, {"n": "Trey Murphy III", "id": 4397688, "t": "NO", "p": "SF", "inj": "", "note": "", "g": ["@MEM", null, "vUTAH", null, "vMIN", null, "@LAC"]}, {"n": "Ausar Thompson", "id": 4869342, "t": "DET", "p": "SF", "inj": "DTD", "note": "ankle", "g": ["@CHA", null, "vPHI", null, null, null, "vLAL"]}, {"n": "Collin Murray-Boyles", "id": 5105565, "t": "TOR", "p": "PF", "inj": "", "note": "", "g": ["@LAC", null, "@DEN", null, "@MIL", null, null]}, {"n": "Cedric Coward", "id": 5174567, "t": "MEM", "p": "SG", "inj": "", "note": "", "g": ["vNO", null, "vIND", null, "vOKC", null, null]}, {"n": "Rudy Gobert", "id": 3032976, "t": "MIN", "p": "C", "inj": "", "note": "", "g": ["vMIL", null, "@HOU", null, "@NO", null, "vUTAH"]}, {"n": "Joel Embiid", "id": 3059318, "t": "PHI", "p": "C", "inj": "MGMT", "note": "plantar fasciitis management", "g": ["vCHI", null, "@DET", null, "@CLE", null, "@CHI"]}, {"n": "Khaman Maluach", "id": 5106001, "t": "PHX", "p": "C", "inj": "", "note": "", "g": ["@GS", null, "vPOR", "vORL", null, "vHOU", null]}, {"n": "Paul Reed", "id": 4066372, "t": "DET", "p": "PF", "inj": "", "note": "", "g": ["@CHA", null, "vPHI", null, null, null, "vLAL"]}, {"n": "Daniss Jenkins", "id": 4703385, "t": "DET", "p": "PG", "inj": "", "note": "", "g": ["@CHA", null, "vPHI", null, null, null, "vLAL"]}, {"n": "Robert Williams III", "id": 4066211, "t": "POR", "p": "C", "inj": "", "note": "", "g": ["@DEN", null, "@PHX", null, "@LAL", "vSA", null]}, {"n": "Jusuf Nurkic", "id": 3102530, "t": "UTAH", "p": "C", "inj": "OUT", "note": "", "g": ["@SA", null, "@NO", null, "@DAL", null, "@MIN"]}]};const DN=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],H=id=>`https://a.espncdn.com/i/headshots/nba/players/full/${id}.png`;
+const ini=n=>n.split(" ").map(x=>x[0]).join("").slice(0,2);
+const av=p=>`<span class="av">${ini(p.n)}<img src="${H(p.id)}" alt="" onerror="this.remove()"></span>`;
+/* your calls in this example */
+const SIT={"Ausar Thompson":[0],"Joel Embiid":[4],"Jusuf Nurkic":[0,2,4,6]};
+const R=M.R,plays=(p,i)=>p.g[i]&&!(SIT[p.n]||[]).includes(i);
+const cnt=M.days.map((_,i)=>R.filter(p=>plays(p,i)).length);
+/* bench overflow: lowest of the day beyond 10 (example order = roster order) */
+const BN={};M.days.forEach((_,i)=>{const L=R.filter(p=>plays(p,i));L.slice(10).forEach(p=>(BN[p.n]=BN[p.n]||[]).push(i))});
+const b2b=p=>{for(let i=0;i<6;i++)if(p.g[i]&&p.g[i+1])return [i,i+1];return null};
+const sched=R.reduce((a,p)=>a+(p.inj==="OUT"?0:p.g.filter(Boolean).length),0),exp=R.reduce((a,p)=>a+M.days.filter((_,i)=>plays(p,i)).length,0),starts=cnt.reduce((a,c)=>a+Math.min(10,c),0);
+const chip=(p,i,on)=>`<div class="ch ${on?"on":"off"}">${DN[i]}<small>${p.g[i].replace(/^v/,"vs ")}</small></div>`;
+const call=(p,tag,cls,why)=>`<div class="cd"><div class="row">${av(p)}<div style="min-width:0;flex:1"><div class="row"><span class="nm">${p.n}</span><span class="tag ${cls}">${tag}</span></div><div class="nt">${p.t} · ${why}</div></div></div><div class="chips">${M.days.map((_,i)=>p.g[i]?chip(p,i,plays(p,i)):"").join("")}</div></div>`;
+const yg=R.find(p=>p.n==="Trae Young"),th=R.find(p=>p.n==="Ausar Thompson"),em=R.find(p=>p.n==="Joel Embiid"),rw=R.find(p=>p.n==="Robert Williams III");
+document.getElementById("ph").innerHTML=`<div class="hd"><div class="bk">‹ Team</div><h2>Week 3 setup</h2><small>Nov 2 – 8 · ACL Enayileri · 10 starting spots</small></div>
+<div class="sc"><div class="seg"><span class="on">My team</span><span>Opponent</span></div>
+<div class="days">${M.days.map((d,i)=>{const c=cnt[i];const k=!c?"none":c>10?"over":c<10?"open":"";return `<div class="dy ${k}"><small style="margin:0 0 3px">${DN[i]}</small><b>${c||"–"}</b><i>${!c?"no games":c>10?(c-10)+" benched":c<10?(10-c)+" open":"full"}</i></div>`}).join("")}</div>
+<div class="nt" style="margin-top:-4px">Thu and Sat are your streaming days: 9 and 7 open spots.</div>
+<div class="row"><span class="lab">Needs your call · 4</span><span class="sp"></span><span class="nt">tap games he'll play</span></div>
+${call(th,"DTD","t-dtd","ankle · you said he sits Mon")}
+${call(em,"MGMT","t-mg","plantar fasciitis management · 3 of 4")}
+${call(yg,"B2B","t-b2b","Fri–Sat back-to-back · plays both?")}
+${call(rw,"B2B","t-b2b","Fri–Sat back-to-back · plays both?")}
+<div class="lab">Rest rules · every week</div>
+<div class="rule"><div style="flex:1"><b style="font-size:13px">Skip 2nd night of back-to-backs</b><div class="nt">Embiid, LeBron · none this week</div></div><span class="sw"></span></div>
+<div class="nt" style="text-align:center;color:var(--acc);font-weight:700">+ Add a rule</div>
+<div class="lab">Everyone else</div>
+<div class="grid"><div class="gr h"><span></span>${DN.map(d=>`<span>${d}</span>`).join("")}</div>${R.map(p=>`<div class="gr ${p.inj==="OUT"?"out":""}"><div class="gn">${av(p).replace('class="av"','class="av" style="width:24px;height:24px;font-size:9px"')}<b>${p.n.split(" ").filter(x=>!/III|Jr/.test(x)).slice(-1)[0]}</b></div>${M.days.map((_,i)=>{if(!p.g[i])return `<div class="gc"></div>`;const off=!plays(p,i),bn=(BN[p.n]||[]).includes(i);return `<div class="gc"><span class="g ${off?"off":bn?"bn":""}">${bn?"BN":p.g[i].replace(/^v/,"")}</span></div>`}).join("")}</div>`).join("")}</div>
+<div class="cd sum"><div><b>${sched}</b><small>games on schedule</small></div><div><b>${exp}</b><small>you expect played</small></div><div><b class="y" style="color:var(--acc)">${starts}</b><small>count as starts</small></div></div>
+<div class="cta">Save week · update projections</div></div>`;
+</script></body></html>
