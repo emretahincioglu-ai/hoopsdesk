@@ -1,0 +1,39 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Around the League · 20</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,400;0,700;0,900;1,900&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1a1b1f;color:#fff;font-family:-apple-system,system-ui,sans-serif}
+h1{font:900 22px "Roboto Condensed";margin:18px 16px 4px}p.i{margin:0 16px 14px;color:#a9abb1;font-size:13px}
+.grid{display:flex;flex-wrap:wrap;gap:18px;padding:0 16px 40px}
+.ph{width:360px;max-width:100%;background:#0b0b0d;border-radius:22px;padding:14px 12px 16px;box-sizing:border-box}
+.num{font:900 13px "Roboto Condensed";color:#ffc62b;letter-spacing:.08em}.ttl{font:800 15px system-ui;margin:2px 0}.ds{font-size:12px;color:#a9abb1;margin-bottom:10px;min-height:30px}
+.hd{font:900 italic 24px/1 "Roboto Condensed";text-transform:uppercase;margin:4px 0 10px}.hd span{color:#ffc62b}
+.row{height:76px;margin-bottom:8px}.row.only{height:auto;min-height:52px}
+.bar{display:flex;align-items:center;gap:6px;border-radius:10px;padding:0 7px;height:50px;box-sizing:border-box}.bar.tall{height:60px}
+.av{border-radius:6px;display:inline-grid;place-items:center;flex:none;font:900 10px "Roboto Condensed";box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35)}
+.tn{flex:1;min-width:0;font:900 12px "Roboto Condensed";text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tn.r{text-align:right}
+.box{flex:none;background:#000;border-radius:8px;padding:3px 8px;text-align:center;min-width:56px}.box b{display:block;font:900 18px/1.05 "Roboto Condensed"}.box small{display:block;font-size:10px;color:#a9abb1}.box small.y{color:#ffc62b;font-weight:800}
+.sub{height:22px;margin-top:4px;display:flex;align-items:center;overflow:hidden}
+.two{justify-content:space-between}.two>div{display:flex;gap:4px}.pl{font:800 10.5px "Roboto Condensed";font-style:normal;border-radius:5px;padding:2px 7px}
+.dots{justify-content:center;gap:5px}.dt{width:28px;height:18px;border-radius:9px;display:grid;place-items:center}.dt em{font:800 8.5px "Roboto Condensed";font-style:normal}.dt.fl{box-shadow:0 0 0 2px #ffc62b}
+.tug{gap:2px}.tug span{flex:1;height:20px;display:grid;place-items:center;font:800 8.5px "Roboto Condensed";border-radius:3px;opacity:.8}.tug span.fl{opacity:1;box-shadow:0 0 0 2px #ffc62b,0 0 10px #ffc62b}
+.ba{display:flex;align-items:center;gap:5px}.ba s{color:#777;font:700 12px "Roboto Condensed"}
+.tick{font:700 12px "Roboto Condensed";color:#c9cacf;padding:0 4px}.tick b{color:#ffc62b}.tick u{text-decoration:none;color:#fff}.ell{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mute{color:#666;font:600 12px system-ui}.lt{font-size:14px}
+.mt{gap:1px;border-radius:6px;overflow:hidden}.mt span{flex:1;height:22px;display:grid;place-items:center}.mt em{font:800 9px "Roboto Condensed";font-style:normal}.mt span.fl{box-shadow:inset 0 0 0 2px #ffc62b}
+.mom{justify-content:center;font:900 13px "Roboto Condensed";letter-spacing:.04em}
+.half{flex:1;min-width:0;display:flex;align-items:center;gap:6px}.half>div{min-width:0;flex:1}.half.r{text-align:right}.half .tn{display:block}.tg{display:flex;gap:3px;margin-top:3px;height:16px}.half.r .tg{justify-content:flex-end}.tg i{font:800 9.5px "Roboto Condensed";font-style:normal;background:rgba(0,0,0,.45);color:#ffc62b;border-radius:4px;padding:1px 5px}
+.od{font:900 18px "Roboto Condensed"}.od em{font-style:normal;color:#111;background:#ffc62b;border-radius:3px;padding:0 3px;animation:fl .6s 2}@keyframes fl{50%{transform:rotateX(90deg)}}
+.ring{position:relative;flex:none;width:54px;height:54px}.ring b{position:absolute;inset:0;display:grid;place-items:center;font:900 11px "Roboto Condensed"}
+.wb{gap:8px}.wb>div{flex:1;height:10px;background:#222;border-radius:5px;position:relative;overflow:hidden}.wb .r{transform:scaleX(-1)}.wb i{position:absolute;left:0;top:0;bottom:0;border-radius:5px}.wb i.g{background:rgba(255,255,255,.25)}
+.stamp{position:relative}.st{position:absolute;right:6px;top:-7px;transform:rotate(8deg);background:#ffc62b;color:#111;font:900 10px "Roboto Condensed";padding:2px 6px;border-radius:4px;box-shadow:0 2px 6px #000}
+.arr{justify-content:center;gap:12px;font:700 12px "Roboto Condensed";color:#c9cacf}.arr b{color:#fff}
+.g33{display:grid;grid-template-columns:repeat(3,16px);gap:1px;flex:none}.g33 i{height:14px;font:800 6.5px "Roboto Condensed";font-style:normal;display:grid;place-items:center}.g33 i.fl{box-shadow:inset 0 0 0 1.5px #ffc62b}.sc{font:900 16px "Roboto Condensed";background:#000;border-radius:6px;padding:2px 6px}
+.sl{padding:0 6px}.trk{position:relative;flex:1;height:6px;border-radius:3px}.trk i{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;transform:translate(-50%,-50%)}.gh{background:rgba(255,255,255,.3)}.dt2{background:#fff;box-shadow:0 0 0 2px #000}
+.hl{font:900 italic 14px "Roboto Condensed";text-transform:uppercase;color:#ffc62b;padding:0 4px;white-space:nowrap}
+.led{display:flex;align-items:center;gap:8px;background:#050505;border:2px solid #222;border-radius:8px;padding:6px 10px;height:52px;box-sizing:border-box;font-family:ui-monospace,monospace}.led .ln{color:#ffb347;font-weight:800;font-size:13px;width:34px}.led .lv{color:#ff5f3a;font:900 26px ui-monospace,monospace;text-shadow:0 0 8px #ff5f3a}.lights{flex:1;display:flex;gap:3px;justify-content:center}.lights i{width:9px;height:9px;border-radius:50%}.lights i.h{background:#ffb347;box-shadow:0 0 5px #ffb347}.lights i.a{background:#3aa0ff;box-shadow:0 0 5px #3aa0ff}.lights i.bl{animation:bl 1s infinite}@keyframes bl{50%{opacity:.15}}
+.tick0{position:absolute;top:-3px;bottom:-3px;width:3px;background:#fff;border-radius:2px}
+.dr{display:flex;align-items:center;gap:6px}.dr .bar{flex:1;min-width:0}.dr .n{width:22px;font:900 18px "Roboto Condensed";color:#ffc62b;text-align:center}.dr .n.z{color:#444}
+.me .bar,.me .led{box-shadow:0 0 0 2px #ffc62b}
+</style></head><body><h1>Around the League · 20 ways to show what changed</h1><p class="i">Last night's real Swish matchups (Wed Oct 28). Every row is the same height in each version. Your matchup has the gold outline.</p><div class="grid" id="g"></div>
+<script src="data.js"></script><script src="league.js"></script><script>
+document.getElementById("g").innerHTML=V.map(([t,d,f],k)=>{let L=MM.map((m,i)=>({m,i}));if(k===19)L.sort((a,b)=>b.m.flips.length-a.m.flips.length);return `<div class="ph"><div class="num">#${k+1}</div><div class="ttl">${t}</div><div class="ds">${d}</div><div class="hd">Around the <span>league</span></div>${L.map(({m,i})=>`<div class="${m.me?"me":""}">${f(m,i)}</div>`).join("")}</div>`}).join("");
+</script></body></html>

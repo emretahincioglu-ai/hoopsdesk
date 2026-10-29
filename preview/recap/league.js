@@ -1,0 +1,48 @@
+const nm=n=>`<b class="tn">${n}</b>`;
+const av=(n,c,s=24)=>`<span class="av" style="width:${s}px;height:${s}px;background:${c}">${ini(n)}</span>`;
+const bar=(m,inner)=>`<div class="bar" style="background:linear-gradient(90deg,${m.c[0]} 0 50%,${m.c[1]} 50%)">${av(m.hn,m.c[0])}${nm(m.hn)}${inner}${nm(m.an).replace('class="tn"','class="tn r"')}${av(m.an,m.c[1])}</div>`;
+const box=(m,extra="")=>`<span class="box"><b>${sc(m.s1)}</b>${extra}</span>`;
+const chg=m=>m.s0.join()!==m.s1.join();
+const winName=(m,f)=>f.to>0?m.hn:f.to<0?m.an:"Tie";
+const winCol=(m,f)=>f.to>0?m.c[0]:m.c[1];
+const V=[];
+/* 1 delta badge + team-colored pills on the winning side */
+V.push(["Delta + side pills","Score shows +1 delta; flipped cats sit under the team that took them, in its color.",m=>`<div class="row">${bar(m,box(m,`<small>${chg(m)?`was ${sc(m.s0)}`:"no change"}</small>`))}<div class="sub two"><div>${m.flips.filter(f=>f.to>0).map(f=>`<i class="pl" style="background:${m.c[0]}">${f.c} ✓</i>`).join("")}</div><div class="r">${m.flips.filter(f=>f.to<0).map(f=>`<i class="pl" style="background:${m.c[1]}">✓ ${f.c}</i>`).join("")}</div></div></div>`]);
+/* 2 nine dots */
+V.push(["9-dot strip","One dot per category in the leader's color. A ring marks what flipped last night.",(m,i)=>`<div class="row">${bar(m,box(m))}<div class="sub dots">${CATS.map((c,k)=>{const f=m.flips.find(x=>x.c===c);return `<span class="dt${f?" fl":""}" style="background:${WIN[i][k]>0?m.c[0]:WIN[i][k]<0?m.c[1]:"#555"}"><em>${c}</em></span>`}).join("")}</div></div>`]);
+/* 3 tug of war segments */
+V.push(["Tug of war","9 blocks fill from each side by categories won. The block that flipped glows.",(m,i)=>{const ks=CATS.map((c,k)=>({c,w:WIN[i][k],f:!!m.flips.find(x=>x.c===c)}));const H=ks.filter(x=>x.w>0),A=ks.filter(x=>x.w<0),T=ks.filter(x=>x.w===0);return `<div class="row">${bar(m,box(m))}<div class="sub tug">${[...H,...T,...A].map(x=>`<span class="${x.f?"fl":""}" style="background:${x.w>0?m.c[0]:x.w<0?m.c[1]:"#444"}">${x.c}</span>`).join("")}</div></div>`}]);
+/* 4 before -> after arrow */
+V.push(["Before → after","Old score faded, arrow, new score. The flips sit next to the arrow.",m=>`<div class="row">${bar(m,`<span class="box ba"><s>${chg(m)?sc(m.s0):""}</s>${chg(m)?"→":""}<b>${sc(m.s1)}</b></span>`)}<div class="sub tick">${m.flips.map(f=>`<span>${f.c} → ${ab(winName(m,f))}</span>`).join(" · ")||"&nbsp;"}</div></div>`]);
+/* 5 mini table */
+V.push(["Mini scoreboard table","A 9-cell scoreboard under each bar. Flipped cells get a gold border.",(m,i)=>`<div class="row">${bar(m,box(m))}<div class="sub mt">${CATS.map((c,k)=>`<span class="${m.flips.find(x=>x.c===c)?"fl":""}" style="background:${WIN[i][k]>0?m.c[0]:m.c[1]}"><em>${c}</em></span>`).join("")}</div></div>`]);
+/* 6 momentum arrow */
+V.push(["Momentum arrow","A big arrow points to whoever gained last night, with how many categories.",m=>{const g=m.flips.reduce((a,f)=>a+f.to,0);return `<div class="row">${bar(m,box(m))}<div class="sub mom">${g?`<span style="color:${g>0?"#7cf0a0":"#7cf0a0"}">${g>0?"◀◀ ":""}${ab(g>0?m.hn:m.an)} +${Math.abs(g)} ${Math.abs(g)>1?"cats":"cat"}${g<0?" ▶▶":""}</span>`:'<span class="mute">— no movement —</span>'}</div></div>`}]);
+/* 7 ticker with why */
+V.push(["Ticker with reason","One line per matchup: what flipped and the player who did it.",m=>`<div class="row">${bar(m,box(m))}<div class="sub tick">${m.flips.length?`<span class="ell">${m.flips.map(f=>`<b>${f.c}</b> → ${ab(winName(m,f))} <u>${f.why}</u>`).join("  ·  ")}</span>`:'<span class="mute">Quiet night</span>'}</div></div>`]);
+/* 8 tags inside bar */
+V.push(["Tags inside the bar","Flipped cats show as tags inside the winning team's half, so the row height never changes.",m=>`<div class="row only"><div class="bar tall" style="background:linear-gradient(90deg,${m.c[0]} 0 50%,${m.c[1]} 50%)"><div class="half">${av(m.hn,m.c[0])}<div>${nm(m.hn)}<div class="tg">${m.flips.filter(f=>f.to>0).map(f=>`<i>+${f.c}</i>`).join("")}</div></div></div>${box(m,`<small>${chg(m)?"was "+sc(m.s0):"&nbsp;"}</small>`)}<div class="half r"><div>${nm(m.an)}<div class="tg">${m.flips.filter(f=>f.to<0).map(f=>`<i>+${f.c}</i>`).join("")}</div></div>${av(m.an,m.c[1])}</div></div></div>`]);
+/* 9 odometer */
+V.push(["Odometer flip","The changed digit is highlighted like a flipped scoreboard number.",m=>{const d=(a,b)=>a!==b?`<em>${b}</em>`:b;return `<div class="row">${bar(m,`<span class="box od">${d(m.s0[0],m.s1[0])}-${d(m.s0[1],m.s1[1])}-${d(m.s0[2],m.s1[2])}</span>`)}<div class="sub tick">${m.flips.map(f=>`${f.c} → ${ab(winName(m,f))}`).join(" · ")||"&nbsp;"}</div></div>`}]);
+/* 10 ring */
+V.push(["Category ring","A 9-slice ring in the middle. Slices take the leader's color and flipped slices pop out.",(m,i)=>{const R=CATS.map((c,k)=>{const a0=k*40-90,a1=a0+38,f=!!m.flips.find(x=>x.c===c),r=f?21:18,p=(a,rr)=>[25+rr*Math.cos(a*Math.PI/180),25+rr*Math.sin(a*Math.PI/180)];const[x0,y0]=p(a0,r),[x1,y1]=p(a1,r),[x2,y2]=p(a1,11),[x3,y3]=p(a0,11);return `<path d="M${x0} ${y0}A${r} ${r} 0 0 1 ${x1} ${y1}L${x2} ${y2}A11 11 0 0 0 ${x3} ${y3}Z" fill="${WIN[i][k]>0?m.c[0]:m.c[1]}" stroke="${f?"#ffc62b":"#000"}" stroke-width="${f?1.5:.6}"/>`}).join("");return `<div class="row only"><div class="bar tall" style="background:linear-gradient(90deg,${m.c[0]} 0 50%,${m.c[1]} 50%)">${av(m.hn,m.c[0])}${nm(m.hn)}<span class="ring"><svg viewBox="0 0 50 50" width="54" height="54">${R}</svg><b>${m.s1[0]}-${m.s1[1]}</b></span>${nm(m.an).replace('tn"','tn r"')}${av(m.an,m.c[1])}</div></div>`}]);
+/* 11 win count bars w ghost */
+V.push(["Win bars with ghost","Bars show categories won. A faded ghost shows where each side was before last night.",m=>`<div class="row">${bar(m,box(m))}<div class="sub wb"><div class="l"><i class="g" style="width:${m.s0[0]/9*100}%"></i><i style="width:${m.s1[0]/9*100}%;background:${m.c[0]}"></i></div><div class="r"><i class="g" style="width:${m.s0[1]/9*100}%"></i><i style="width:${m.s1[1]/9*100}%;background:${m.c[1]}"></i></div></div></div>`]);
+/* 12 flip stamp */
+V.push(["FLIP stamp","A corner stamp counts the flips. Tap the card to see which ones.",m=>`<div class="row only stamp">${bar(m,box(m,`<small>${chg(m)?"was "+sc(m.s0):"&nbsp;"}</small>`))}${m.flips.length?`<span class="st">${m.flips.length} FLIP${m.flips.length>1?"S":""}</span>`:""}</div>`]);
+/* 13 ⇄ chip in score */
+V.push(["⇄ count in the score box","The score box carries a ⇄ count. The cats show on one line below.",m=>`<div class="row">${bar(m,box(m,`<small class="${m.flips.length?"y":""}">${m.flips.length?"⇄ "+m.flips.length:"·"}</small>`))}<div class="sub tick">${m.flips.map(f=>`<span style="color:${winCol(m,f)}" class="lt">■</span> ${f.c}`).join("   ")||"&nbsp;"}</div></div>`]);
+/* 14 arrows column */
+V.push(["Arrows to the winner","Each flipped cat sits in the middle with an arrow pointing at the team that took it.",m=>`<div class="row">${bar(m,box(m))}<div class="sub arr">${m.flips.map(f=>`<span>${f.to>0?"◀ ":""}<b>${f.c}</b>${f.to<0?" ▶":""}</span>`).join("")||'<span class="mute">no flips</span>'}</div></div>`]);
+/* 15 3x3 grid */
+V.push(["3×3 category grid","A small grid on each card. Flipped tiles carry an arrow.",(m,i)=>`<div class="row only"><div class="bar tall" style="background:linear-gradient(90deg,${m.c[0]} 0 50%,${m.c[1]} 50%)">${av(m.hn,m.c[0])}${nm(m.hn)}<span class="g33">${CATS.map((c,k)=>{const f=m.flips.find(x=>x.c===c);return `<i style="background:${WIN[i][k]>0?m.c[0]:m.c[1]}" class="${f?"fl":""}">${c.replace("%","")}</i>`}).join("")}</span><b class="sc">${sc(m.s1)}</b>${nm(m.an).replace('tn"','tn r"')}${av(m.an,m.c[1])}</div></div>`]);
+/* 16 slider line */
+V.push(["Swing line","A track from 9-0 one way to 9-0 the other. The dot moved from its ghost position.",m=>{const pos=s=>50+(s[0]-s[1])/9*50;return `<div class="row">${bar(m,box(m))}<div class="sub sl"><div class="trk" style="background:linear-gradient(90deg,${m.c[0]},#333 50%,${m.c[1]})"><i class="gh" style="left:${100-pos(m.s0)}%"></i><i class="dt2" style="left:${100-pos(m.s1)}%"></i></div></div></div>`}]);
+/* 17 headline */
+V.push(["Newspaper headline","One punchy headline per matchup, written from the flips.",m=>`<div class="row">${bar(m,box(m))}<div class="sub hl">${m.flips.length?(m.flips.length>1?`${(m.flips[0].to>0?m.hn:m.an).split(" ")[0]} grabs ${m.flips.map(f=>f.c).join(", ")}`:`${m.flips[0].why.split(" ")[0]} swings ${m.flips[0].c} to ${(m.flips[0].to>0?m.hn:m.an).split(" ")[0]}`):"Holding pattern"}</div></div>`]);
+/* 18 LED */
+V.push(["Stadium LED","A dot-matrix scoreboard with 9 indicator lights. Flipped lights blink.",(m,i)=>`<div class="row only"><div class="led"><span class="ln">${ab(m.hn)}</span><span class="lv">${m.s1[0]}</span><span class="lights">${CATS.map((c,k)=>`<i class="${WIN[i][k]>0?"h":"a"}${m.flips.find(x=>x.c===c)?" bl":""}"></i>`).join("")}</span><span class="lv">${m.s1[1]}</span><span class="ln">${ab(m.an)}</span></div></div>`]);
+/* 19 moving split */
+V.push(["Moving split","The color split sits where the score is (6-3 means 67/33). A white tick shows yesterday's split.",m=>{const p=m.s1[0]/(m.s1[0]+m.s1[1]||1)*100,p0=m.s0[0]/(m.s0[0]+m.s0[1]||1)*100;return `<div class="row only"><div class="bar" style="background:linear-gradient(90deg,${m.c[0]} 0 ${p}%,${m.c[1]} ${p}%);position:relative">${av(m.hn,m.c[0])}${nm(m.hn)}${box(m)}${nm(m.an).replace('tn"','tn r"')}${av(m.an,m.c[1])}${chg(m)?`<i class="tick0" style="left:${p0}%"></i>`:""}</div></div>`}]);
+/* 20 sorted by drama */
+V.push(["Sorted by drama","Matchups ordered by how much changed, with a swing count on the left. Quiet ones drop to the bottom.",m=>`<div class="row only"><div class="dr"><span class="n${m.flips.length?"":" z"}">${m.flips.length}</span>${bar(m,box(m))}</div></div>`]);
