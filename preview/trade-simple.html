@@ -1,0 +1,140 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Trade Builder — 20 simple layouts</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@600;700;800;900&family=Inter:wght@500;600;700;800&display=swap">
+<style>
+:root{--bg:#000;--sc:#151517;--box:#1d1e21;--c2:#26272b;--sep:#2f3035;--ink:#ececee;--sub:#8e9096;--acc:#ffc62b;--win:#3fcf6c;--lose:#ff5f5f;--blu:#5b9bff;--ui:"Inter",-apple-system,system-ui,sans-serif;--d:"Roboto Condensed","Arial Narrow",sans-serif;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:#0b0b0c;color:var(--ink);font:14px/1.4 var(--ui);padding:20px max(14px,env(safe-area-inset-left)) 60px}
+h1{font:900 30px/1 var(--d);margin:0 0 6px}.intro{color:var(--sub);max-width:640px;margin:0 0 18px;line-height:1.5}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:22px;align-items:start}
+.v{min-width:0}.vh{display:flex;gap:10px;align-items:baseline;margin:0 4px 8px}.vh b{font:900 22px var(--d);color:var(--acc)}.vh span{font:800 15px var(--ui)}.vh p{margin:2px 0 0;color:var(--sub);font-size:12px;width:100%}
+.ph{background:var(--sc);border:1px solid #232428;border-radius:26px;overflow:hidden;max-width:400px}
+.top{background:#000;padding:12px 14px 12px;border-bottom:1px solid var(--sep)}
+.top .bk{color:var(--acc);font:600 12px var(--ui)}.top h2{font:900 24px/1 var(--d);margin:3px 0 10px}
+.ss{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ss.stk{grid-template-columns:1fr}
+.sb{background:var(--c2);border-radius:12px;padding:7px 10px;display:flex;align-items:center;gap:8px;min-width:0;border:1.5px solid transparent}
+.sb .lb{font:800 9.5px var(--ui);letter-spacing:.08em;color:var(--sub);text-transform:uppercase}.sb .nm{font:700 13.5px var(--ui);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb .x{margin-left:auto;color:var(--sub);font-size:15px}
+.sb.give{border-color:#3a2a2a}.sb.get{border-color:#23392b}
+.av{width:30px;height:30px;border-radius:50%;background:#33343a;overflow:hidden;flex:none;position:relative}.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.av.l{width:64px;height:64px}.av.m{width:44px;height:44px}.av.xl{width:96px;height:96px}
+.bd{padding:14px;display:flex;flex-direction:column;gap:12px}
+.cd{background:var(--box);border-radius:16px;padding:12px}
+.lab{font:800 10.5px var(--ui);letter-spacing:.09em;color:var(--sub);text-transform:uppercase}
+.g{color:var(--win)}.r{color:var(--lose)}.s{color:var(--sub)}.y{color:var(--acc)}.bl{color:var(--blu)}
+.row{display:flex;align-items:center;gap:8px}.sp{flex:1}
+.big{font:900 40px/1 var(--d)}.mid{font:900 26px/1 var(--d)}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}td{padding:6px 4px;border-top:1px solid #2a2b30}tr:first-child td{border-top:0}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font:800 11px var(--ui)}
+.pill.r{background:rgba(255,95,95,.15)}.pill.g{background:rgba(63,207,108,.15)}.pill.s{background:#2a2b30}
+.btn{display:block;text-align:center;padding:12px;border-radius:14px;background:var(--acc);color:#111;font:800 14px var(--ui)}
+.btn.o{background:var(--c2);color:var(--ink)}
+.lg{width:16px;height:16px;vertical-align:-3px;margin-right:3px}
+.bar{height:8px;border-radius:4px;background:#2a2b30;position:relative;overflow:hidden}.bar i{position:absolute;top:0;bottom:0;border-radius:4px}
+.tag{font:800 10px var(--ui);letter-spacing:.06em;padding:2px 6px;border-radius:5px}
+.tgv{background:rgba(255,95,95,.18);color:var(--lose)}.tgt{background:rgba(63,207,108,.18);color:var(--win)}
+.nt{font-size:11.5px;color:var(--sub)}
+.dots{display:flex;gap:5px;justify-content:center}.dots i{width:6px;height:6px;border-radius:50%;background:#444}.dots i.on{background:var(--acc)}
+.seg{display:flex;background:var(--c2);border-radius:999px;padding:3px}.seg span{flex:1;text-align:center;padding:6px;border-radius:999px;font:700 12px var(--ui);color:var(--sub)}.seg span.on{background:var(--ink);color:#111}
+</style></head><body>
+<h1>Trade Builder · 20 simpler layouts</h1>
+<p class="intro">Same example in every frame: <b>you give Austin Reaves, you get Ja Morant</b>, with real numbers from your league. Every version starts with just two search bars (any player, any team), and the page opens at the top. The team suggestions show under the search bars until you pick players. Tell me a number, or mix pieces, e.g. "7 with the bars from 10".</p>
+<div class="grid" id="g"></div>
+<script>
+const H=id=>`https://a.espncdn.com/i/headshots/nba/players/full/${id}.png`,TL=t=>`https://a.espncdn.com/i/teamlogos/nba/500/${t}.png`;
+const R={n:"Austin Reaves",s:"Reaves",id:4066457,t:"lal",tm:"LAL",pos:"SG",min:36.6,gp:67,val:3.4,wk:3,po:13,ovr:84,
+ st:{PTS:25.4,"3PM":2.7,REB:4.9,AST:5.9,STL:1.1,BLK:0.4,"FG%":48.4,"FT%":87.1,TO:3.0}};
+const M={n:"Ja Morant",s:"Morant",id:4279888,t:"por",tm:"POR",pos:"PG",min:29.5,gp:65,val:-0.59,wk:2,po:14,ovr:79,
+ st:{PTS:21.6,"3PM":1.5,REB:3.9,AST:7.4,STL:1.1,BLK:0.3,"FG%":44.3,"FT%":84.4,TO:3.5}};
+const CATS=["FG%","FT%","3PM","REB","AST","STL","BLK","PTS"];
+const RK={PTS:0,AST:0,STL:0,BLK:0,REB:-1,"FG%":-1,"FT%":-1,"3PM":-2};
+const BK=[["This week","Bad",79,68],["Next 3 wks","Even",44,44],["Season","Bad",53,51],["Playoffs","Bad",26,20]];
+const av=(p,c="")=>`<span class="av ${c}"><img src="${H(p.id)}" alt="" onerror="this.remove()"></span>`;
+const d=(c)=>{const a=M.st[c],b=R.st[c];return Math.round((a-b)*10)/10};
+const better=c=>{const x=d(c);return c==="TO"?(x<0?1:x>0?-1:0):(x>0?1:x<0?-1:0)};
+const fm=(c,v)=>c.endsWith("%")?v.toFixed(1):v.toFixed(1);
+function tp(o={}){const g=`<div class="sb give">${av(R)}<div style="min-width:0"><div class="lb">You give</div><div class="nm">${o.full?R.n:R.s}</div></div><span class="x">×</span></div>`,
+ t=`<div class="sb get">${av(M)}<div style="min-width:0"><div class="lb">You get</div><div class="nm">${o.full?M.n:M.s}</div></div><span class="x">×</span></div>`;
+ return `<div class="top"><div class="bk">‹ Trades</div><h2>Trade builder</h2><div class="ss${o.stk?" stk":""}">${g}${o.arrow?`<div style="text-align:center;color:var(--sub);margin:-4px 0">⇅</div>`:""}${t}</div></div>`}
+const V=[];const add=(t,p,f)=>V.push([t,p,f]);
+const verdictBig=`<div class="row"><div><div class="lab">Verdict</div><div class="big r">Skip it</div></div><span class="sp"></span><div style="text-align:right"><div class="lab">Win chance</div><div class="mid">53% <span class="s">→</span> <span class="r">51%</span></div></div></div>`;
+
+/* 1 ESPN analyzer */
+add("ESPN Trade Analyzer","Two columns like ESPN's own analyzer: who leaves, who arrives, one grade at the bottom.",()=>tp()+`<div class="bd">
+<div class="cd" style="padding:0;overflow:hidden"><div style="display:grid;grid-template-columns:1fr 1fr">${[[R,"Trading away","r"],[M,"Receiving","g"]].map(([p,h,c],i)=>`<div style="padding:12px;${i?"border-left:1px solid #2a2b30":""}"><div class="lab ${c}">${h}</div><div class="row" style="margin-top:8px">${av(p,"m")}<div><b>${p.s}</b><div class="nt"><img class="lg" src="${TL(p.t)}">${p.tm} · ${p.pos}</div></div></div><div style="margin-top:10px;font:800 22px var(--d)">${p.st.PTS} <span class="nt">PTS</span></div></div>`).join("")}</div>
+<div style="background:#2a1a1a;padding:12px;text-align:center"><span class="lab">Trade grade</span><div class="big r" style="margin-top:4px">D</div><div class="nt">You lose more than you gain</div></div></div>
+<div class="cd"><table>${CATS.map(c=>`<tr><td class="${better(c)<0?"":"s"}">${fm(c,R.st[c])}</td><td style="text-align:center" class="s">${c}</td><td style="text-align:right" class="${better(c)>0?"g":better(c)<0?"r":""}">${fm(c,M.st[c])}</td></tr>`).join("")}</table></div></div>`);
+
+/* 2 Verdict + diff table */
+add("Verdict first","One big answer on top, then a single table of what changes per category.",()=>tp()+`<div class="bd"><div class="cd">${verdictBig}</div>
+<div class="cd"><div class="row lab"><span>Category</span><span class="sp"></span><span>Per game</span></div><table style="margin-top:6px">${CATS.map(c=>{const x=d(c),b=better(c);return `<tr><td><b>${c}</b></td><td style="text-align:right" class="${b>0?"g":b<0?"r":"s"}">${x>0?"+":""}${c.endsWith("%")?x.toFixed(1)+"%":x.toFixed(1)}</td></tr>`}).join("")}</table></div></div>`);
+
+/* 3 Tale of the tape */
+add("Tale of the tape","Fight-card style: photos up top, the better number lights up on each line.",()=>tp()+`<div class="bd"><div class="cd"><div class="row" style="justify-content:space-between">${av(R,"l")}<div style="text-align:center"><div class="lab">vs</div><div class="pill r" style="margin-top:6px">Skip</div></div>${av(M,"l")}</div>
+<div class="row" style="justify-content:space-between;margin:6px 0 4px"><b>${R.s}</b><b>${M.s}</b></div>
+${CATS.map(c=>{const b=better(c);return `<div class="row" style="padding:7px 0;border-top:1px solid #2a2b30"><b style="width:56px;font:800 18px var(--d)" class="${b<0?"y":"s"}">${fm(c,R.st[c])}</b><span class="sp" style="text-align:center;font:700 12px var(--ui)" >${c}</span><b style="width:56px;text-align:right;font:800 18px var(--d)" class="${b>0?"y":"s"}">${fm(c,M.st[c])}</b></div>`}).join("")}</div></div>`);
+
+/* 4 Scoreboard */
+add("Category scoreboard","Reads like your matchup scoreboard: how many categories this trade wins you.",()=>tp()+`<div class="bd"><div class="cd" style="text-align:center"><div class="lab">Your league rank per category, after the trade</div>
+<div class="row" style="justify-content:center;gap:22px;margin:10px 0"><div><div class="big g">0</div><div class="nt">better</div></div><div><div class="big s">4</div><div class="nt">same</div></div><div><div class="big r">4</div><div class="nt">worse</div></div></div><div class="pill r">Skip it</div></div>
+<div class="cd" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">${CATS.map(c=>{const b=Math.sign(RK[c]);return `<div style="text-align:center;padding:8px 0;border-radius:10px;background:${b>0?"rgba(63,207,108,.15)":b<0?"rgba(255,95,95,.14)":"#26272b"}"><b class="${b>0?"g":b<0?"r":"s"}">${c}</b><div class="nt">${RK[c]>0?"▲"+RK[c]:RK[c]<0?"▼"+(-RK[c]):"="}</div></div>`}).join("")}</div></div>`);
+
+/* 5 Gauge */
+add("Win-chance gauge","One dial: your season win chance before and after. Nothing else unless you tap.",()=>tp()+`<div class="bd"><div class="cd" style="text-align:center"><svg viewBox="0 0 200 110" width="100%" style="max-width:260px"><path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#2a2b30" stroke-width="16" stroke-linecap="round"/><path d="M20 100 A80 80 0 0 1 102 20" fill="none" stroke="#ff5f5f" stroke-width="16" stroke-linecap="round"/><line x1="100" y1="100" x2="${100+70*Math.cos(Math.PI*(1-.53))}" y2="${100-70*Math.sin(Math.PI*(1-.53))}" stroke="#8e9096" stroke-width="3" stroke-dasharray="4 3"/><line x1="100" y1="100" x2="${100+70*Math.cos(Math.PI*(1-.51))}" y2="${100-70*Math.sin(Math.PI*(1-.51))}" stroke="#ececee" stroke-width="4" stroke-linecap="round"/><circle cx="100" cy="100" r="6" fill="#ececee"/></svg>
+<div class="big">51%</div><div class="nt">season win chance · was 53%</div><div class="pill r" style="margin-top:10px">−2 · skip it</div></div><div class="btn o">See the details</div></div>`);
+
+/* 6 Card face-off */
+add("Card face-off","Two player cards side by side with OVR, like the Team of the Week cards.",()=>tp()+`<div class="bd"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${[[R,"GIVE","tgv"],[M,"GET","tgt"]].map(([p,h,c])=>`<div class="cd" style="text-align:center;background:linear-gradient(180deg,#2a2412,#1d1e21 60%)"><span class="tag ${c}">${h}</span><div style="margin:10px auto 6px;width:max-content">${av(p,"xl")}</div><div style="font:900 30px/1 var(--d)" class="y">${p.ovr}</div><div class="nt">OVR</div><b style="display:block;margin-top:6px">${p.s}</b><div class="nt">${p.tm} · ${p.pos}</div><div class="row" style="justify-content:center;gap:10px;margin-top:8px;font:700 12px var(--ui)"><span>${p.st.PTS}<br><span class="nt">PTS</span></span><span>${p.st.AST}<br><span class="nt">AST</span></span><span>${p.st["3PM"]}<br><span class="nt">3PM</span></span></div></div>`).join("")}</div><div class="cd row"><b class="r">Skip it</b><span class="sp"></span><span class="nt">Reaves is the better card</span></div></div>`);
+
+/* 7 Chips */
+add("Gains & losses chips","Green chips for what you gain, red for what you lose. Readable in two seconds.",()=>tp()+`<div class="bd"><div class="cd">${verdictBig}</div><div class="cd"><div class="lab g">You gain</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span class="pill g">AST +1.5</span></div>
+<div class="lab r" style="margin-top:14px">You lose</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span class="pill r">PTS −3.8</span><span class="pill r">3PM −1.2</span><span class="pill r">REB −1.0</span><span class="pill r">FG% −4.1</span><span class="pill r">FT% −2.7</span><span class="pill r">BLK −0.1</span></div>
+<div class="lab" style="margin-top:14px">No change</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span class="pill s">STL</span></div></div></div>`);
+
+/* 8 Value number */
+add("One number","A single trade score from your player values. Thumbs up or down, done.",()=>tp()+`<div class="bd"><div class="cd" style="text-align:center;padding:22px 12px"><div class="lab">Trade score for you</div><div style="font:900 64px/1 var(--d);margin:8px 0" class="r">−4.0</div><div class="nt">Morant −0.6 &nbsp;vs&nbsp; Reaves +3.4</div><div style="font-size:34px;margin-top:8px">👎</div></div>
+<div class="cd"><div class="bar" style="height:12px"><i style="left:50%;width:30%;background:var(--lose)"></i></div><div class="row nt" style="margin-top:4px"><span>Bad for you</span><span class="sp"></span><span>Fair</span><span class="sp"></span><span>Good for you</span></div></div></div>`);
+
+/* 9 Four pills */
+add("Four time frames","Just the four answers that matter: this week, next 3, season, playoffs.",()=>tp()+`<div class="bd"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${BK.map(([n,v,a,b])=>`<div class="cd"><div class="lab">${n}</div><div class="mid ${v==="Bad"?"r":v==="Good"?"g":"y"}" style="margin-top:6px">${v}</div><div class="nt">${a}% → ${b}%</div></div>`).join("")}</div><div class="cd row"><b>Overall</b><span class="sp"></span><span class="pill r">Skip it</span></div></div>`);
+
+/* 10 Diverging bars */
+add("Diverging bars","Each category is a bar from the middle: right = you gain, left = you lose.",()=>tp()+`<div class="bd"><div class="cd">${verdictBig}</div><div class="cd">${CATS.map(c=>{const b=better(c),x=d(c),w=Math.min(48,Math.abs(c.endsWith("%")?x*8:c==="PTS"?x*6:x*24));return `<div class="row" style="padding:5px 0"><b style="width:40px;font-size:12px">${c}</b><div style="flex:1;position:relative;height:14px"><i style="position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:#444"></i>${b?`<i style="position:absolute;top:2px;height:10px;border-radius:5px;${b>0?`left:50%`:`right:50%`};width:${w}%;background:${b>0?"var(--win)":"var(--lose)"}"></i>`:""}</div><span style="width:44px;text-align:right;font:700 12px var(--ui)" class="${b>0?"g":b<0?"r":"s"}">${x>0?"+":""}${x.toFixed(1)}</span></div>`}).join("")}<div class="row nt" style="margin-top:4px"><span>◀ you lose</span><span class="sp"></span><span>you gain ▶</span></div></div></div>`);
+
+/* 11 Two tabs */
+add("Verdict | Stats tabs","Only two tabs. Verdict is a short read, Stats is the head-to-head table.",()=>tp()+`<div class="bd"><div class="seg"><span class="on">Verdict</span><span>Stats</span></div><div class="cd"><div class="big r">Skip it</div><ul style="margin:10px 0 0;padding-left:18px;line-height:1.6"><li>You only gain assists (+1.5).</li><li>You lose 3PM, REB and both percentages.</li><li>Season win chance 53% → 51%.</li><li>Playoff odds 26% → 20%.</li></ul></div></div>`);
+
+/* 12 Gains / losses columns */
+add("Plus / minus columns","Two plain columns of text. No charts at all.",()=>tp()+`<div class="bd"><div class="cd" style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div><div class="lab g">+ You get</div><p style="margin:8px 0 0;line-height:1.7">More assists<br>1 more playoff game<br>A younger PG</p></div><div><div class="lab r">− You give up</div><p style="margin:8px 0 0;line-height:1.7">Scoring and 3s<br>Rebounds<br>FG% and FT%<br>1 game this week</p></div></div><div class="cd row"><b>Verdict</b><span class="sp"></span><b class="r">Skip it</b></div></div>`);
+
+/* 13 Report card */
+add("Report card","School-style letter grades for each time frame and an overall grade.",()=>tp()+`<div class="bd"><div class="cd"><div class="row"><div><div class="lab">Overall</div><div style="font:900 56px/1 var(--d)" class="r">D+</div></div><span class="sp"></span><div class="nt" style="max-width:150px;text-align:right">You lose more than you gain.</div></div>
+<table style="margin-top:10px">${[["This week","D","79→68%"],["Next 3 weeks","C","44→44%"],["Season","D+","53→51%"],["Playoffs","D","26→20%"]].map(([a,g,s])=>`<tr><td>${a}</td><td class="nt" style="text-align:right">${s}</td><td style="text-align:right;width:44px;font:900 20px var(--d)" class="${g.startsWith("C")?"y":"r"}">${g}</td></tr>`).join("")}</table></div></div>`);
+
+/* 14 Swipe cards */
+add("Swipe cards","One insight per card, swipe sideways. Feels like Instagram stories.",()=>tp()+`<div class="bd"><div class="cd" style="min-height:220px;display:flex;flex-direction:column;justify-content:center;text-align:center;background:linear-gradient(160deg,#2a1717,#1d1e21)"><div class="lab">1 of 4 · Verdict</div><div class="big r" style="margin:12px 0">Skip it</div><div>You'd drop in 4 category ranks<br>and climb in none.</div></div><div class="dots"><i class="on"></i><i></i><i></i><i></i></div><div class="nt" style="text-align:center">Next: category changes · week by week · games left</div></div>`);
+
+/* 15 Accordion */
+add("Collapsed sections","Verdict open, everything else folded into one-line rows you can tap open.",()=>tp()+`<div class="bd"><div class="cd">${verdictBig}<p class="nt" style="margin:10px 0 0">Your ranks drop in 3PM, REB, FG% and FT%; nothing improves.</p></div>${[["Player stats","per game, side by side"],["Your category ranks","3PM drops 2 spots"],["Week by week","biggest drop: week 10"],["Games left","3 vs 2 this week"]].map(([a,b])=>`<div class="cd row"><b>${a}</b><span class="sp"></span><span class="nt">${b}</span><span class="s" style="margin-left:6px">›</span></div>`).join("")}</div>`);
+
+/* 16 ESPN review banner */
+add("ESPN trade review","ESPN app look: team-colour banner, player rows with projected fantasy value.",()=>tp()+`<div class="bd" style="padding:0"><div style="background:linear-gradient(90deg,#552583,#e03a3e);padding:14px;display:flex;align-items:center;gap:10px"><img src="${TL("lal")}" width="34"><span style="font:900 18px var(--d)">LAL</span><span class="sp"></span><span style="font:900 18px var(--d)">⇄</span><span class="sp"></span><span style="font:900 18px var(--d)">POR</span><img src="${TL("por")}" width="34"></div>
+<div style="padding:14px;display:flex;flex-direction:column;gap:10px">${[[R,"Out","r"],[M,"In","g"]].map(([p,h,c])=>`<div class="cd row">${av(p,"m")}<div><b>${p.n}</b><div class="nt">${p.tm} · ${p.pos} · ${p.min} min</div></div><span class="sp"></span><div style="text-align:right"><div class="lab ${c}">${h}</div><b>${p.val>0?"+":""}${p.val}</b><div class="nt">value</div></div></div>`).join("")}<div class="cd row"><b>Recommendation</b><span class="sp"></span><span class="pill r">Decline</span></div></div></div>`);
+
+/* 17 Heat strip */
+add("Heat strip","Nine coloured cells, one per category. Green good, red bad, grey no change.",()=>tp()+`<div class="bd"><div class="cd">${verdictBig}</div><div class="cd"><div style="display:grid;grid-template-columns:repeat(8,1fr);gap:3px">${CATS.map(c=>{const b=better(c),x=Math.abs(d(c));const o=b?Math.min(1,.35+x/4):0;return `<div style="aspect-ratio:1;border-radius:6px;display:grid;place-items:center;background:${b>0?`rgba(63,207,108,${o})`:b<0?`rgba(255,95,95,${o})`:"#2a2b30"};font:800 9.5px var(--ui)">${c}</div>`}).join("")}</div><div class="nt" style="margin-top:8px">Darker = bigger change. Tap a cell for the numbers.</div></div></div>`);
+
+/* 18 Radar */
+add("Radar overlay","Both players drawn on one spider chart, so the shape shows who does what.",()=>{const C=["PTS","3PM","REB","AST","STL","BLK","FG%","FT%"],mx={PTS:30,"3PM":4,REB:12,AST:10,STL:2,BLK:2,"FG%":55,"FT%":92},mn={"FG%":40,"FT%":70};
+ const pt=(p,i)=>{const c=C[i],lo=mn[c]||0,v=Math.max(.08,(p.st[c]-lo)/(mx[c]-lo)),a=-Math.PI/2+i*2*Math.PI/C.length;return [100+80*v*Math.cos(a),100+80*v*Math.sin(a)]};
+ const poly=(p,col)=>`<polygon points="${C.map((_,i)=>pt(p,i).join(",")).join(" ")}" fill="${col}" fill-opacity=".25" stroke="${col}" stroke-width="2"/>`;
+ return tp()+`<div class="bd"><div class="cd"><svg viewBox="-14 0 228 204" width="100%">${[.33,.66,1].map(k=>`<polygon points="${C.map((_,i)=>{const a=-Math.PI/2+i*2*Math.PI/C.length;return (100+80*k*Math.cos(a))+","+(100+80*k*Math.sin(a))}).join(" ")}" fill="none" stroke="#333"/>`).join("")}${poly(R,"#ff5f5f")}${poly(M,"#3fcf6c")}${C.map((c,i)=>{const a=-Math.PI/2+i*2*Math.PI/C.length;return `<text x="${100+94*Math.cos(a)}" y="${103+94*Math.sin(a)}" fill="#8e9096" font-size="8" font-weight="700" text-anchor="middle">${c}</text>`}).join("")}</svg><div class="row nt" style="justify-content:center;gap:14px"><span><b class="r">■</b> Reaves (give)</span><span><b class="g">■</b> Morant (get)</span></div></div><div class="cd row"><b>Verdict</b><span class="sp"></span><b class="r">Skip it</b></div></div>`});
+
+/* 19 Analyst note */
+add("Analyst note","Reads like a short scouting note. Three sentences and a verdict.",()=>tp()+`<div class="bd"><div class="cd"><div class="row"><span class="pill r">Skip it</span><span class="sp"></span><span class="nt">Fantasy Plus analyst</span></div><p style="margin:12px 0 0;line-height:1.6;font-size:15px">Morant only helps your <b>assists</b>. You'd give up Reaves's scoring, threes and much better shooting, and your weakest category (3PM) gets worse.</p><p style="margin:10px 0 0;line-height:1.6;font-size:15px">Season win chance drops <b class="r">53% → 51%</b> and playoff odds <b class="r">26% → 20%</b>.</p></div><div class="btn o">Show the numbers</div></div>`);
+
+/* 20 Sticky verdict bar */
+add("Stat table + sticky verdict","Clean side-by-side table; the verdict sits in a bar pinned to the bottom.",()=>tp({full:true})+`<div class="bd" style="padding-bottom:0"><div class="cd"><div class="row" style="margin-bottom:6px">${av(R)}<b style="font-size:12px">Reaves</b><span class="sp"></span><b style="font-size:12px">Morant</b>${av(M)}</div><table>${CATS.map(c=>{const b=better(c);return `<tr><td class="${b<0?"bl":""}" style="font-weight:700">${fm(c,R.st[c])}</td><td class="nt" style="text-align:center">${c}</td><td style="text-align:right;font-weight:700" class="${b>0?"bl":""}">${fm(c,M.st[c])}</td></tr>`}).join("")}</table></div></div>
+<div style="position:sticky;bottom:0;margin-top:12px;background:#2a1717;border-top:1px solid #5a2a2a;padding:12px 14px;display:flex;align-items:center;gap:10px"><b class="r" style="font:900 22px var(--d)">SKIP</b><span class="nt">53% → 51% season · 4 categories drop</span></div>`);
+
+document.getElementById("g").innerHTML=V.map(([t,p,f],i)=>`<div class="v"><div class="vh"><b>${i+1}</b><span>${t}</span><p>${p}</p></div><div class="ph">${f()}</div></div>`).join("");
+</script></body></html>
