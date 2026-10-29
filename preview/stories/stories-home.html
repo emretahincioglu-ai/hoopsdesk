@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Stories on Home · 30</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&family=Bebas+Neue&family=Permanent+Marker&family=Playfair+Display:wght@900&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1a1b1f;color:#fff;font-family:-apple-system,system-ui,sans-serif}
+h1{font:900 24px "Roboto Condensed";margin:18px 16px 2px}p.i{margin:0 16px 10px;color:#a9abb1;font-size:13px;max-width:760px}
+.flt{display:flex;gap:6px;margin:0 16px 14px}.flt button{background:#26272c;color:#ddd;border:0;border-radius:999px;padding:6px 12px;font:700 12px system-ui;cursor:pointer}.flt button.on{background:#ffc62b;color:#111}
+.grid{display:flex;flex-wrap:wrap;gap:18px;padding:0 16px 40px;align-items:flex-start}
+.ph{width:360px;max-width:100%;background:#0b0b0d;border-radius:26px;overflow:hidden;box-shadow:0 0 0 1px #2a2b30;position:relative;isolation:isolate}
+.cap{padding:10px 14px 0}.num{font:900 12px "Roboto Condensed";color:#ffc62b;letter-spacing:.08em}.num span{color:#8e9096;margin-left:6px}.ttl{font:800 15px system-ui;margin:1px 0}.ds{font-size:12px;color:#a9abb1;min-height:32px}
+.app{border-top:1px solid #1d1e22;margin-top:8px;padding-top:8px}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:0 14px 6px}.hdr .lg{width:28px;height:28px;border-radius:50%;background:#fff;color:#7B5236;font:900 9px/28px system-ui;text-align:center}.hdr b{font:900 20px "Roboto Condensed"}.hdr .sr{width:28px;height:28px;border-radius:50%;background:#1b1c20}
+.tabs{display:flex;gap:16px;padding:0 14px 8px;font:800 12.5px system-ui;color:#8e9096;border-bottom:1px solid #1d1e22;margin-bottom:8px}.tabs span:first-child{color:#fff;box-shadow:inset 0 -2px #ffc62b;padding-bottom:6px}
+.stub{margin:0 14px 14px;padding:14px;border-radius:16px;background:#141518;display:flex;justify-content:space-between;align-items:center}.stub .t{font:700 12px system-ui}.stub .t b{display:block;font:900 30px "Roboto Condensed"}.stub .t.r{text-align:right}.stub .m{text-align:center;font:800 10px system-ui;color:#8e9096}.stub .m em{display:block;font:900 14px system-ui;color:#3fcf6c;font-style:normal}
+.stub2{margin:0 14px 14px;height:38px;border-radius:12px;background:#141518;display:flex;align-items:center;padding:0 12px;font:700 12.5px system-ui;color:#c9cacf}
+</style></head><body>
+<h1>Stories on Home · 30 options</h1><p class="i">Four sample stories (Daily Recap, Waiver Watch, Matchup Pulse, Trade Desk) placed at the top of Home. Each phone shows the option inside the real header and matchup card so you can judge the fit. Classic = Instagram-style, Sleek = minimal, Creative = new ideas. Pick by number.</p>
+<div class="flt"><button class="on" data-f="all">All 30</button><button data-f="classic">Classic</button><button data-f="sleek">Sleek</button><button data-f="creative">Creative</button></div>
+<div class="grid" id="g"></div>
+<script src="v.js"></script><script>
+const st=document.createElement("style");st.textContent=V.map(v=>v.css).join("\n");document.head.appendChild(st);
+const noHdr=new Set([8]),noStub=new Set([18]);
+document.getElementById("g").innerHTML=V.map((v,k)=>`<div class="ph" data-t="${v.tier}"><div class="cap"><div class="num">#${k+1}<span>${v.tier.toUpperCase()}</span></div><div class="ttl">${v.name}</div><div class="ds">${v.why}</div></div><div class="app">${noHdr.has(k)?"":`<div class="hdr"><span class="lg">MM</span><b>Home</b><span class="sr"></span></div>`}${noHdr.has(k)?v.html:""}<div class="tabs"><span>Overview</span><span>Team</span><span>Matchup</span><span>Players</span></div>${noHdr.has(k)?"":v.html}${noStub.has(k)?"":`<div class="stub"><span class="t">Mastika Magics<b>6</b></span><span class="m">WK 2<em>95%</em></span><span class="t r">Dimes Square SK<b>3</b></span></div>`}<div class="stub2">This week's categories ›</div></div></div>`).join("");
+document.querySelectorAll(".flt button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".flt button").forEach(x=>x.classList.toggle("on",x===b));document.querySelectorAll(".ph").forEach(p=>p.style.display=b.dataset.f==="all"||p.dataset.t===b.dataset.f?"":"none")});
+</script></body></html>
