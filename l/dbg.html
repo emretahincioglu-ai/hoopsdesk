@@ -6600,6 +6600,6 @@ return{apply,toggle,ui}})();
 #views .whpick .pkr>.pkm{padding:6px 7px!important;margin:0!important}
 #views .whpick .pkr>.pkm.rk2{flex:1}
 </style><script>(function(){const C={},RING=[];let n=0;const fl=()=>{try{localStorage.setItem("fpdbg",JSON.stringify({t:Date.now(),C,R:RING.slice(-40)}))}catch(e){}};
-function wrap(o,k,lab){const f=o[k];if(typeof f!=="function"||f.__w)return;const g=function(){C[lab]=(C[lab]||0)+1;RING.push(lab);if(RING.length>200)RING.splice(0,100);if(++n%25===0)fl();return f.apply(this,arguments)};g.__w=1;try{o[k]=g}catch(e){}}
+function wrap(o,k,lab){const f=o[k];if(typeof f!=="function"||f.__w)return;const g=function(){C[lab]=(C[lab]||0)+1;RING.push(lab);if(RING.length>200)RING.splice(0,100);if(++n%25===0||!/FPGAME|FPSB|FPPROJLINE/.test(lab))fl();return f.apply(this,arguments)};g.__w=1;try{o[k]=g}catch(e){}}
 const go=()=>{Object.keys(window).filter(k=>/^(FP|HD|__FP)/.test(k)).forEach(k=>wrap(window,k,k));if(window.HDX)Object.keys(HDX).forEach(k=>wrap(HDX,k,"HDX."+k))};go();setTimeout(go,30);setTimeout(go,300);setTimeout(go,1500);
 setInterval(()=>{C.beat=(C.beat||0)+1;fl()},500);localStorage.setItem("fpdbg","start")})();</script>
