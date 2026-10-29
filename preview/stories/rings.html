@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Stories Panel · 20</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1a1b1f;color:#fff;font-family:-apple-system,system-ui,sans-serif}
+h1{font:900 24px "Roboto Condensed";margin:18px 16px 2px}h2{font:900 18px "Roboto Condensed";margin:22px 16px 8px;text-transform:uppercase;letter-spacing:.04em}p.i{margin:0 16px 12px;color:#a9abb1;font-size:13px;max-width:780px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.lgsheet{display:flex;flex-wrap:wrap;gap:12px;padding:0 16px}.lgc{width:230px;background:#0b0b0d;border-radius:16px;padding:12px;box-shadow:0 0 0 1px #2a2b30}.lgc .row{display:flex;gap:10px;align-items:center}.lgc .a{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#101114;box-shadow:inset 0 0 0 2px var(--a)}.lgc .a svg{width:22px;height:22px}.lgc .b{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(140deg,var(--a),var(--b));color:#111}.lgc .b svg{width:24px;height:24px}.lgc .c{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#101114;box-shadow:inset 0 0 0 2px var(--a);font:900 15px "Roboto Condensed";color:var(--a)}.lgc b{display:block;font:800 13px system-ui;margin-top:8px}.lgc small{font:500 11px/1.35 system-ui;color:#a9abb1}
+.grid{display:flex;flex-wrap:wrap;gap:20px;padding:0 16px 40px;align-items:flex-start}
+.card{width:350px;max-width:100%}.num{font:900 12px "Roboto Condensed";color:#ffc62b;letter-spacing:.08em}.ttl{font:800 16px system-ui;margin:2px 0}.ds{font-size:12px;color:#a9abb1;min-height:46px;margin-bottom:8px}
+.scr{width:350px;background:#0b0b0d;border-radius:24px;padding:12px 0 14px;box-shadow:0 0 0 1px #2a2b30;overflow:hidden}
+.stub{margin:0 12px 10px;height:46px;border-radius:14px;background:#141518;display:flex;align-items:center;padding:0 12px;font:900 11px "Roboto Condensed";letter-spacing:.08em;color:#8e9096}
+.panel{margin:0 12px 10px;padding:11px 12px;border-radius:16px;background:#141518}.panel.bare{background:none;padding:0}.ph{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;font:800 12px "Roboto Condensed";letter-spacing:.08em;text-transform:uppercase}.ph span{font:600 10.5px system-ui;color:#8e9096;letter-spacing:0;text-transform:none}
+.lgo{display:inline-grid;place-items:center}.lgo svg{width:100%;height:100%}
+</style></head><body>
+<h1>Stories panel · 20 ideas</h1><p class="i">Six stories (Daily Recap, Waiver Wire, Weekly Recap, Team of the Week, Team of the Month, Josh Lloyd's Notes), shown smaller than the classic rings, each in its own panel under Last Night. The ones marked "tap" are interactive here, so try them. Logos first, then the 20 panels.</p>
+<h2>Logo concepts</h2><p class="i">Drawn as simple line icons so they stay sharp at small sizes. Each one in 3 treatments: ring, filled badge, monogram. If you want custom art later, the brief per logo is under each card.</p>
+<div class="lgsheet" id="ls"></div>
+<h2>Panels</h2>
+<div class="grid" id="g"></div>
+<script src="logos.js"></script><script src="ideas.js"></script><script>
+const BR={recap:"Sunrise over a basketball. Last night's games, served in the morning.",waiver:"Lightning bolt. Fast pickups before anyone else sees them.",weekly:"Calendar with a big 7. A week in review.",totw:"Trophy cup. The week's best lineup.",totm:"Crown with a jewel. The month's elite, so a step above the trophy.",notes:"Notepad. An analyst's notebook. Could become a \"JL\" signature monogram."};
+const MONO={recap:"DR",waiver:"WW",weekly:"WR",totw:"W",totm:"M",notes:"JL"};
+document.getElementById("ls").innerHTML=ST.map(s=>`<div class="lgc" style="--a:${s.c};--b:${s.c2}"><div class="row"><span class="a" style="color:${s.c}">${LG[s.k]}</span><span class="b">${LG[s.k]}</span><span class="c">${MONO[s.k]}</span></div><b>${s.n}</b><small>${BR[s.k]}</small></div>`).join("");
+const st=document.createElement("style");st.textContent=I.map(x=>x.css).join("\n");document.head.appendChild(st);
+const g=document.getElementById("g");
+I.forEach((x,k)=>{const d=document.createElement("div");d.className="card";const tap=!!x.js;d.innerHTML=`<div class="num">#${k+1}${tap?" · TAP":""}</div><div class="ttl">${x.name}</div><div class="ds">${x.why}</div><div class="scr"><div class="stub">LAST NIGHT · Reed 16 · Wiggins 10</div><div class="panel">${[1,7,9,15,18,19].includes(k)?"":`<div class="ph">Stories <span>Thu, Oct 29</span></div>`}${x.html}</div><div class="stub">HOT ON WAIVERS</div></div>`;g.appendChild(d);if(x.js)try{x.js(d)}catch(e){console.error(e)}});
+</script></body></html>
