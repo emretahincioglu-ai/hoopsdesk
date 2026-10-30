@@ -1,0 +1,86 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Story Tile Customizer</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0b0d}body{margin:0;background:#0b0b0d;color:#fff;font-family:-apple-system,system-ui,sans-serif}
+.pv{position:sticky;top:0;z-index:5;background:#0b0b0d;padding:12px 12px 10px;border-bottom:1px solid #222}
+.pan{background:#202124;border-radius:14px;padding:12px}.row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}.row::-webkit-scrollbar{display:none}
+.t{position:relative;flex:none;overflow:hidden;cursor:pointer;transition:transform .15s}.t:active{transform:scale(.95)}.t b{position:relative;z-index:2;display:block;letter-spacing:.01em}.t small{position:relative;z-index:2;display:block;margin-top:4px;font:600 10px system-ui}.t i{position:absolute;z-index:2;right:9px;bottom:9px}.t i svg{width:100%;height:100%;display:block}.t em{position:absolute;z-index:3;left:10px;bottom:10px;font:900 8.5px system-ui;font-style:normal;letter-spacing:.06em;border-radius:5px;padding:2px 6px}
+.t .fx{position:absolute;inset:0;z-index:1;pointer-events:none}
+@keyframes sh{0%{transform:translateX(-120%)}60%,100%{transform:translateX(120%)}}@keyframes holo{50%{background-position:100% 50%}}@keyframes pulse{50%{opacity:.55}}
+.wrap{padding:12px 14px 60px;max-width:640px}h3{font:900 13px "Roboto Condensed";letter-spacing:.1em;text-transform:uppercase;color:#ffc62b;margin:18px 0 8px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}.seg button{border:0;background:#1b1c20;color:#c9cacf;font:700 12px system-ui;padding:7px 11px;border-radius:999px;cursor:pointer}.seg button.on{background:#ffc62b;color:#111}
+.sl{display:flex;align-items:center;gap:10px;margin:8px 0}.sl label{width:110px;font:600 12px system-ui;color:#c9cacf}.sl input{flex:1;accent-color:#ffc62b}.sl span{width:38px;text-align:right;font:700 12px system-ui;color:#8e9096}
+.tg{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid #1d1e22;font:600 13px system-ui}.tg input{width:42px;height:24px;accent-color:#ffc62b}
+.st{display:flex;gap:6px;margin-bottom:10px}.st button{flex:1;border:0;border-radius:10px;padding:8px 4px;font:800 11.5px system-ui;color:#fff;background:#1b1c20;cursor:pointer;border-bottom:3px solid var(--c)}.st button.on{background:#2a2b30}
+.cp{display:flex;align-items:center;gap:12px}.cp input[type=color]{width:64px;height:64px;border:0;border-radius:50%;padding:0;background:none;cursor:pointer}.cp input[type=color]::-webkit-color-swatch-wrapper{padding:0}.cp input[type=color]::-webkit-color-swatch{border:3px solid #2a2b30;border-radius:50%}
+.sw{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;margin-top:10px}.sw button{aspect-ratio:1;border-radius:50%;border:2px solid #0b0b0d;box-shadow:0 0 0 1px #2a2b30;cursor:pointer}.sw button.on{box-shadow:0 0 0 2px #fff}
+.hex{font:700 13px ui-monospace,monospace;background:#1b1c20;border:1px solid #2a2b30;color:#fff;border-radius:8px;padding:8px;width:100px}
+.out{margin-top:18px;background:#141518;border-radius:12px;padding:12px}.out textarea{width:100%;height:90px;background:#0b0b0d;color:#c9cacf;border:1px solid #222;border-radius:8px;font:11px ui-monospace,monospace;box-sizing:border-box;padding:8px}.out button{margin-top:8px;border:0;background:#ffc62b;color:#111;font:800 13px system-ui;padding:10px 14px;border-radius:10px;cursor:pointer;width:100%}.small{font:500 11.5px system-ui;color:#8e9096}
+</style></head><body>
+<div class="pv"><div class="pan"><div class="row" id="row"></div></div></div>
+<div class="wrap">
+<h3>Story color</h3><div class="st" id="stabs"></div>
+<div class="cp"><input type="color" id="pick"><div><input class="hex" id="hex"><div class="small" style="margin-top:6px">Tap the circle for the color wheel</div></div></div>
+<div class="sw" id="sw"></div>
+<h3>Finish</h3><div class="seg" id="finish"></div>
+<h3>Accent</h3><div class="seg" id="accent"></div>
+<div class="sl"><label>Accent thickness</label><input type="range" id="thick" min="1" max="6" step="0.5"><span></span></div>
+<h3>Background</h3><div class="seg" id="bgm"></div>
+<div class="sl"><label>Color tint</label><input type="range" id="tint" min="0" max="60"><span></span></div>
+<div class="sl"><label>Glow strength</label><input type="range" id="glow" min="0" max="30"><span></span></div>
+<h3>Text & icon</h3>
+<div class="seg" id="title"></div><div style="height:8px"></div><div class="seg" id="icon"></div><div style="height:8px"></div><div class="seg" id="font"></div>
+<div class="sl"><label>Title size</label><input type="range" id="tsize" min="13" max="24"><span></span></div>
+<div class="sl"><label>Icon size</label><input type="range" id="isize" min="18" max="48"><span></span></div>
+<h3>Shape</h3>
+<div class="sl"><label>Tile size</label><input type="range" id="size" min="80" max="130"><span></span></div>
+<div class="sl"><label>Corner radius</label><input type="range" id="rad" min="0" max="26"><span></span></div>
+<h3>Extras</h3>
+<div class="tg">Subtitle<input type="checkbox" id="sub"></div><div class="tg">NEW tag<input type="checkbox" id="new"></div><div class="tg">Shine animation<input type="checkbox" id="shine"></div><div class="tg">Pulse when new<input type="checkbox" id="pulse"></div>
+<div class="out"><b style="font:800 13px system-ui">Your settings</b><div class="small">Copy and paste this to me in chat and I'll build it exactly.</div><textarea id="json" readonly></textarea><button id="copy">Copy settings</button><button id="reset" style="background:#2a2b30;color:#fff">Reset to current app look</button></div>
+</div>
+<script>
+const LG={recap:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18a8 8 0 0 1 16 0"/><path d="M12 10v8M7.2 12.2 12 18M16.8 12.2 12 18"/><path d="M12 3v2.2M4.6 6.2l1.5 1.5M19.4 6.2l-1.5 1.5M2 18h20"/></svg>`,waiver:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 2.5 5 13.5h6l-1 8 8.5-11h-6z"/></svg>`,totw:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4.5a2.5 2.5 0 0 0 2.6 3.6M17 6h2.5a2.5 2.5 0 0 1-2.6 3.6M12 14v3.5M8.5 20.5h7M9.5 17.5h5"/></svg>`,totm:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8l4 4 4.5-6.5 4.5 6.5 4-4-1.8 10H5.3z"/><path d="M5.3 20.5h13.4"/><circle cx="12" cy="13.6" r="1.3" fill="currentColor"/></svg>`};
+const STS=[["recap","RECAP","Wed · 5 pages"],["waiver","WAIVERS","Free agents"],["totw","TOTW","This week"],["totm","TOTM","October"]];
+const DEF={colors:{recap:"#ff8a2b",waiver:"#3fe07a",totw:"#ffc62b",totm:"#c79bff"},finish:"flat",accent:"top",thick:2,bgm:"dark",tint:0,glow:0,title:"white",icon:"accent",font:"cond",tsize:19,isize:32,size:104,rad:9,sub:true,new:false,shine:false,pulse:false};
+let S;try{S=JSON.parse(localStorage.getItem("fp_tilecfg"))||null}catch(e){}S=Object.assign(JSON.parse(JSON.stringify(DEF)),S||{});let cur="recap";
+const SW=["#ff8a2b","#ff5a1f","#e0442f","#d4202c","#ff2d7a","#e07a5f","#ffc62b","#e7c873","#c9a227","#3fe07a","#2fbf71","#00b3a4","#5ff0e0","#4aa8ff","#2a6cf0","#6b5bff","#c79bff","#9b59d0","#ffffff","#d6d7da","#a9abb1","#6b6d73","#3a3b40","#7B5236","#8a6d2f","#3f6b57","#3e5577"];
+const mix=(a,p,b)=>`color-mix(in srgb,${a} ${p}%,${b})`;
+function tile([k,t,s]){const a=S.colors[k],th=S.thick;const base={dark:"#17181b",graphite:"#2b2c30",black:"#0b0b0d",paper:"#ecebe7",grey:"#c4c5c8"}[S.bgm];const light=S.bgm==="paper"||S.bgm==="grey";
+ let bg=S.tint?mix(a,S.tint,base):base,fx="",sh=[];
+ if(S.finish==="gradient")bg=`linear-gradient(150deg,${mix(a,Math.max(S.tint,35),base)},${base})`;
+ if(S.finish==="metallic")bg=`linear-gradient(135deg,${mix(a,22,"#3a3b40")} 0%,${mix(a,10,"#16171a")} 35%,${mix(a,30,"#5a5b60")} 52%,${mix(a,8,"#141518")} 70%,${mix(a,18,"#2d2e33")} 100%)`;
+ if(S.finish==="glass")bg=`linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.03)),${S.tint?mix(a,S.tint,"transparent"):"transparent"}`;
+ if(S.finish==="holo")fx=`<span class="fx" style="background:linear-gradient(115deg,#ff9ad555,#ffe08a55,#7dffcf55,#7ab8ff55,#d39bff55,#ff9ad555);background-size:300% 300%;animation:holo 4s ease-in-out infinite;mix-blend-mode:screen"></span>`;
+ if(S.finish==="neon")sh.push(`0 0 10px ${a}`,`inset 0 0 10px ${mix(a,60,"transparent")}`);
+ if(S.finish==="glass")sh.push("inset 0 1px 0 rgba(255,255,255,.18)");
+ if(S.glow)sh.push(`0 0 ${S.glow}px ${mix(a,70,"transparent")}`);
+ const ac={top:`inset 0 ${th}px 0 ${a}`,border:`inset 0 0 0 ${th}px ${a}`,left:`inset ${th+1}px 0 0 ${a}`,bottom:`inset 0 -${th}px 0 ${a}`,none:""}[S.accent];if(ac)sh.push(ac);
+ if(S.finish==="neon"&&S.accent==="none")sh.push(`inset 0 0 0 1.5px ${a}`);
+ if(!ac&&S.finish!=="neon")sh.push(light?"none":"inset 0 0 0 1px #2c2d31");
+ if(S.accent==="corner")fx+=`<span class="fx" style="background:linear-gradient(225deg,${a} 0 ${10+th*3}px,transparent ${10+th*3}px)"></span>`;
+ if(S.shine)fx+=`<span class="fx" style="background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.22) 50%,transparent 60%);animation:sh 3.2s ease-in-out infinite"></span>`;
+ const tc=S.title==="accent"?a:light?"#141414":"#f2f2f3",ic=S.icon==="accent"?a:S.icon==="white"?(light?"#141414":"#f2f2f3"):"#8e9096";
+ const ff=S.font==="cond"?`900 ${S.tsize}px/1 "Roboto Condensed",sans-serif`:S.font==="sys"?`800 ${S.tsize-2}px/1.05 system-ui`:`700 ${S.tsize}px/1 Georgia,serif`;
+ return `<div class="t" style="width:${S.size}px;height:${S.size}px;border-radius:${S.rad}px;padding:10px;box-sizing:border-box;background:${bg};box-shadow:${sh.filter(Boolean).join(",")||"none"};${S.pulse?"animation:pulse 2.4s ease-in-out infinite;":""}">${fx}<b style="font:${ff};color:${tc}">${t}</b>${S.sub?`<small style="color:${light?"#4a4b50":"#8e9096"}">${s}</small>`:""}<i style="width:${S.isize}px;height:${S.isize}px;color:${ic}">${LG[k]}</i>${S.new?`<em style="background:${a};color:#111">NEW</em>`:""}</div>`}
+const seg=(id,opts,key)=>{const el=document.getElementById(id);el.innerHTML=opts.map(([v,l])=>`<button data-v="${v}">${l}</button>`).join("");el.onclick=e=>{const b=e.target.closest("button");if(!b)return;S[key]=b.dataset.v;draw()}};
+seg("finish",[["flat","Flat"],["gradient","Gradient"],["metallic","Metallic"],["glass","Glass"],["neon","Neon"],["holo","Holographic"]],"finish");
+seg("accent",[["top","Top line"],["border","Full border"],["left","Left bar"],["bottom","Bottom bar"],["corner","Corner"],["none","None"]],"accent");
+seg("bgm",[["dark","App dark"],["graphite","Graphite"],["black","Black"],["paper","Paper white"],["grey","Light grey"]],"bgm");
+seg("title",[["white","Title white"],["accent","Title in color"]],"title");seg("icon",[["accent","Icon in color"],["white","Icon white"],["grey","Icon grey"]],"icon");seg("font",[["cond","Condensed"],["sys","System"],["serif","Serif"]],"font");
+["thick","tint","glow","tsize","isize","size","rad"].forEach(k=>{const el=document.getElementById(k);el.oninput=()=>{S[k]=+el.value;draw()}});
+["sub","new","shine","pulse"].forEach(k=>{const el=document.getElementById(k);el.onchange=()=>{S[k]=el.checked;draw()}});
+const pick=document.getElementById("pick"),hex=document.getElementById("hex");pick.oninput=()=>{S.colors[cur]=pick.value;draw()};hex.onchange=()=>{if(/^#?[0-9a-f]{6}$/i.test(hex.value)){S.colors[cur]=(hex.value[0]==="#"?"":"#")+hex.value;draw()}};
+document.getElementById("sw").innerHTML=SW.map(c=>`<button data-c="${c}" style="background:${c}"></button>`).join("");document.getElementById("sw").onclick=e=>{const b=e.target.closest("button");if(!b)return;S.colors[cur]=b.dataset.c;draw()};
+document.getElementById("copy").onclick=()=>{const t=document.getElementById("json");t.select();try{navigator.clipboard.writeText(t.value)}catch(e){document.execCommand("copy")}document.getElementById("copy").textContent="Copied ✓";setTimeout(()=>document.getElementById("copy").textContent="Copy settings",1500)};
+document.getElementById("reset").onclick=()=>{S=JSON.parse(JSON.stringify(DEF));draw()};
+function draw(){document.getElementById("row").innerHTML=STS.map(tile).join("");
+ document.getElementById("stabs").innerHTML=STS.map(([k,t])=>`<button data-k="${k}" class="${k===cur?"on":""}" style="--c:${S.colors[k]}">${t}</button>`).join("");
+ document.querySelectorAll("#stabs button").forEach(b=>b.onclick=()=>{cur=b.dataset.k;draw()});
+ pick.value=S.colors[cur];hex.value=S.colors[cur];document.querySelectorAll("#sw button").forEach(b=>b.classList.toggle("on",b.dataset.c.toLowerCase()===S.colors[cur].toLowerCase()));
+ [["finish","finish"],["accent","accent"],["bgm","bgm"],["title","title"],["icon","icon"],["font","font"]].forEach(([id,k])=>document.querySelectorAll("#"+id+" button").forEach(b=>b.classList.toggle("on",b.dataset.v===S[k])));
+ ["thick","tint","glow","tsize","isize","size","rad"].forEach(k=>{const el=document.getElementById(k);el.value=S[k];el.nextElementSibling.textContent=S[k]+(k==="tint"?"%":"")});
+ ["sub","new","shine","pulse"].forEach(k=>document.getElementById(k).checked=!!S[k]);
+ document.getElementById("json").value="TILES "+JSON.stringify(S);try{localStorage.setItem("fp_tilecfg",JSON.stringify(S))}catch(e){}}
+draw();
+</script></body></html>
