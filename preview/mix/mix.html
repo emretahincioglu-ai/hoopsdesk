@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mix · 10 palettes</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#141517;color:#fff;font-family:-apple-system,system-ui,sans-serif}h1{font:900 22px "Roboto Condensed";margin:18px 16px 2px}p.i{margin:0 16px 14px;color:#9a9ca2;font-size:13px}
+.grid{display:flex;flex-wrap:wrap;gap:22px;padding:0 16px 40px}.card{width:360px}.num{font:900 12px "Roboto Condensed";color:#9a9ca2;letter-spacing:.1em}.ttl{font:800 15px system-ui;margin:2px 0}.ds{font-size:12px;color:#9a9ca2;min-height:32px;margin-bottom:8px}
+.pan{background:#202124;border-radius:14px;padding:12px 12px 14px}.hd{display:flex;justify-content:space-between;margin-bottom:10px}.hd b{font:800 14px "Roboto Condensed";text-transform:uppercase;letter-spacing:.4px}.hd span{font:700 13px system-ui;color:#8e9096}
+.row{display:flex;gap:8px;overflow:hidden}.t{position:relative;flex:none;width:100px;height:100px;border-radius:9px;padding:10px;box-sizing:border-box;overflow:hidden}.t b{display:block;font:900 18px/1 "Roboto Condensed";letter-spacing:.01em}.t i{position:absolute;right:9px;bottom:9px;width:30px;height:30px}.t em{position:absolute;left:10px;bottom:10px;font:800 8.5px system-ui;font-style:normal;letter-spacing:.08em;border-radius:4px;padding:2px 5px}.t small{position:absolute;left:10px;top:32px;font:600 10px system-ui;opacity:.7}.t.seen{opacity:.45}
+svg{width:100%;height:100%;display:block}
+</style></head><body>
+<h1>Your Daily Mix · 10 professional palettes</h1><p class="i">Same album-cover layout, toned down. No rainbow gradients: solid surfaces, one accent at most, the kind of restraint ESPN, The Athletic and Apple Sports use. The 4th tile is watched (dimmed).</p>
+<div class="grid" id="g"></div>
+<script src="../stories/logos2.js"></script><script>
+const T=[["recap","RECAP","Wed · 5 pages",1],["waiver","WAIVERS","Free agents",1],["totw","TOTW","Week 1",1],["weekly","WEEKLY","Week 1 recap",0]];
+const AC={recap:"#e3b341",waiver:"#3fb27f",totw:"#e07a5f",weekly:"#5b8def"};
+const P=[
+["Graphite + accent bar","Dark tiles with a thin colored bar on top. Color only marks the story, it doesn't flood the tile.",(k,a)=>({bg:"#2b2c30",fg:"#f2f2f3",ic:"#8e9096",ex:`box-shadow:inset 0 3px 0 ${a}`,em:`background:${a};color:#111`})],
+["Paper white","Off-white tiles with black type, like Apple News or a printed program. Very clean on the dark app.",(k,a)=>({bg:"#ecebe7",fg:"#141414",ic:"#141414",em:"background:#141414;color:#fff"})],
+["Muted solids","One flat, desaturated color per story (ochre, sage, clay, slate). Still tells them apart, but calm.",(k,a)=>({bg:{recap:"#8a6d2f",waiver:"#3f6b57",totw:"#8a4f3f",weekly:"#3e5577"}[k],fg:"#f4f1ea",ic:"rgba(244,241,234,.75)",em:"background:rgba(0,0,0,.35);color:#fff"})],
+["Carbon, colored icon","Near-black tiles. Only the icon carries the story color.",(k,a)=>({bg:"#18191c",fg:"#fff",ic:a,ex:"box-shadow:inset 0 0 0 1px #2c2d31",em:"background:#fff;color:#111"})],
+["Two-tone block","Dark top with the title. The bottom third is a muted color block with the icon.",(k,a)=>({bg:`linear-gradient(#26272b 0 64%,${a}cc 64%)`,fg:"#fff",ic:"#111",em:"background:#fff;color:#111;bottom:auto;top:62px"})],
+["Hairline outline","See-through tiles with a 1px border. Unseen stories get a small colored dot. The most minimal.",(k,a)=>({bg:"transparent",fg:"#fff",ic:"#c9cacf",ex:"box-shadow:inset 0 0 0 1px #3a3b40",em:`background:none;color:${a};padding-left:12px;background-image:radial-gradient(circle,${a} 3px,transparent 3.5px);background-repeat:no-repeat;background-position:0 50%`})],
+["Editorial black + red","Black tiles with a red rule under the title in condensed caps. Feels like ESPN print.",(k,a)=>({bg:"#0f0f10",fg:"#fff",ic:"#6b6d73",ex:"box-shadow:inset 0 0 0 1px #26272b;background-image:linear-gradient(#d4202c,#d4202c);background-size:28px 3px;background-repeat:no-repeat;background-position:10px 32px",em:"background:#d4202c;color:#fff"})],
+["Slate monochrome","Cool slate tiles in one tone. Your fantasy team's color shows only on the NEW tag.",(k,a)=>({bg:"#3a4250",fg:"#eef1f5",ic:"#aab3c2",em:"background:#7B5236;color:#fff"})],
+["Black + gold","Premium: black tiles, a thin gold frame on unseen stories, gold type.",(k,a)=>({bg:"#111112",fg:"#e7c873",ic:"#8c7a45",ex:"box-shadow:inset 0 0 0 1.5px #b8963f",em:"background:#e7c873;color:#111"})],
+["Frosted dark glass","Slightly lighter than the panel, with a soft inner highlight. Close to native iOS.",(k,a)=>({bg:"linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.04))",fg:"#fff",ic:a,ex:"box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 0 1px rgba(255,255,255,.06)",em:"background:rgba(255,255,255,.9);color:#111"})]];
+document.getElementById("g").innerHTML=P.map(([n,d,f],i)=>`<div class="card"><div class="num">PALETTE ${i+1}</div><div class="ttl">${n}</div><div class="ds">${d}</div><div class="pan"><div class="hd"><b>Your daily mix</b><span>4</span></div><div class="row">${T.map(([k,t,s,nw])=>{const a=AC[k],o=f(k,a);return `<div class="t ${nw?"":"seen"}" style="background:${o.bg};color:${o.fg};${o.ex||""}"><b>${t}</b><small>${s}</small><i style="color:${o.ic}">${LG[k]}</i>${nw?`<em style="${o.em}">NEW</em>`:""}</div>`}).join("")}</div></div></div>`).join("");
+</script></body></html>
