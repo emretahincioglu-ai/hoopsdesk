@@ -1,0 +1,151 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Team of the Week 2</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;600;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@500;700;800&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap">
+<style>:root { --bg: #efece6; --surface: #ffffff; --surface2: #f6f3ee; --ink: #1a1916; --sub: #6f6a62; --mute: #9a958c; --sep: #e6e1d8; --acc: #e8551f; --acc-soft: #fde4d7; --acc-ink: #b2400f; --win: #2a8a52; --win-soft: #e0f1e6; --lose: #cc3d31; --lose-soft: #fbe4e0; --keep: #2f5fa8; --keep-soft: #e1e9f6; --lean: #a5790c; --wood1: #d9a46a; --wood2: #cf9a5e; --wood3: #dfae76; --card-wood: #fffaf2; --frame: #1c1b19; --f-disp: "Archivo","Arial Narrow",Arial,sans-serif; --f-ui: -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif; }:root { --sat: env(safe-area-inset-top,0px); }.tw-root { padding: 2px 0px 8px; }
+.tw-hd { display: flex; align-items: center; gap: 8px; padding: 6px 2px 10px; }
+.tw-t { flex: 1 1 0%; text-align: center; line-height: 1.2; }
+.tw-t b { display: block; font-size: 16px; font-weight: 800; color: rgb(255, 255, 255); letter-spacing: -0.01em; }
+.tw-t small { font-size: 11.5px; color: rgb(154, 156, 163); font-weight: 600; }
+.tw-ar { width: 32px; height: 32px; border-radius: 50%; border: 0px; background: rgb(38, 39, 45); color: rgb(230, 231, 234); font-size: 20px; line-height: 1; cursor: pointer; }
+.tw-ar[disabled] { opacity: 0.3; cursor: default; }
+.tw-sh { display: flex; align-items: baseline; gap: 8px; padding: 4px 2px 6px; border-bottom: 1px solid rgb(42, 43, 49); margin-bottom: 6px; }
+.tw-sh b { font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(255, 198, 43); }
+.tw-sh small { font-size: 11px; color: rgb(142, 144, 150); font-weight: 600; }
+#twov { position: fixed; inset: 0px; z-index: 2147482000; background: rgb(18, 19, 21); overflow-y: auto; padding: calc(10px + env(safe-area-inset-top,0px)) 14px calc(30px + env(safe-area-inset-bottom,0px)); transform: translateY(100%); transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1); font-family: system-ui, -apple-system, sans-serif; }
+#twov.open { transform: none; }
+.tw-ovh { display: flex; justify-content: flex-end; }
+.tw-ovh button { width: 34px; height: 34px; border-radius: 50%; border: 0px; background: rgb(38, 39, 45); color: rgb(230, 231, 234); font-size: 15px; cursor: pointer; }
+.twk-sec { margin: 4px 0px 16px; padding: 2px 0px; }
+.twm-court { position: relative; height: clamp(300px, 82vw, 360px); border-radius: 16px; background: radial-gradient(120% 80% at 50% 30%, rgb(43, 61, 49), rgb(23, 35, 28)); box-shadow: rgb(91, 63, 34) 0px 0px 0px 7px inset, rgb(58, 40, 20) 0px 0px 0px 9px inset, rgba(0, 0, 0, 0.5) 0px 0px 50px inset; overflow: hidden; }
+.twm-pos .twc { --w: min(23vw,92px); margin: 0px auto; }
+.twc { --w: 84px; --h: calc(var(--w)*1.42); position: relative; width: var(--w); height: var(--h); perspective: 800px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.twc-in { position: absolute; inset: 0px; transition: transform 0.6s cubic-bezier(0.3, 0.7, 0.2, 1); transform-style: preserve-3d; }
+.twc-f, .twc-b { position: absolute; inset: 0px; border-radius: 8px; overflow: hidden; backface-visibility: hidden; }
+.twc-f { box-shadow: rgba(0, 0, 0, 0.5) 0px 6px 14px; }
+.twc-f::after, .twc-b::after { content: ""; position: absolute; inset: 0px; border-radius: inherit; box-shadow: rgba(233, 194, 91, 0.65) 0px 0px 0px 1px inset; pointer-events: none; z-index: 6; }
+.twc i[class^="tq-"] { position: absolute; display: block; font-style: normal; }
+.tq-bg { inset: 0px; background: radial-gradient(90% 60% at 25% 15%, rgba(255, 220, 140, 0.07), transparent 60%), linear-gradient(rgb(11, 10, 9) 0%, rgb(19, 16, 11) 38%, rgb(28, 22, 10) 70%, rgb(70, 53, 20) 100%); }
+.tq-vn { inset: 0px; background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20142%22%20preserveAspectRatio%3D%22none%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22rgba%28233%2C194%2C91%2C.34%29%22%20stroke-linecap%3D%22round%22%20opacity%3D%221%22%3E%3Cpath%20d%3D%22M-10.0%2020.0%20Q9.1%2029.4%2023.4%2032.7%20Q37.6%2036.0%2043.9%2041.3%20Q50.1%2046.6%2057.2%2050.1%20Q64.3%2053.5%2078.3%2060.2%20Q92.3%2066.9%20101.2%2068.5%22%20stroke-width%3D%220.67%22/%3E%3Cpath%20d%3D%22M50.1%2046.6%20Q60.7%2055.4%2061.9%2061.0%22%20stroke-width%3D%220.43%22/%3E%3Cpath%20d%3D%22M64.3%2053.5%20Q75.7%2047.2%2084.3%2049.0%22%20stroke-width%3D%220.25%22/%3E%3Cpath%20d%3D%22M92.3%2066.9%20Q101.8%2070.2%20102.1%2071.0%22%20stroke-width%3D%220.48%22/%3E%3Cpath%20d%3D%22M-10.0%2075.0%20Q6.9%2070.8%2015.7%2064.7%20Q24.5%2058.5%2035.4%2053.6%20Q46.3%2048.6%2054.4%2051.5%20Q62.5%2054.5%2075.4%2050.6%20Q88.3%2046.8%2099.2%2043.4%22%20stroke-width%3D%221.25%22/%3E%3Cpath%20d%3D%22M6.9%2070.8%20Q1.6%2061.0%202.9%2056.3%22%20stroke-width%3D%220.27%22/%3E%3Cpath%20d%3D%22M6.9%2070.8%20Q-4.0%2083.2%20-12.2%2084.6%22%20stroke-width%3D%220.50%22/%3E%3Cpath%20d%3D%22M6.9%2070.8%20Q4.3%2081.4%2012.5%2095.0%22%20stroke-width%3D%220.46%22/%3E%3Cpath%20d%3D%22M20.0%20150.0%20Q31.1%20124.5%2035.3%20112.2%20Q39.6%2099.8%2047.1%2083.2%20Q54.6%2066.6%2057.9%2054.2%20Q61.3%2041.7%2075.7%2025.9%20Q90.1%2010.1%2092.6%200.0%22%20stroke-width%3D%221.09%22/%3E%3Cpath%20d%3D%22M31.1%20124.5%20Q37.8%20129.4%2052.2%20132.9%22%20stroke-width%3D%220.38%22/%3E%3Cpath%20d%3D%22M39.6%2099.8%20Q49.7%2097.4%2061.8%2097.7%22%20stroke-width%3D%220.37%22/%3E%3Cpath%20d%3D%22M39.6%2099.8%20Q57.2%20101.0%2063.4%2099.9%22%20stroke-width%3D%220.55%22/%3E%3C/g%3E%3C/svg%3E") center center / 100% 100% no-repeat; filter: blur(0.3px); mask-image: linear-gradient(rgb(0, 0, 0) 62%, transparent 80%); }
+.tq-vn::after { content: ""; position: absolute; inset: 0px; background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20142%22%20preserveAspectRatio%3D%22none%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22rgba%28255%2C233%2C170%2C.8%29%22%20stroke-linecap%3D%22round%22%20opacity%3D%221%22%3E%3Cpath%20d%3D%22M-10.0%2020.0%20Q9.1%2029.4%2023.4%2032.7%20Q37.6%2036.0%2043.9%2041.3%20Q50.1%2046.6%2057.2%2050.1%20Q64.3%2053.5%2078.3%2060.2%20Q92.3%2066.9%20101.2%2068.5%22%20stroke-width%3D%220.67%22/%3E%3Cpath%20d%3D%22M50.1%2046.6%20Q60.7%2055.4%2061.9%2061.0%22%20stroke-width%3D%220.43%22/%3E%3Cpath%20d%3D%22M64.3%2053.5%20Q75.7%2047.2%2084.3%2049.0%22%20stroke-width%3D%220.25%22/%3E%3Cpath%20d%3D%22M92.3%2066.9%20Q101.8%2070.2%20102.1%2071.0%22%20stroke-width%3D%220.48%22/%3E%3Cpath%20d%3D%22M-10.0%2075.0%20Q6.9%2070.8%2015.7%2064.7%20Q24.5%2058.5%2035.4%2053.6%20Q46.3%2048.6%2054.4%2051.5%20Q62.5%2054.5%2075.4%2050.6%20Q88.3%2046.8%2099.2%2043.4%22%20stroke-width%3D%221.25%22/%3E%3Cpath%20d%3D%22M6.9%2070.8%20Q1.6%2061.0%202.9%2056.3%22%20stroke-width%3D%220.27%22/%3E%3Cpath%20d%3D%22M6.9%2070.8%20Q-4.0%2083.2%20-12.2%2084.6%22%20stroke-width%3D%220.50%22/%3E%3Cpath%20d%3D%22M6.9%2070.8%20Q4.3%2081.4%2012.5%2095.0%22%20stroke-width%3D%220.46%22/%3E%3Cpath%20d%3D%22M20.0%20150.0%20Q31.1%20124.5%2035.3%20112.2%20Q39.6%2099.8%2047.1%2083.2%20Q54.6%2066.6%2057.9%2054.2%20Q61.3%2041.7%2075.7%2025.9%20Q90.1%2010.1%2092.6%200.0%22%20stroke-width%3D%221.09%22/%3E%3Cpath%20d%3D%22M31.1%20124.5%20Q37.8%20129.4%2052.2%20132.9%22%20stroke-width%3D%220.38%22/%3E%3Cpath%20d%3D%22M39.6%2099.8%20Q49.7%2097.4%2061.8%2097.7%22%20stroke-width%3D%220.37%22/%3E%3Cpath%20d%3D%22M39.6%2099.8%20Q57.2%20101.0%2063.4%2099.9%22%20stroke-width%3D%220.55%22/%3E%3C/g%3E%3C/svg%3E") center center / 100% 100% no-repeat; filter: drop-shadow(rgba(255, 210, 120, 0.8) 0px 0px 2px); mask: linear-gradient(transparent 35%, rgb(0, 0, 0) 50%, transparent 65%) 0px 0px / 100% 300% no-repeat; animation: 5.5s ease-in-out 0s infinite normal none running tqvein; }
+.tq-gl { top: 0px; bottom: 0px; width: 55%; left: 20%; background: linear-gradient(105deg, transparent, rgba(255, 220, 130, 0.08) 45%, transparent); transform: skewX(-8deg); }
+.tq-st { left: 0px; right: 0px; top: 0px; height: 4.5%; background: linear-gradient(180deg,var(--c1) 0 45%,rgba(255,255,255,.85) 45% 60%,var(--c2) 60%); z-index: 2; }
+.tq-ph { position: absolute; left: 14%; right: 8%; top: 7%; height: 58%; overflow: hidden; z-index: 1; }
+.tq-ph em { position: absolute; inset: 0px; display: grid; place-items: center; font-variant-ligatures: ; font-variant-caps: ; font-variant-numeric: ; font-variant-east-asian: ; font-variant-alternates: ; font-variant-position: ; font-variant-emoji: ; font-weight: ; font-stretch: ; font-size: ; line-height: ; font-family: ; font-optical-sizing: ; font-size-adjust: ; font-kerning: ; font-feature-settings: ; font-variation-settings: ; font-style: normal; color: rgba(233, 194, 91, 0.3); }
+.tq-ph img { position: absolute; inset: 0px; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.tq-ov { position: absolute; z-index: 3; top: 8%; left: 5%; width: calc(var(--w)*.28); height: calc(var(--w)*.28); border-radius: 50%; background: rgb(255, 255, 255); border: 2px solid var(--c1); display: grid; place-items: center; }
+.tq-ov span { font-style: ; font-variant-ligatures: ; font-variant-caps: ; font-variant-numeric: ; font-variant-east-asian: ; font-variant-alternates: ; font-variant-position: ; font-variant-emoji: ; font-weight: ; font-stretch: ; font-size: ; font-family: ; font-optical-sizing: ; font-size-adjust: ; font-kerning: ; font-feature-settings: ; font-variation-settings: ; color: var(--c1); line-height: 1; }
+.tq-po { position: absolute; z-index: 3; top: calc(8% + var(--w)*.3); left: 5%; width: calc(var(--w)*.28); text-align: center; font: 900 calc(var(--w)*.075) system-ui; color: rgb(233, 194, 91); }
+.tq-lg { position: absolute; z-index: 3; top: calc(8% + var(--w)*.4); left: calc(5% + var(--w)*.065); width: calc(var(--w)*.15); height: calc(var(--w)*.15); }
+.tq-lg i { position: absolute; inset: 0px; border-radius: 50%; background: var(--c1); color: rgb(255, 255, 255); display: grid; place-items: center; font-variant-ligatures: ; font-variant-caps: ; font-variant-numeric: ; font-variant-east-asian: ; font-variant-alternates: ; font-variant-position: ; font-variant-emoji: ; font-weight: ; font-stretch: ; font-size: ; line-height: ; font-family: ; font-optical-sizing: ; font-size-adjust: ; font-kerning: ; font-feature-settings: ; font-variation-settings: ; font-style: normal; box-shadow: 0 0 0 1px var(--c2); }
+.tq-lg img { position: relative; width: 100%; height: 100%; object-fit: contain; }
+.tq-rc { position: absolute; z-index: 4; top: 5.5%; right: 3%; display: flex; flex-direction: column; align-items: flex-end; gap: calc(var(--w)*.015); }
+.tq-tw { font: 900 calc(var(--w)*.042) system-ui; color: rgb(233, 194, 91); letter-spacing: 0.08em; border: 1px solid rgba(233, 194, 91, 0.6); border-radius: 2px; padding: calc(var(--w)*.006) calc(var(--w)*.016); background: rgba(0, 0, 0, 0.45); white-space: nowrap; }
+.tq-pw { font-variant-ligatures: ; font-variant-caps: ; font-variant-numeric: ; font-variant-east-asian: ; font-variant-alternates: ; font-variant-position: ; font-variant-emoji: ; font-weight: ; font-stretch: ; font-size: ; line-height: ; font-family: ; font-optical-sizing: ; font-size-adjust: ; font-kerning: ; font-feature-settings: ; font-variation-settings: ; font-style: normal; background: rgb(233, 194, 91); color: rgb(17, 17, 17); border-radius: 2px; padding: calc(var(--w)*.005) calc(var(--w)*.016); }
+.tq-nb { position: absolute; z-index: 3; left: -2%; right: -2%; top: 67%; height: 11%; clip-path: polygon(0px 0px, 100% 0px, 96% 50%, 100% 100%, 0px 100%, 4% 50%); background: linear-gradient(180deg,color-mix(in srgb,var(--c1) 80%,#fff),var(--c1) 50%,color-mix(in srgb,var(--c1) 70%,#000)); display: grid; place-items: center; font: 900 calc(var(--w)*.125) "Roboto Condensed",system-ui; color: rgb(255, 255, 255); letter-spacing: 0.03em; white-space: nowrap; overflow: hidden; box-shadow: rgba(255, 255, 255, 0.15) 0px 0px 0px 1px; }
+.tq-s6 { position: absolute; z-index: 3; left: 4%; right: 4%; top: 82%; display: grid; grid-template-columns: repeat(6, 1fr); }
+.tq-s6 span { text-align: center; line-height: 1.05; }
+.tq-s6 u { display: block; text-decoration: none; font: 800 calc(var(--w)*.05) "Roboto Condensed",system-ui; color: rgb(233, 194, 91); letter-spacing: 0.03em; }
+.tq-s6 b { display: block; font: 800 calc(var(--w)*.075) "Roboto Condensed",system-ui; color: rgb(243, 227, 176); }
+.twc-row { display: grid; grid-template-columns: repeat(3, minmax(0px, 1fr)); gap: 10px 8px; justify-items: center; }
+.twc-row .twc { --w: min(27vw,104px); margin: 0px auto; }
+.twm-court svg { position: absolute; inset: 0px; width: 100%; height: 100%; fill: none; stroke: rgba(201, 154, 58, 0.55); stroke-width: 2; }
+.twm-pos { position: absolute; transform: translateX(-50%); width: 31%; }
+.tw-ft { font-size: 10.5px; color: rgb(125, 127, 134); padding: 4px 2px 0px; line-height: 1.4; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+@media (prefers-reduced-motion: reduce){* { transition: none !important; animation: auto ease 0s 1 normal none running none !important; }}
+@keyframes tqvein { 
+  0% { mask-position: 0px -20%; }
+  100% { mask-position: 0px 120%; }
+}
+html,body{margin:0;background:rgb(18,19,21);color:#f4f4f5;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;-webkit-text-size-adjust:100%}
+.tw-host{max-width:430px;margin:0 auto;padding:10px 14px 16px;box-sizing:border-box}.twc{cursor:default!important}
+</style></head><body><div class="tw-host"><div class="tw-root"><div class="tw-hd"><button class="tw-ar" style="visibility:hidden" data-twk="1" aria-label="Previous week">‹</button><div class="tw-t"><b>Team of the Week</b><small>Week 2 · Oct 26 – Nov 1</small></div><button class="tw-ar" style="visibility:hidden" data-twk="3" disabled="" aria-label="Next week">›</button></div><div class="twk-sec"><div class="tw-sh"><b>Starting Five</b></div><div class="twm-court"><svg viewBox="0 0 400 380" preserveAspectRatio="none" aria-hidden="true"><rect x="2" y="2" width="396" height="376" rx="14"></rect><line x1="172" y1="18" x2="228" y2="18" stroke-width="4"></line><circle cx="200" cy="32" r="9"></circle><path d="M140 2v150h120V2"></path><path d="M140 152a60 60 0 0 0 120 0"></path><path d="M140 152a60 60 0 0 1 120 0" stroke-dasharray="7 7"></path><path d="M26 2v90a174 174 0 0 0 348 0V2"></path><path d="M140 378a60 60 0 0 1 120 0"></path></svg><div class="twm-pos" style="left:50%;top:3%"><div class="twc mvp" style="--c1:#000000;--c2:#C4CED4" role="button" data-tw="Victor Wembanyama" aria-label="Victor Wembanyama: open profile"><div class="twc-in">
+  <div class="twc-f"><i class="tq-bg"></i><i class="tq-vn"></i><i class="tq-gl"></i><i class="tq-st"></i>
+   <span class="tq-ph"><em>VW</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/5104157.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <b class="tq-ov"><span>99</span></b><small class="tq-po">C</small><span class="tq-lg"><i>SA</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/sa.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <div class="tq-rc"><span class="tq-tw">TOTW 2</span><em class="tq-pw">POTW</em></div>
+   <span class="tq-nb" style="font-size:calc(var(--w)*.095)">WEMBANYAMA</span><div class="tq-s6"><span><u>PTS</u><b>36</b></span><span><u>REB</u><b>10</b></span><span><u>AST</u><b>3.7</b></span><span><u>STL</u><b>2</b></span><span><u>BLK</u><b>4.3</b></span><span><u>3PM</u><b>2.3</b></span></div></div>
+  </div></div></div><div class="twm-pos" style="left:19%;top:3%"><div class="twc" style="--c1:#00538C;--c2:#002B5E" role="button" data-tw="Cooper Flagg" aria-label="Cooper Flagg: open profile"><div class="twc-in">
+  <div class="twc-f"><i class="tq-bg"></i><i class="tq-vn"></i><i class="tq-gl"></i><i class="tq-st"></i>
+   <span class="tq-ph"><em>CF</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/5041939.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <b class="tq-ov"><span>90</span></b><small class="tq-po">F</small><span class="tq-lg"><i>DAL</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/dal.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <div class="tq-rc"><span class="tq-tw">TOTW 2</span></div>
+   <span class="tq-nb">FLAGG</span><div class="tq-s6"><span><u>PTS</u><b>29</b></span><span><u>REB</u><b>6.7</b></span><span><u>AST</u><b>8.3</b></span><span><u>STL</u><b>2.3</b></span><span><u>BLK</u><b>1.3</b></span><span><u>3PM</u><b>1.3</b></span></div></div>
+  </div></div></div><div class="twm-pos" style="left:81%;top:3%"><div class="twc" style="--c1:#007A33;--c2:#BA9653" role="button" data-tw="Jayson Tatum" aria-label="Jayson Tatum: open profile"><div class="twc-in">
+  <div class="twc-f"><i class="tq-bg"></i><i class="tq-vn"></i><i class="tq-gl"></i><i class="tq-st"></i>
+   <span class="tq-ph"><em>JT</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4065648.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <b class="tq-ov"><span>93</span></b><small class="tq-po">F</small><span class="tq-lg"><i>BOS</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/bos.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <div class="tq-rc"><span class="tq-tw">TOTW 2</span></div>
+   <span class="tq-nb">TATUM</span><div class="tq-s6"><span><u>PTS</u><b>30</b></span><span><u>REB</u><b>5.8</b></span><span><u>AST</u><b>7</b></span><span><u>STL</u><b>0.3</b></span><span><u>BLK</u><b>0.8</b></span><span><u>3PM</u><b>1.8</b></span></div></div>
+  </div></div></div><div class="twm-pos" style="left:27%;top:50%"><div class="twc" style="--c1:#552583;--c2:#FDB927" role="button" data-tw="Luka Doncic" aria-label="Luka Doncic: open profile"><div class="twc-in">
+  <div class="twc-f"><i class="tq-bg"></i><i class="tq-vn"></i><i class="tq-gl"></i><i class="tq-st"></i>
+   <span class="tq-ph"><em>LD</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3945274.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <b class="tq-ov"><span>97</span></b><small class="tq-po">G</small><span class="tq-lg"><i>LAL</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/lal.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <div class="tq-rc"><span class="tq-tw">TOTW 2</span></div>
+   <span class="tq-nb">DONCIC</span><div class="tq-s6"><span><u>PTS</u><b>41</b></span><span><u>REB</u><b>9</b></span><span><u>AST</u><b>6.7</b></span><span><u>STL</u><b>2</b></span><span><u>BLK</u><b>1.3</b></span><span><u>3PM</u><b>6.7</b></span></div></div>
+  </div></div></div><div class="twm-pos" style="left:73%;top:50%"><div class="twc" style="--c1:#1D428A;--c2:#FFC72C" role="button" data-tw="Stephen Curry" aria-label="Stephen Curry: open profile"><div class="twc-in">
+  <div class="twc-f"><i class="tq-bg"></i><i class="tq-vn"></i><i class="tq-gl"></i><i class="tq-st"></i>
+   <span class="tq-ph"><em>SC</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3975.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <b class="tq-ov"><span>92</span></b><small class="tq-po">G</small><span class="tq-lg"><i>GS</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/gs.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <div class="tq-rc"><span class="tq-tw">TOTW 2</span></div>
+   <span class="tq-nb">CURRY</span><div class="tq-s6"><span><u>PTS</u><b>33</b></span><span><u>REB</u><b>5</b></span><span><u>AST</u><b>5</b></span><span><u>STL</u><b>1.7</b></span><span><u>BLK</u><b>0.3</b></span><span><u>3PM</u><b>5.7</b></span></div></div>
+  </div></div></div></div></div><div class="twk-sec"><div class="tw-sh"><b>Bench</b><small>next best at each spot</small></div><div class="twc-row"><div class="twc" style="--c1:#1D1160;--c2:#00788C" role="button" data-tw="Brandon Miller" aria-label="Brandon Miller: open profile"><div class="twc-in">
+  <div class="twc-f"><i class="tq-bg"></i><i class="tq-vn"></i><i class="tq-gl"></i><i class="tq-st"></i>
+   <span class="tq-ph"><em>BM</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4433287.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <b class="tq-ov"><span>88</span></b><small class="tq-po">G</small><span class="tq-lg"><i>CHA</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/cha.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <div class="tq-rc"><span class="tq-tw">TOTW 2</span></div>
+   <span class="tq-nb">MILLER</span><div class="tq-s6"><span><u>PTS</u><b>28</b></span><span><u>REB</u><b>7.5</b></span><span><u>AST</u><b>2.8</b></span><span><u>STL</u><b>2</b></span><span><u>BLK</u><b>1</b></span><span><u>3PM</u><b>4</b></span></div></div>
+  </div></div><div class="twc" style="--c1:#0E2240;--c2:#FEC524" role="button" data-tw="Jamal Murray" aria-label="Jamal Murray: open profile"><div class="twc-in">
+  <div class="twc-f"><i class="tq-bg"></i><i class="tq-vn"></i><i class="tq-gl"></i><i class="tq-st"></i>
+   <span class="tq-ph"><em>JM</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3936299.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <b class="tq-ov"><span>90</span></b><small class="tq-po">G</small><span class="tq-lg"><i>DEN</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/den.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <div class="tq-rc"><span class="tq-tw">TOTW 2</span></div>
+   <span class="tq-nb">MURRAY</span><div class="tq-s6"><span><u>PTS</u><b>27</b></span><span><u>REB</u><b>5</b></span><span><u>AST</u><b>6.3</b></span><span><u>STL</u><b>1.3</b></span><span><u>BLK</u><b>1</b></span><span><u>3PM</u><b>5</b></span></div></div>
+  </div></div><div class="twc" style="--c1:#007A33;--c2:#BA9653" role="button" data-tw="Paul George" aria-label="Paul George: open profile"><div class="twc-in">
+  <div class="twc-f"><i class="tq-bg"></i><i class="tq-vn"></i><i class="tq-gl"></i><i class="tq-st"></i>
+   <span class="tq-ph"><em>PG</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4251.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <b class="tq-ov"><span>90</span></b><small class="tq-po">F</small><span class="tq-lg"><i>BOS</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/bos.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <div class="tq-rc"><span class="tq-tw">TOTW 2</span></div>
+   <span class="tq-nb">GEORGE</span><div class="tq-s6"><span><u>PTS</u><b>18</b></span><span><u>REB</u><b>6</b></span><span><u>AST</u><b>6.3</b></span><span><u>STL</u><b>1.8</b></span><span><u>BLK</u><b>0.5</b></span><span><u>3PM</u><b>2.3</b></span></div></div>
+  </div></div><div class="twc" style="--c1:#CE1141;--c2:#000000" role="button" data-tw="Kevin Durant" aria-label="Kevin Durant: open profile"><div class="twc-in">
+  <div class="twc-f"><i class="tq-bg"></i><i class="tq-vn"></i><i class="tq-gl"></i><i class="tq-st"></i>
+   <span class="tq-ph"><em>KD</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3202.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <b class="tq-ov"><span>90</span></b><small class="tq-po">F</small><span class="tq-lg"><i>HOU</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/hou.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <div class="tq-rc"><span class="tq-tw">TOTW 2</span></div>
+   <span class="tq-nb">DURANT</span><div class="tq-s6"><span><u>PTS</u><b>21</b></span><span><u>REB</u><b>5.5</b></span><span><u>AST</u><b>3</b></span><span><u>STL</u><b>0.5</b></span><span><u>BLK</u><b>2.5</b></span><span><u>3PM</u><b>1</b></span></div></div>
+  </div></div><div class="twc" style="--c1:#CE1141;--c2:#000000" role="button" data-tw="Jabari Smith Jr." aria-label="Jabari Smith Jr.: open profile"><div class="twc-in">
+  <div class="twc-f"><i class="tq-bg"></i><i class="tq-vn"></i><i class="tq-gl"></i><i class="tq-st"></i>
+   <span class="tq-ph"><em>JS</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4432639.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <b class="tq-ov"><span>79</span></b><small class="tq-po">C</small><span class="tq-lg"><i>HOU</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/hou.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <div class="tq-rc"><span class="tq-tw">TOTW 2</span></div>
+   <span class="tq-nb">SMITH</span><div class="tq-s6"><span><u>PTS</u><b>21</b></span><span><u>REB</u><b>6.5</b></span><span><u>AST</u><b>3.5</b></span><span><u>STL</u><b>0.8</b></span><span><u>BLK</u><b>0.8</b></span><span><u>3PM</u><b>3.5</b></span></div></div>
+  </div></div></div></div><div class="twk-sec"><div class="tw-sh"><b>Reserves</b><small>5 best of the rest, any position</small></div><div class="twc-row"><div class="twc" style="--c1:#860038;--c2:#FDBB30" role="button" data-tw="Jarrett Allen" aria-label="Jarrett Allen: open profile"><div class="twc-in">
+  <div class="twc-f"><i class="tq-bg"></i><i class="tq-vn"></i><i class="tq-gl"></i><i class="tq-st"></i>
+   <span class="tq-ph"><em>JA</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4066328.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <b class="tq-ov"><span>80</span></b><small class="tq-po">C</small><span class="tq-lg"><i>CLE</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/cle.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <div class="tq-rc"><span class="tq-tw">TOTW 2</span></div>
+   <span class="tq-nb">ALLEN</span><div class="tq-s6"><span><u>PTS</u><b>14</b></span><span><u>REB</u><b>10</b></span><span><u>AST</u><b>2.3</b></span><span><u>STL</u><b>0.8</b></span><span><u>BLK</u><b>1.8</b></span><span><u>3PM</u><b>0.3</b></span></div></div>
+  </div></div><div class="twc" style="--c1:#0C2340;--c2:#78BE20" role="button" data-tw="Ayo Dosunmu" aria-label="Ayo Dosunmu: open profile"><div class="twc-in">
+  <div class="twc-f"><i class="tq-bg"></i><i class="tq-vn"></i><i class="tq-gl"></i><i class="tq-st"></i>
+   <span class="tq-ph"><em>AD</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4397002.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <b class="tq-ov"><span>78</span></b><small class="tq-po">G</small><span class="tq-lg"><i>MIN</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/min.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <div class="tq-rc"><span class="tq-tw">TOTW 2</span></div>
+   <span class="tq-nb">DOSUNMU</span><div class="tq-s6"><span><u>PTS</u><b>17</b></span><span><u>REB</u><b>5</b></span><span><u>AST</u><b>2.3</b></span><span><u>STL</u><b>2</b></span><span><u>BLK</u><b>0.5</b></span><span><u>3PM</u><b>2.3</b></span></div></div>
+  </div></div><div class="twc" style="--c1:#552583;--c2:#FDB927" role="button" data-tw="Walker Kessler" aria-label="Walker Kessler: open profile"><div class="twc-in">
+  <div class="twc-f"><i class="tq-bg"></i><i class="tq-vn"></i><i class="tq-gl"></i><i class="tq-st"></i>
+   <span class="tq-ph"><em>WK</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/4433136.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <b class="tq-ov"><span>85</span></b><small class="tq-po">C</small><span class="tq-lg"><i>LAL</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/lal.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <div class="tq-rc"><span class="tq-tw">TOTW 2</span></div>
+   <span class="tq-nb">KESSLER</span><div class="tq-s6"><span><u>PTS</u><b>13</b></span><span><u>REB</u><b>11</b></span><span><u>AST</u><b>1</b></span><span><u>STL</u><b>1</b></span><span><u>BLK</u><b>2.8</b></span><span><u>3PM</u><b>0</b></span></div></div>
+  </div></div><div class="twc" style="--c1:#00538C;--c2:#002B5E" role="button" data-tw="Kyrie Irving" aria-label="Kyrie Irving: open profile"><div class="twc-in">
+  <div class="twc-f"><i class="tq-bg"></i><i class="tq-vn"></i><i class="tq-gl"></i><i class="tq-st"></i>
+   <span class="tq-ph"><em>KI</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/6442.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <b class="tq-ov"><span>91</span></b><small class="tq-po">G</small><span class="tq-lg"><i>DAL</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/dal.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <div class="tq-rc"><span class="tq-tw">TOTW 2</span></div>
+   <span class="tq-nb">IRVING</span><div class="tq-s6"><span><u>PTS</u><b>23</b></span><span><u>REB</u><b>4</b></span><span><u>AST</u><b>6.3</b></span><span><u>STL</u><b>1.3</b></span><span><u>BLK</u><b>0.7</b></span><span><u>3PM</u><b>3.3</b></span></div></div>
+  </div></div><div class="twc" style="--c1:#860038;--c2:#FDBB30" role="button" data-tw="Donovan Mitchell" aria-label="Donovan Mitchell: open profile"><div class="twc-in">
+  <div class="twc-f"><i class="tq-bg"></i><i class="tq-vn"></i><i class="tq-gl"></i><i class="tq-st"></i>
+   <span class="tq-ph"><em>DM</em><img src="https://a.espncdn.com/i/headshots/nba/players/full/3908809.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <b class="tq-ov"><span>90</span></b><small class="tq-po">G</small><span class="tq-lg"><i>CLE</i><img src="https://a.espncdn.com/i/teamlogos/nba/500/cle.png" alt="" loading="lazy" onerror="this.remove()"></span>
+   <div class="tq-rc"><span class="tq-tw">TOTW 2</span></div>
+   <span class="tq-nb">MITCHELL</span><div class="tq-s6"><span><u>PTS</u><b>21</b></span><span><u>REB</u><b>4.3</b></span><span><u>AST</u><b>5</b></span><span><u>STL</u><b>1.3</b></span><span><u>BLK</u><b>0.3</b></span><span><u>3PM</u><b>2.5</b></span></div></div>
+  </div></div></div></div><p class="tw-ft">Per-game lines. Ranked by 9-cat per-game value (FG%/FT% weighted by volume, min. 2 games and 15 min). 49 games.</p></div></div></body></html>
