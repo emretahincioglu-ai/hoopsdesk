@@ -34,17 +34,18 @@ p.s{margin:0 16px 22px;text-align:center;color:#9a9ca2;font-size:13px}
 
 /* ---------- A2: gold foil, photo right, logo column ---------- */
 .A2 .foil{position:absolute;inset:0;background:
+ radial-gradient(70% 38% at 100% 0%,rgba(10,8,5,.92) 0%,rgba(10,8,5,.6) 45%,rgba(10,8,5,0) 100%),
  linear-gradient(90deg,#0a0805 0%,rgba(10,8,5,.94) 22%,rgba(10,8,5,.7) 38%,rgba(10,8,5,.25) 56%,rgba(10,8,5,0) 72%),
  linear-gradient(115deg,rgba(255,255,255,0) 30%,rgba(255,250,225,.55) 42%,rgba(255,255,255,0) 54%),
  radial-gradient(120% 90% at 85% 10%,#fff1b8 0%,#f0cd6a 28%,#d4a53e 55%,#a87a22 80%,#7a5512 100%)}
 .A2 .foil:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(100deg,rgba(255,255,255,0) 0 3px,rgba(255,255,255,.07) 3px 4px),radial-gradient(70% 50% at 20% 100%,rgba(90,60,10,.35),transparent 70%)}
 .A2 .ph{position:absolute;right:0;left:58px;top:18px;height:244px;display:flex;justify-content:flex-end;align-items:flex-end;overflow:hidden}
 .A2 .ph img{width:300px;max-width:none;margin-right:-62px;filter:drop-shadow(-6px 10px 14px rgba(70,40,0,.5))}
-.A2 .col{position:absolute;left:14px;top:96px;z-index:3;display:grid;gap:10px;justify-items:center;width:66px}
-.A2 .col .nba{width:42px;height:42px;border-radius:50%;background:#fff;padding:5px;box-shadow:0 0 0 2px #e8c45c,0 3px 6px rgba(0,0,0,.35)}
+.A2 .col{position:absolute;left:14px;top:94px;z-index:3;display:grid;gap:12px;justify-items:center;width:66px}
+.A2 .col .nba{width:58px;height:58px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6))}
 .A2 .col .nba img{width:100%;height:100%;object-fit:contain}
-.A2 .col .fan{width:42px;height:42px;border-radius:9px;overflow:hidden;box-shadow:0 0 0 2px #e8c45c,0 3px 6px rgba(0,0,0,.35);background:#5b2a86}
-.A2 .col .fan img{width:100%;height:100%;object-fit:cover}
+.A2 .col .flag{width:44px;height:30px;border-radius:3px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 3px 6px rgba(0,0,0,.5)}
+.A2 .col .flag img{width:100%;height:100%;object-fit:cover;display:block}
 .A2 .ribbon{top:22px}.A2 .rt{background:linear-gradient(160deg,#f6d77c,#b9862b)}.A2 .rt b{color:#120e06}.A2 .rt small{color:#120e06}
 /* ---------- B: BLACK CHROME ---------- */
 .B{background:#0a0b0d;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.55),0 0 0 2px #2c2f35,0 22px 40px rgba(0,0,0,.65)}
@@ -86,12 +87,12 @@ p.s{margin:0 16px 22px;text-align:center;color:#9a9ca2;font-size:13px}
 <p class="s">Same player, same data. Pick one (or mix parts) and it becomes the card for all 15 TOTW spots.</p>
 <div class="grid" id="g"></div>
 <script>
-const P={n:"WEMBANYAMA",pos:"C",ovr:99,lg:"https://a.espncdn.com/i/teamlogos/nba/500/sa.png",img:"https://a.espncdn.com/i/headshots/nba/players/full/5104157.png",own:"TRALALA CAFE CROWN",fl:"https://10haber-net.cdn.ampproject.org/i/s/10haber.net/wp-content/uploads/2024/09/Ergin-Ataman.jpg",sub:"PLAYER OF THE WEEK · 3 G",
+const P={n:"WEMBANYAMA",pos:"C",ovr:99,lg:"https://a.espncdn.com/i/teamlogos/nba/500/sa.png",lgd:"https://a.espncdn.com/i/teamlogos/nba/500-dark/sa.png",flag:"https://flagcdn.com/w160/fr.png",img:"https://a.espncdn.com/i/headshots/nba/players/full/5104157.png",own:"TRALALA CAFE CROWN",fl:"https://10haber-net.cdn.ampproject.org/i/s/10haber.net/wp-content/uploads/2024/09/Ergin-Ataman.jpg",sub:"PLAYER OF THE WEEK · 3 G",
 S:[["36.0","PTS",1],["10.3","REB"],["3.7","AST"],["4.3","BLK",1],["2.0","STL"],["2.3","3PM"],[".563","FG%",1],[".786","FT%"],["1.0","TO"]]};
 const st=`<div class="stats">${P.S.map(([v,k,h])=>`<div class="st${h?" k":""}"><b>${v}</b><small>${k}</small></div>`).join("")}</div>`;
 const ph=`<div class="ph"><img src="${P.img}" alt=""></div>`;
 const A=`<div class="card A"><div class="foil"></div>${ph}<div class="rt"><div><b>${P.ovr}</b><small>${P.pos}</small></div></div><div class="lg"><img src="${P.lg}"></div><div class="ribbon">TOTW 2</div><div class="low"><div class="nm"><b>${P.n}</b><small>${P.sub}</small></div>${st}<div class="own">${P.own}</div></div></div>`;
-const A2=`<div class="card A A2"><div class="foil"></div><div class="ph"><img src="${P.img}" alt=""></div><div class="rt"><div><b>${P.ovr}</b><small>${P.pos}</small></div></div><div class="col"><div class="nba"><img src="${P.lg}"></div><div class="fan"><img src="${P.fl}" onerror="this.remove()"></div></div><div class="ribbon">TOTW 2</div><div class="low"><div class="nm"><b>${P.n}</b><small>${P.sub}</small></div>${st}<div class="own">${P.own}</div></div></div>`;
+const A2=`<div class="card A A2"><div class="foil"></div><div class="ph"><img src="${P.img}" alt=""></div><div class="rt"><div><b>${P.ovr}</b><small>${P.pos}</small></div></div><div class="col"><div class="nba"><img src="${P.lgd}"></div><div class="flag"><img src="${P.flag}" alt="France"></div></div><div class="ribbon">TOTW 2</div><div class="low"><div class="nm"><b>${P.n}</b><small>${P.sub}</small></div>${st}<div class="own">${P.own}</div></div></div>`;
 const B=`<div class="card B"><div class="stripe"></div><div class="big">${P.ovr}</div>${ph}<div class="top"><b>${P.ovr}</b><small>${P.pos}</small></div><div class="lg"><img src="${P.lg}"></div><div class="tag">TOTW 2</div><div class="low"><div class="nm"><b>${P.n}</b><small>POTW · 3 G</small></div>${st}<div class="own">${P.own}</div></div></div>`;
 const C=`<div class="card C"><div class="bg"></div><div class="rays"></div>${ph}<div class="medal"><div><div><b>${P.ovr}</b><small>${P.pos}</small></div></div></div><div class="tm"><img src="${P.lg}"><span>TOTW 2</span></div><div class="band"><b>${P.n}</b></div><div class="low">${st}<div class="own">${P.own}</div></div></div>`;
 document.getElementById("g").innerHTML=[["A2","Gold foil · new",A2],["A","Gold foil",A],["B","Black chrome",B],["C","Spotlight",C]].map(([k,t,h])=>`<div class="opt"><div class="lab"><b>${k}</b> · ${t}</div>${h}</div>`).join("");
