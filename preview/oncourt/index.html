@@ -1,0 +1,108 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>On Court and Live Layout Options</title>
+<style>
+:root{--bg:#0b0b0d;--card:#111214;--line:#1d1e22;--fg:#f2f3f5;--sub:#8e9096;--y:#ffc62b;--blue:#5b9bff;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px -apple-system,system-ui,sans-serif}
+.wrap{max-width:430px;margin:0 auto;padding:14px 12px 60px}
+h1{font:800 22px system-ui;margin:4px 4px 2px}h2{font:800 18px system-ui;margin:28px 4px 4px;color:var(--y)}.lede{color:var(--sub);font-size:13px;margin:0 4px 14px}
+.opt{margin:0 0 22px}.oh{display:flex;gap:8px;align-items:baseline;margin:0 4px 2px}.oh b{color:var(--y);font:800 15px system-ui}.oh span{font:700 14px system-ui}.od{display:block;color:var(--sub);font-size:12px;margin:0 4px 6px}
+.box{background:var(--card);border-radius:14px;overflow:hidden}
+.r{display:flex;gap:8px;padding:8px 10px 8px 12px;border-top:1px solid var(--line);position:relative}.r:first-child{border-top:0}
+.l{flex:none;width:42px;display:flex;flex-direction:column;align-items:center;position:relative}
+.ph{width:40px;height:40px;border-radius:50%;background:#26272c;overflow:hidden;position:relative;display:block}
+.ph img{width:100%;height:100%;object-fit:cover;object-position:50% 12%}
+.m{flex:1;min-width:0}
+.n{display:flex;align-items:baseline;gap:5px;white-space:nowrap;overflow:hidden}
+.n b{font:700 14px system-ui;overflow:hidden;text-overflow:ellipsis}.n i{font:600 10.5px system-ui;color:var(--sub);font-style:normal}.n em{font:800 8px system-ui;font-style:normal;color:var(--blue);border:1.5px solid #3b82f6;border-radius:999px;padding:0 5px}
+.mn{margin-left:auto;font:600 10px system-ui;color:#75777e;white-space:nowrap}
+.s{display:flex;gap:8px;margin-top:3px;overflow:hidden}
+.c{flex:none;min-width:22px}.c.w{min-width:32px}
+.c b{display:block;font:700 14px system-ui;letter-spacing:-.3px}.c small{display:block;font:700 8.5px system-ui;color:#75777e}
+.pre .c b{color:#9a9ca2;font-style:italic;font-weight:600}
+.gl{font:600 10.5px system-ui;color:var(--sub);white-space:nowrap}.gl b{color:#e6e7ea}
+.pill{font:800 8.5px system-ui;padding:1px 6px;border-radius:999px;border:1.5px solid #3a3b40;color:#9a9ca2;white-space:nowrap}
+.pill.lv{border-color:var(--y);color:var(--y)}
+.dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--y);margin-right:4px;vertical-align:1px;animation:bl 1.4s infinite}
+@keyframes bl{50%{opacity:.3}}
+.hd{padding:9px 12px 4px;font:800 12px system-ui;color:var(--sub);letter-spacing:.06em;text-transform:uppercase;display:flex;justify-content:space-between}
+.hd.y{color:var(--y)}
+</style></head><body><div class="wrap">
+<h1>On court + live layout: 40 options</h1>
+<p class="lede">Every option shows the same four players: Trae on the floor, Buzelis on the bench in a live game, Embiid finished, Reed not started. Yellow = live, like ESPN.</p>
+<h2>Part 1 · On the court or not (20)</h2><div id="a"></div>
+<h2>Part 2 · Where the live and game info goes (20)</h2><div id="b"></div>
+</div>
+<script>
+const P=[{id:4277905,n:"T. Young",p:"PG",sl:"G",st:"on",tm:"ATL",opp:"@ORL",q:"Q3",clk:"4:12",sc:"61–54",min:24,stint:"6:40",S:[22,3,9,1,0,4,"5/6",".833","7/14",".500",3],pm:34},
+{id:4711294,n:"M. Buzelis",p:"SF/PF",sl:"PF",st:"bench",tm:"CHI",opp:"@PHI",q:"Q3",clk:"8:51",sc:"70–77",min:18,S:[11,6,1,1,1,1,"2/2","1.000","4/9",".444",1],pm:30},
+{id:3059318,n:"J. Embiid",p:"C",sl:"UTIL",st:"fin",tm:"PHI",opp:"vs CHI",q:"Final",clk:"",sc:"W 118–109",min:33,S:[27,11,5,0,2,1,"8/9",".889","9/18",".500",4],pm:33},
+{id:4397002,n:"P. Reed",p:"C",sl:"UTIL",st:"pre",tm:"DET",opp:"@CHA",q:"",clk:"7:30 PM",sc:"",min:0,S:[9.7,6,1.7,1.2,1.2,.2,"1.6/2.3",".679","4.7/7.8",".603",1.1],pm:22}];
+const K=["PTS","REB","AST","STL","BLK","3PM","FT","FT%","FG","FG%","TO"];
+const hs=id=>`https://a.espncdn.com/i/headshots/nba/players/full/${id}.png`;
+const lgo=t=>`https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/${t.replace(/[@vs ]/g,"").toLowerCase()}.png`;
+const live=p=>p.st==="on"||p.st==="bench";
+const stats=(p,n=11)=>`<div class="s">${p.S.slice(0,n).map((v,i)=>`<div class="c ${[6,7,8,9].includes(i)?"w":""}"><b>${v}</b><small>${K[i]}</small></div>`).join("")}</div>`;
+const nm=(p,extra="",right=true)=>`<div class="n"><b>${p.n}</b><i>${p.p}</i><em>${p.sl}</em>${extra}${right&&p.min?`<span class="mn">${p.min} min</span>`:""}</div>`;
+const ph=(p,st="",inner="")=>`<span class="ph" style="${st}"><img src="${hs(p.id)}" alt="">${inner}</span>`;
+const status=p=>live(p)?`${p.q} ${p.clk}`:p.st==="fin"?"Final":p.clk;
+const pill=p=>`<span class="pill ${live(p)?"lv":""}">${live(p)?'<i class="dot"></i>LIVE ':""}${live(p)?status(p):p.st==="fin"?"FINAL":p.clk}</span>`;
+const gline=p=>`<div style="display:flex;gap:6px;align-items:center;margin-top:2px">${pill(p)}<span class="gl">${p.opp}${p.sc?` · <b>${p.sc}</b>`:""}</span></div>`;
+const base=(p,o={})=>`<div class="l">${o.ph||ph(p)}</div><div class="m">${o.nm||nm(p)}${o.g===false?"":(o.g||gline(p))}${stats(p)}</div>`;
+const on=p=>p.st==="on";
+const row=(p,inner,st="",cls="")=>`<div class="r ${p.st==="pre"?"pre":""} ${cls}" style="${st}">${inner}</div>`;
+const A=[
+["Stripe only when on the floor","Yellow edge stripe only for players on the court right now. Bench and finished rows stay plain.",p=>row(p,(on(p)?'<i style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#ffc62b"></i>':"")+base(p))],
+["Row tint","Players on the floor get a faint yellow wash across the row, like ESPN.",p=>row(p,base(p),on(p)?"background:rgba(255,198,43,.08)":"")],
+["Tint + stripe (ESPN style)","Wash and edge stripe together for players on the floor; bench in a live game gets nothing.",p=>row(p,(on(p)?'<i style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#ffc62b"></i>':"")+base(p),on(p)?"background:rgba(255,198,43,.07)":"")],
+["Photo ring","Yellow ring around the photo when on the floor, thin grey ring on the bench.",p=>row(p,base(p,{ph:ph(p,on(p)?"box-shadow:0 0 0 2px #ffc62b":p.st==="bench"?"box-shadow:0 0 0 1.5px #3a3b40":"")}))],
+["ON COURT / BENCH label","A tiny word under the photo: ON COURT in yellow, BENCH in grey.",p=>row(p,base(p,{ph:ph(p)+(live(p)?`<span style="font:800 7.5px system-ui;margin-top:3px;letter-spacing:.04em;color:${on(p)?"#ffc62b":"#75777e"}">${on(p)?"ON COURT":"BENCH"}</span>`:"")}))],
+["Ball icon by the name","A small basketball icon after the name when he's on the floor.",p=>row(p,base(p,{nm:nm(p,on(p)?'<svg width="12" height="12" viewBox="0 0 24 24" style="flex:none;align-self:center" aria-label="On court"><circle cx="12" cy="12" r="10" fill="#ffc62b"/><path d="M2 12h20M12 2v20M5 5c4 4 4 10 0 14M19 5c-4 4-4 10 0 14" stroke="#111" stroke-width="1.6" fill="none"/></svg>':"")}))],
+["Dim the bench","On-floor rows stay bright; bench rows in a live game fade to half.",p=>row(p,base(p),p.st==="bench"?"opacity:.5":"")],
+["Corner dot on photo","A yellow dot on the photo's corner, like an online light, only while on the floor.",p=>row(p,base(p,{ph:ph(p)+(on(p)?'<i style="position:absolute;right:0;bottom:0;width:11px;height:11px;border-radius:50%;background:#ffc62b;box-shadow:0 0 0 2px #111214"></i>':"")}))],
+["Mini court icon","A tiny court outline next to the name that fills yellow when he's playing.",p=>row(p,base(p,{nm:nm(p,live(p)?`<svg width="16" height="11" viewBox="0 0 16 11" style="flex:none;align-self:center" aria-label="${on(p)?"On court":"Bench"}"><rect x=".75" y=".75" width="14.5" height="9.5" rx="1.5" fill="${on(p)?"#ffc62b":"none"}" stroke="${on(p)?"#ffc62b":"#55575e"}" stroke-width="1.5"/><path d="M8 1v9" stroke="${on(p)?"#111":"#55575e"}" stroke-width="1.2"/></svg>`:"")}))],
+["Stint timer","On the floor: 'on 6:40' (time in this stint). Bench: 'sat 3:10'.",p=>row(p,base(p,{nm:nm(p,live(p)?`<span class="gl" style="color:${on(p)?"#ffc62b":"#75777e"}">${on(p)?"on "+p.stint:"sat 3:10"}</span>`:"")}))],
+["Yellow name","The player's name turns yellow while he's on the floor.",p=>row(p,base(p,{nm:nm(p).replace(`<b>${p.n}</b>`,`<b style="color:${on(p)?"#ffc62b":"inherit"}">${p.n}</b>`)}))],
+["Color vs grey photo","Photo in color on the floor, grey on the bench or not playing.",p=>row(p,base(p,{ph:ph(p,on(p)?"":"filter:grayscale(1);opacity:.7")}))],
+["Glow","A soft yellow glow around the whole row while on the floor.",p=>row(p,base(p),on(p)?"box-shadow:inset 0 0 0 1px rgba(255,198,43,.45),inset 0 0 18px rgba(255,198,43,.08)":"")],
+["SUB tag","Bench players in a live game get a grey 'SUB' tag; on-floor rows stay clean.",p=>row(p,base(p,{nm:nm(p,p.st==="bench"?'<span class="pill">SUB</span>':"")}))],
+["Grouped: floor / bench","Live players split into 'On the floor' and 'On the bench' groups.",null],
+["Lineup dots in header","The section header shows 5 dots per team: how many of your players are on the floor.",null],
+["IN / OUT chip at the right","A chip at the far right of the name line: IN (yellow) or OUT (grey).",p=>row(p,base(p,{nm:nm(p,live(p)?`<span class="mn"><span class="pill ${on(p)?"lv":""}">${on(p)?"IN":"OUT"}</span></span>`:"",!live(p))}))],
+["Minutes bar","A thin bar under the stats: minutes played vs his normal minutes, yellow while on the floor.",p=>row(p,base(p)+`<i style="position:absolute;left:62px;right:12px;bottom:3px;height:3px;border-radius:2px;background:#2a2b31"></i><i style="position:absolute;left:62px;bottom:3px;height:3px;border-radius:2px;width:${Math.min(1,p.min/p.pm)*60}%;background:${on(p)?"#ffc62b":"#55575e"}"></i>`)],
+["Thick stripe + bench tick","Full yellow bar on the floor; a short grey tick for bench players in a live game.",p=>row(p,(on(p)?'<i style="position:absolute;left:0;top:6px;bottom:6px;width:4px;border-radius:0 3px 3px 0;background:#ffc62b"></i>':p.st==="bench"?'<i style="position:absolute;left:0;top:50%;height:14px;margin-top:-7px;width:3px;border-radius:0 2px 2px 0;background:#55575e"></i>':"")+base(p))],
+["Mini court on top","A small court diagram at the top of the section with photos of your players on the floor right now.",null]];
+const B=[
+["Pill + score under name (now)","What's live right now: status pill and score on the line under the name.",p=>row(p,base(p))],
+["Right side of the name line","Status and score move to the far right of the name line; stats get the full width.",p=>row(p,base(p,{g:false,nm:nm(p,`<span class="mn" style="color:${live(p)?"#ffc62b":"#75777e"};font-weight:800">${live(p)?'<i class="dot"></i>':""}${p.opp} ${p.sc?p.sc+" ":""}${status(p)}</span>`,false)}))],
+["Grouped by game","Players grouped under a game header: ATL @ ORL · 61–54 · Q3 4:12.",null],
+["Thin scorebug on top","A full-width scorebug line at the top of each row with logos and score.",p=>row(p,`<div style="width:100%"><div style="display:flex;align-items:center;gap:6px;margin:-2px 0 5px;font:700 10px system-ui;color:${live(p)?"#ffc62b":"#8e9096"}">${live(p)?'<i class="dot"></i>':""}<img src="${lgo(p.tm)}" width="14" height="14" alt=""><span>${p.tm}</span><span>${p.opp.replace(/[@vs ]/g,"")}</span><img src="${lgo(p.opp)}" width="14" height="14" alt=""><span style="color:#e6e7ea">${p.sc}</span><span style="margin-left:auto">${status(p)}</span></div><div style="display:flex;gap:8px">${base(p,{g:false})}</div></div>`)],
+["Logos with score","Your team's logo vs the opponent's, with the score between them.",p=>row(p,base(p,{g:`<div style="display:flex;align-items:center;gap:4px;margin-top:2px" class="gl"><img src="${lgo(p.tm)}" width="13" height="13" alt=""><b>${p.sc||"–"}</b><img src="${lgo(p.opp)}" width="13" height="13" alt=""><span style="margin-left:4px;color:${live(p)?"#ffc62b":""}">${status(p)}</span></div>`}))],
+["Live ticker on top","A horizontal strip of your live games at the top of the section; rows stay clean.",null],
+["Two-up cards","Live players as a 2-column grid of mini cards with game info at the top.",null],
+["Stats first, game footer","Stats right under the name, game info as a small footer line at the bottom.",p=>row(p,`<div class="l">${ph(p)}</div><div class="m">${nm(p)}${stats(p)}<div class="gl" style="margin-top:2px;color:${live(p)?"#ffc62b":""}">${live(p)?'<i class="dot"></i>':""}${p.opp} · ${p.sc?p.sc+" · ":""}${status(p)}</div></div>`)],
+["Replace minutes","Where minutes are: '24 min · Q3 4:12'. Score after the opponent in the name line.",p=>row(p,base(p,{g:false,nm:`<div class="n"><b>${p.n}</b><i>${p.p}</i><em>${p.sl}</em><span class="gl">${p.opp}${p.sc?" "+p.sc:""}</span><span class="mn" style="color:${live(p)?"#ffc62b":""}">${p.min?p.min+" min · ":""}${status(p)}</span></div>`}))],
+["Band on the photo","A yellow band across the bottom of the photo with the quarter; score in the name line.",p=>row(p,base(p,{g:false,ph:ph(p,"",p.st!=="pre"?`<span style="position:absolute;left:0;right:0;bottom:0;height:13px;background:${live(p)?"rgba(255,198,43,.92)":"rgba(40,41,46,.9)"};font:800 8px/13px system-ui;text-align:center;color:${live(p)?"#111":"#fff"}">${live(p)?p.q:"FINAL"}</span>`:""),nm:nm(p,`<span class="gl">${p.opp}${p.sc?" · <b>"+p.sc+"</b>":""}${live(p)?" · "+p.clk:p.st==="pre"?" · "+p.clk:""}</span>`)}))],
+["All on one line","Name · opponent · score · clock on a single line.",p=>row(p,base(p,{g:false,nm:`<div class="n"><b>${p.n}</b><span class="gl">· ${p.opp} ${p.sc?"<b>"+p.sc+"</b>":""} ${live(p)?'<span style="color:#ffc62b">'+status(p)+"</span>":status(p)}</span></div>`}))],
+["Tap to expand","Collapsed: name, PTS/REB/AST, status. Tap a row to see every stat.",p=>row(p,`<div class="l">${ph(p)}</div><div class="m">${nm(p,"",false)}<div class="gl" style="margin-top:2px"><b>${p.S[0]}</b> PTS <b>${p.S[1]}</b> REB <b>${p.S[2]}</b> AST · <span style="color:${live(p)?"#ffc62b":""}">${p.opp} ${p.sc} ${status(p)}</span></div></div><span style="align-self:center;color:#55575e;font-size:16px">›</span>`)],
+["Status column on the right","A narrow right column, stacked: Q3 / 4:12 / 61–54.",p=>row(p,base(p,{g:false})+`<div style="flex:none;width:46px;text-align:center;align-self:center;font:800 10px/1.25 system-ui;color:${live(p)?"#ffc62b":"#8e9096"}">${live(p)?p.q:p.st==="fin"?"FINAL":"7:30"}<br><span style="font-weight:600;color:#8e9096">${live(p)?p.clk:p.st==="pre"?"PM":""}</span><br><span style="color:#e6e7ea">${p.sc.replace(/^[WL] /,"")}</span></div>`)],
+["Section header totals","The Live now header adds what your live players have put up tonight.",null],
+["Opponent logo on photo","Opponent team logo on the photo's corner; clock and score under the name.",p=>row(p,base(p,{ph:ph(p)+`<img src="${lgo(p.opp)}" alt="" style="position:absolute;right:-3px;bottom:-2px;width:18px;height:18px;border-radius:50%;background:#fff;padding:1px;box-shadow:0 0 0 2px #111214">`,g:`<div class="gl" style="margin-top:2px"><span style="color:${live(p)?"#ffc62b":""}">${live(p)?'<i class="dot"></i>':""}${status(p)}</span> · <b>${p.sc||p.clk}</b></div>`}))],
+["Big score, small stats","Score and clock big on the left under the photo, stats smaller on the right.",p=>row(p,`<div class="l" style="width:54px">${ph(p)}<span style="font:800 11px system-ui;margin-top:3px;color:${live(p)?"#ffc62b":"#8e9096"}">${p.sc.replace(/^[WL] /,"")||p.clk}</span><span style="font:700 8.5px system-ui;color:#75777e">${live(p)?status(p):p.st==="fin"?"FINAL":""}</span></div><div class="m">${nm(p)}${stats(p)}</div>`)],
+["Bold game header row","Each row starts with a dark header strip: @ORL · 61–54 · Q3 4:12, then the player.",p=>row(p,`<div style="width:100%"><div style="margin:-8px -10px 6px -12px;padding:3px 12px;background:${live(p)?"rgba(255,198,43,.12)":"#16171a"};font:700 10px system-ui;color:${live(p)?"#ffc62b":"#8e9096"}">${live(p)?'<i class="dot"></i>':""}${p.tm} ${p.opp} · ${p.sc||"–"} · ${status(p)}</div><div style="display:flex;gap:8px">${base(p,{g:false})}</div></div>`)],
+["Pill in the name line","Status pill right after the name; score at the far right where minutes were.",p=>row(p,base(p,{g:false,nm:nm(p,pill(p)+`<span class="mn" style="color:#e6e7ea;font-weight:800">${p.sc}</span>`,false)}))],
+["Your line vs his","Matchup view: each live player paired with the opponent's player in the same slot.",null],
+["Compact + big stat","Just name, status and his best stat tonight in big type; tap for the rest.",p=>row(p,`<div class="l">${ph(p)}</div><div class="m">${nm(p,"",false)}${gline(p)}</div><div style="flex:none;text-align:right;align-self:center"><b style="font:800 20px system-ui">${p.S[0]}</b><small style="display:block;font:700 9px system-ui;color:#75777e">PTS</small></div>`)]];
+const box=(t,d,i,h)=>`<div class="opt"><div class="oh"><b>${i}</b><span>${t}</span></div><span class="od">${d}</span><div class="box">${h}</div></div>`;
+const rows=f=>P.map(f).join("");
+const special={
+ "Grouped: floor / bench":()=>`<div class="hd y"><span>On the floor</span><span>1</span></div>${row(P[0],base(P[0]))}<div class="hd"><span>On the bench</span><span>1</span></div>${row(P[1],base(P[1]))}<div class="hd"><span>Final</span><span>1</span></div>${row(P[2],base(P[2]))}<div class="hd"><span>Still to play</span><span>1</span></div>${row(P[3],base(P[3]))}`,
+ "Lineup dots in header":()=>`<div class="hd y"><span>Live now · on the floor</span><span style="letter-spacing:2px">●<span style="color:#3a3b40">●●●●</span></span></div>${rows(p=>row(p,base(p)))}`,
+ "Mini court on top":()=>`<div style="margin:10px;height:84px;border-radius:10px;border:1.5px solid #3a3420;background:linear-gradient(#1a1810,#121108);position:relative"><i style="position:absolute;left:50%;top:0;bottom:0;width:1.5px;background:#3a3420"></i><i style="position:absolute;left:50%;top:50%;width:30px;height:30px;margin:-15px;border-radius:50%;border:1.5px solid #3a3420"></i><span style="position:absolute;left:22%;top:20px;text-align:center">${ph(P[0],"box-shadow:0 0 0 2px #ffc62b")}<small style="display:block;font:700 9px system-ui;color:#ffc62b">Young</small></span><span style="position:absolute;right:8px;top:6px;font:700 9px system-ui;color:#8e9096">1 of your players on the floor</span></div>${rows(p=>row(p,base(p)))}`,
+ "Grouped by game":()=>[P[0],P[1],P[2],P[3]].map(p=>`<div class="hd ${live(p)?"y":""}"><span>${live(p)?'<i class="dot"></i>':""}${p.tm} ${p.opp} · ${p.sc||p.clk}</span><span>${live(p)?status(p):p.st==="fin"?"Final":""}</span></div>${row(p,base(p,{g:false}))}`).join(""),
+ "Live ticker on top":()=>`<div style="display:flex;gap:6px;overflow-x:auto;padding:10px">${P.map(p=>`<div style="flex:none;padding:5px 8px;border-radius:8px;background:${live(p)?"rgba(255,198,43,.12)":"#1b1c20"};font:700 10px system-ui;color:${live(p)?"#ffc62b":"#9a9ca2"}">${p.tm} ${p.opp} <b style="color:#fff">${p.sc||""}</b> · ${status(p)}</div>`).join("")}</div>${rows(p=>row(p,base(p,{g:false})))}`,
+ "Two-up cards":()=>`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px">${P.map(p=>`<div style="background:#18191c;border-radius:10px;padding:8px;${live(p)?"box-shadow:inset 0 2px 0 #ffc62b":""}"><div class="gl" style="color:${live(p)?"#ffc62b":""}">${p.opp} ${p.sc} · ${status(p)}</div><div style="display:flex;gap:6px;align-items:center;margin:5px 0">${ph(p)}<b style="font:700 13px system-ui">${p.n}</b></div><div class="gl"><b>${p.S[0]}</b> PTS <b>${p.S[1]}</b> REB <b>${p.S[2]}</b> AST <b>${p.S[5]}</b> 3PM</div></div>`).join("")}</div>`,
+ "Section header totals":()=>`<div class="hd y" style="flex-wrap:wrap;gap:4px"><span><i class="dot"></i>Live now · 2</span><span style="color:#e6e7ea;text-transform:none;letter-spacing:0">Tonight: 33 PTS · 9 REB · 10 AST · 5 3PM</span></div>${rows(p=>row(p,base(p)))}`,
+ "Your line vs his":()=>[[P[0],P[2]],[P[1],P[3]]].map(([a,b])=>`<div class="hd y"><span>G slot</span><span>you vs them</span></div><div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #1d1e22">${[a,b].map(p=>`<div style="padding:8px 10px;${p===a?"border-right:1px solid #1d1e22":""}"><div style="display:flex;gap:6px;align-items:center">${ph(p)}<div><b style="font:700 13px system-ui">${p.n}</b><div class="gl" style="color:${live(p)?"#ffc62b":""}">${status(p)}</div></div></div><div class="gl" style="margin-top:4px"><b>${p.S[0]}</b> PTS <b>${p.S[1]}</b> REB <b>${p.S[2]}</b> AST</div></div>`).join("")}</div>`).join("")};
+document.getElementById("a").innerHTML=A.map(([t,d,f],i)=>box(t,d,i+1,f?rows(f):special[t]())).join("");
+document.getElementById("b").innerHTML=B.map(([t,d,f],i)=>box(t,d,i+1,f?rows(f):special[t]())).join("");
+</script></body></html>
