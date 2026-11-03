@@ -1,0 +1,58 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Live Game Badge Options</title>
+<style>
+:root{--bg:#0b0b0d;--card:#111214;--line:#1d1e22;--fg:#f2f3f5;--sub:#8e9096;--red:#ff3b4e;--blue:#5b9bff;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px -apple-system,system-ui,sans-serif}
+.wrap{max-width:430px;margin:0 auto;padding:14px 12px 60px}
+h1{font:800 22px system-ui;margin:4px 4px 2px}.lede{color:var(--sub);font-size:13px;margin:0 4px 14px}
+.opt{margin:0 0 22px}.oh{display:flex;gap:8px;align-items:baseline;margin:0 4px 6px}.oh b{color:#ffc62b;font:800 16px system-ui}.oh span{font:700 14px system-ui}.oh small{color:var(--sub);font-size:12px;display:block;margin:2px 4px 6px}
+.box{background:var(--card);border-radius:14px;overflow:hidden}
+.r{display:flex;gap:8px;padding:8px 0 8px 10px;border-top:1px solid var(--line);position:relative}.r:first-child{border-top:0}
+.l{flex:none;width:46px;display:flex;flex-direction:column;align-items:center;position:relative}
+.ph{width:40px;height:40px;border-radius:50%;background:#26272c;overflow:hidden;position:relative}
+.ph img{width:100%;height:100%;object-fit:cover;object-position:50% 12%}
+.m{flex:1;min-width:0}
+.n{display:flex;align-items:baseline;gap:5px;padding-right:10px;white-space:nowrap;overflow:hidden}
+.n b{font:700 14px system-ui}.n i{font:600 10.5px system-ui;color:var(--sub);font-style:normal}.n em{font:800 8px system-ui;font-style:normal;color:var(--blue);border:1.5px solid #3b82f6;border-radius:999px;padding:0 5px}
+.n .mn{margin-left:auto;font:600 10px system-ui;color:#75777e}
+.s{display:flex;gap:8px;margin-top:3px;overflow:hidden;padding-right:10px}
+.c{flex:none;min-width:22px}.c.w{min-width:32px}
+.c b{display:block;font:700 14px system-ui;letter-spacing:-.3px}.c small{display:block;font:700 8.5px system-ui;color:#75777e}
+.pj .c b{color:#9a9ca2;font-style:italic;font-weight:600}
+@keyframes bl{50%{opacity:.35}}
+@keyframes rg{0%{box-shadow:0 0 0 0 rgba(255,59,78,.6)}100%{box-shadow:0 0 0 6px rgba(255,59,78,0)}}
+/* shared helpers */
+.lv{color:var(--red)}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);animation:bl 1.4s infinite;vertical-align:1px;margin-right:4px}
+.gl{font:700 10.5px system-ui;color:var(--sub);white-space:nowrap}
+</style></head><body><div class="wrap">
+<h1>Live game badge: 15 options</h1>
+<p class="lede">Same compact rows each time: a live player, a finished one, and one still to play. Only the game info changes.</p>
+<div id="o"></div></div>
+<script>
+const R=[{id:4277905,n:"T. Young",p:"PG",sl:"G",st:"live",opp:"@ORL",q:"Q3",clk:"4:12",sc:"ATL 61–54",pct:.62,min:24,S:[22,3,9,1,0,4,"5/6",".833","7/14",".500",3]},
+{id:4711294,n:"M. Buzelis",p:"SF/PF",sl:"PF",st:"fin",opp:"@PHI",q:"Final",clk:"",sc:"W 118–109",pct:1,min:34,S:[18,7,2,1,1,2,"4/4","1.000","6/13",".462",1]},
+{id:3059318,n:"J. Embiid",p:"C",sl:"UTIL",st:"pre",opp:"vs CHI",q:"",clk:"8:00 PM",sc:"",pct:0,min:0,S:[24.1,10.2,4.5,.8,1.4,1.1,"6.8/8.1",".840","8.9/18",".494",3.2]}];
+const K=["PTS","REB","AST","STL","BLK","3PM","FT","FT%","FG","FG%","TO"];
+const hs=id=>`https://a.espncdn.com/i/headshots/nba/players/full/${id}.png`;
+const stats=p=>`<div class="s">${p.S.map((v,i)=>`<div class="c ${[6,7,8,9].includes(i)?"w":""}"><b>${v}</b><small>${K[i]}</small></div>`).join("")}</div>`;
+const nm=(p,extra="",right=true)=>`<div class="n"><b>${p.n}</b><i>${p.p}</i><em>${p.sl}</em>${extra}${right&&p.min?`<span class="mn">${p.min} min</span>`:""}</div>`;
+const ph=(p,inner="",st="")=>`<span class="ph" style="${st}"><img src="${hs(p.id)}" alt="">${inner}</span>`;
+const txt=p=>p.st==="live"?`${p.q} ${p.clk}`:p.st==="fin"?"Final":p.clk;
+const V=[
+["Red ring + clock","The photo gets a pulsing red ring when live; the clock sits under it in small red text.",p=>`<div class="l">${ph(p,"",p.st==="live"?"box-shadow:0 0 0 2px #ff3b4e;animation:rg 1.6s infinite":"")}<span class="gl ${p.st==="live"?"lv":""}" style="margin-top:3px;font-size:9.5px">${txt(p)}</span></div><div class="m">${nm(p)}${stats(p)}</div>`],
+["Game line next to name","No badge on the photo. The name line ends with ● Q3 4:12 @ORL.",p=>`<div class="l">${ph(p)}</div><div class="m">${nm(p,`<span class="gl ${p.st==="live"?"lv":""}" style="margin-left:4px">${p.st==="live"?'<i class="dot"></i>':""}${txt(p)} ${p.opp}</span>`,false)}${stats(p)}</div>`],
+["Score under name","A small line with the real score and clock between the name and the stats.",p=>`<div class="l">${ph(p)}</div><div class="m">${nm(p)}<div class="gl ${p.st==="live"?"lv":""}" style="margin-top:1px">${p.st==="live"?'<i class="dot"></i>':""}${p.opp} · ${p.sc?p.sc+" · ":""}${txt(p)}</div>${stats(p)}</div>`],
+["Progress bar under photo","A thin bar under the photo fills as the game goes on, with the quarter on it.",p=>`<div class="l">${ph(p)}<div style="width:40px;height:4px;border-radius:2px;background:#2a2b31;margin-top:4px;overflow:hidden"><i style="display:block;height:100%;width:${p.pct*100}%;background:${p.st==="live"?"#ff3b4e":"#55575e"}"></i></div><span class="gl" style="font-size:9px;margin-top:2px">${p.st==="live"?p.q:p.st==="fin"?"Final":p.clk}</span></div><div class="m">${nm(p)}${stats(p)}</div>`],
+["Corner chip","A tiny red chip on the photo's top-right corner, just the quarter.",p=>`<div class="l">${ph(p)}${p.st!=="pre"?`<span style="position:absolute;top:-3px;right:-2px;font:800 8.5px system-ui;padding:1px 4px;border-radius:5px;background:${p.st==="live"?"#ff3b4e":"#3a3b40"};color:#fff">${p.st==="live"?p.q:"F"}</span>`:""}</div><div class="m">${nm(p,`<span class="gl" style="margin-left:4px">${p.opp}${p.st==="live"?" · "+p.clk:p.st==="pre"?" · "+p.clk:""}</span>`)}${stats(p)}</div>`],
+["Right-edge status","The game status moves to the far right of the name line, where minutes were.",p=>`<div class="l">${ph(p)}</div><div class="m"><div class="n"><b>${p.n}</b><i>${p.p}</i><em>${p.sl}</em><span class="mn ${p.st==="live"?"lv":""}" style="font-weight:800">${p.st==="live"?'<i class="dot"></i>':""}${p.opp} ${txt(p)}</span></div>${stats(p)}</div>`],
+["Row progress underline","A hairline across the bottom of the whole row shows how far the game is.",p=>`<div class="l">${ph(p)}</div><div class="m">${nm(p,`<span class="gl ${p.st==="live"?"lv":""}" style="margin-left:4px">${txt(p)}</span>`)}${stats(p)}</div><i style="position:absolute;left:0;bottom:0;height:2px;width:${p.pct*100}%;background:${p.st==="live"?"#ff3b4e":"#3a3b40"}"></i>`],
+["Outlined LIVE tag","An outlined pill in the name line: LIVE Q3 4:12. Final and start time get grey ones.",p=>`<div class="l">${ph(p)}</div><div class="m">${nm(p,`<span style="margin-left:4px;font:800 8.5px system-ui;padding:1px 5px;border-radius:999px;border:1.5px solid ${p.st==="live"?"#ff3b4e":"#3a3b40"};color:${p.st==="live"?"#ff5c6c":"#8e9096"}">${p.st==="live"?"LIVE ":""}${txt(p)}</span>`)}${stats(p)}</div>`],
+["Clock under photo, plain","Just the clock under the photo in red, no pill. Opponent moves next to the name.",p=>`<div class="l">${ph(p)}<span class="gl ${p.st==="live"?"lv":""}" style="margin-top:3px;font-size:10px;font-weight:800">${p.st==="live"?p.q+" "+p.clk:p.st==="fin"?"Final":p.clk}</span></div><div class="m">${nm(p,`<span class="gl" style="margin-left:4px">${p.opp}</span>`)}${stats(p)}</div>`],
+["Mini scoreboard","A compact score box above the stats: opponent, score, quarter.",p=>`<div class="l">${ph(p)}</div><div class="m">${nm(p)}<div style="display:inline-flex;gap:6px;align-items:center;margin-top:2px;padding:1px 6px;border-radius:5px;background:${p.st==="live"?"rgba(255,59,78,.12)":"#1b1c20"};font:700 10px system-ui;color:${p.st==="live"?"#ff7380":"#9a9ca2"}">${p.st==="live"?'<i class="dot"></i>':""}${p.opp}${p.sc?" · "+p.sc:""} · ${txt(p)}</div>${stats(p)}</div>`],
+["Online-style dot","A small pulsing red dot on the photo's corner, like an 'online' light. Game info in the name line.",p=>`<div class="l">${ph(p)}${p.st==="live"?'<i style="position:absolute;right:2px;bottom:0;width:11px;height:11px;border-radius:50%;background:#ff3b4e;box-shadow:0 0 0 2px #111214;animation:bl 1.4s infinite"></i>':""}</div><div class="m">${nm(p,`<span class="gl ${p.st==="live"?"lv":""}" style="margin-left:4px">${p.opp} · ${txt(p)}</span>`)}${stats(p)}</div>`],
+["Quarter pips","Four little segments under the photo, one per quarter; done ones fill, the live one blinks.",p=>{const qn=p.st==="fin"?4:p.st==="live"?3:0;return `<div class="l">${ph(p)}<div style="display:flex;gap:2px;margin-top:4px">${[1,2,3,4].map(i=>`<i style="width:8px;height:3px;border-radius:1px;background:${i<qn?"#8e9096":i===qn&&p.st==="live"?"#ff3b4e":i<=qn?"#8e9096":"#2a2b31"};${i===qn&&p.st==="live"?"animation:bl 1.4s infinite":""}"></i>`).join("")}</div><span class="gl" style="font-size:9px;margin-top:2px">${p.st==="live"?p.clk:p.st==="fin"?"Final":p.clk}</span></div><div class="m">${nm(p,`<span class="gl" style="margin-left:4px">${p.opp}</span>`)}${stats(p)}</div>`}],
+["Side stripe","A red stripe on the row's left edge while live, grey when final. Text in the name line.",p=>`<i style="position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;background:${p.st==="live"?"#ff3b4e":p.st==="fin"?"#3a3b40":"transparent"}"></i><div class="l">${ph(p)}</div><div class="m">${nm(p,`<span class="gl ${p.st==="live"?"lv":""}" style="margin-left:4px">${p.opp} ${txt(p)}</span>`)}${stats(p)}</div>`],
+["Glass band in photo","A see-through band across the bottom of the photo circle with the quarter in it.",p=>`<div class="l">${ph(p,p.st!=="pre"?`<span style="position:absolute;left:0;right:0;bottom:0;height:13px;background:${p.st==="live"?"rgba(255,59,78,.85)":"rgba(40,41,46,.85)"};font:800 8px/13px system-ui;text-align:center;color:#fff">${p.st==="live"?p.q:"FINAL"}</span>`:"")}</div><div class="m">${nm(p,`<span class="gl" style="margin-left:4px">${p.opp}${p.st==="live"?" · "+p.clk:p.st==="pre"?" · "+p.clk:""}</span>`)}${stats(p)}</div>`],
+["Minutes + clock together","Where minutes sit, show '24 min · Q3 4:12' in red while live.",p=>`<div class="l">${ph(p)}</div><div class="m"><div class="n"><b>${p.n}</b><i>${p.p}</i><em>${p.sl}</em><span class="gl" style="margin-left:4px">${p.opp}</span><span class="mn ${p.st==="live"?"lv":""}">${p.min?p.min+" min · ":""}${txt(p)}</span></div>${stats(p)}</div>`]];
+document.getElementById("o").innerHTML=V.map(([t,d,f],i)=>`<div class="opt"><div class="oh"><b>${i+1}</b><span>${t}</span></div><small style="display:block;color:#8e9096;font-size:12px;margin:0 4px 6px">${d}</small><div class="box">${R.map(p=>`<div class="r ${p.st==="pre"?"pj":""}">${f(p)}</div>`).join("")}</div></div>`).join("");
+</script></body></html>
