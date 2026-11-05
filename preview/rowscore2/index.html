@@ -1,0 +1,91 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Score Column Options</title>
+<style>
+:root{--bg:#0b0b0d;--card:#141518;--line:#202126;--fg:#f2f3f5;--sub:#8e9096;--y:#ffc62b;--g:#4ade80;--r:#f87171;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px -apple-system,system-ui,sans-serif}
+.wrap{max-width:430px;margin:0 auto;padding:16px 10px 60px}
+h1{font:800 22px system-ui;margin:4px 6px 2px}.lede{color:var(--sub);font-size:13px;margin:0 6px 10px;line-height:1.4}
+.opt{margin:26px 0 0}.oh{display:flex;gap:8px;align-items:baseline;margin:0 6px 2px}.oh b{color:var(--y);font:800 16px system-ui}.oh span{font:700 15px system-ui}.od{display:block;color:var(--sub);font-size:12px;margin:0 6px 8px;line-height:1.35}
+.box{background:var(--card);border-radius:14px;overflow:hidden}
+.r{position:relative;display:grid;grid-template-columns:44px 1fr auto;gap:8px 9px;padding:10px 10px 10px 14px;border-top:1px solid var(--line);background:rgba(255,198,43,.045)}.r:first-child{border-top:0}
+.r::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;background:var(--y)}
+.ph{width:44px;height:44px;border-radius:50%;background:#26272c;overflow:hidden;display:grid;place-items:center;font:800 13px system-ui;color:#999;position:relative}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 12%}
+.nm{min-width:0;align-self:center}.nm b{font:700 15px system-ui;white-space:nowrap}.nm i{font-style:normal;color:var(--sub);font-size:12px;margin-left:4px}.nm .sl{display:inline-block;font:800 10px system-ui;color:#5b9bff;border:1.5px solid #5b9bff;border-radius:8px;padding:0 5px;margin-left:5px;vertical-align:1px}
+.nm small{display:block;color:var(--sub);font-size:11.5px;margin-top:2px}
+.lg{width:16px;height:16px;object-fit:contain;vertical-align:-3px}
+.sc{align-self:center;text-align:right;font:700 13px system-ui;white-space:nowrap}
+.sc .st{display:block;color:var(--y);font:800 11px system-ui;margin-top:3px}.sc .st.f{color:var(--sub)}
+.stats{grid-column:1/-1;display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;mask-image:linear-gradient(90deg,#000 88%,transparent);-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent)}
+.stats::-webkit-scrollbar{display:none}
+.c{flex:none;width:20%;scroll-snap-align:start;text-align:center}.c b{display:block;font:800 22px system-ui;line-height:1.1}.c u{display:block;text-decoration:none;font:700 10px system-ui;color:var(--sub);letter-spacing:.05em;margin-top:2px}
+.c.w2 {width:24%}
+.lo{color:var(--sub)!important}.hi{color:var(--fg)}
+</style><style>
+.r2{position:relative;display:grid;grid-template-columns:44px 1fr 74px;gap:0 9px;padding:10px 0 10px 14px;border-top:1px solid var(--line);background:rgba(255,198,43,.045)}.r2:first-child{border-top:0}
+.r2::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;background:var(--y)}
+.mid{min-width:0;display:flex;flex-direction:column;gap:7px}
+.mid .stats{grid-column:auto}
+.mid .c{width:25%}.mid .c.w2{width:30%}
+.col{grid-row:1;grid-column:3;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;font:700 13px system-ui;padding:0 6px}
+.col .tl{display:flex;align-items:center;gap:5px}.col .lg{width:18px;height:18px}
+.ph2{grid-row:1;align-self:start}.mid .nm{align-self:flex-start}
+</style></head><body><div class="wrap">
+<h1>Score column on the right · 10 options</h1>
+<p class="lede">The game score gets its own full-height column on the right of each player row, reading top to bottom. Name and bigger scrollable stats sit to its left (4 visible, swipe for the rest).</p>
+<div id="o"></div></div>
+<script>
+const L=a=>`https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/${a}.png`;
+const P=[
+ {n:"J. Embiid",pos:"C",sl:"UTIL",id:3059318,tm:"phi",op:"det",ts:111,os:106,st:"Q4 12.5",live:1,min:33,s:{PTS:26,REB:14,AST:2,STL:1,BLK:0,"3PM":0,FT:"10/10","FT%":"1.000",FG:"8/18","FG%":".444",TO:3}},
+ {n:"T. Maxey",pos:"PG/SG",sl:"PG",id:4431678,tm:"phi",op:"det",ts:111,os:106,st:"Q4 12.5",live:1,min:34,s:{PTS:17,REB:1,AST:7,STL:0,BLK:0,"3PM":3,FT:"4/4","FT%":"1.000",FG:"5/16","FG%":".313",TO:2}},
+ {n:"C. Coward",pos:"SG/SF",sl:"SG",id:4903027,tm:"mem",op:"ind",ts:82,os:80,st:"End Q3",live:1,min:26,s:{PTS:17,REB:4,AST:4,STL:3,BLK:0,"3PM":3,FT:"2/2","FT%":"1.000",FG:"6/11","FG%":".545",TO:1}},
+ {n:"M. Buzelis",pos:"SF/PF",sl:"PF",id:0,tm:"chi",op:"ny",ts:96,os:129,st:"Final",live:0,min:26,s:{PTS:12,REB:5,AST:3,STL:1,BLK:0,"3PM":1,FT:"1/1","FT%":"1.000",FG:"5/11","FG%":".455",TO:2}}];
+const ORD=["PTS","REB","AST","STL","BLK","3PM","FT","FT%","FG","FG%","TO"];
+const ini=n=>n.replace(/[^A-Z]/g,"").slice(0,2);
+const ph=p=>`<span class="ph">${ini(p.n)}${p.id?`<img src="https://a.espncdn.com/i/headshots/nba/players/full/${p.id}.png" onerror="this.remove()">`:""}</span>`;
+const nm=(p,sub)=>`<div class="nm"><b>${p.n}</b><i>${p.pos}</i><span class="sl">${p.sl}</span>${sub!==undefined?`<small>${sub}</small>`:""}</div>`;
+const lg=a=>`<img class="lg" src="${L(a)}" onerror="this.replaceWith(document.createTextNode('${a.toUpperCase()}'))">`;
+const stt=p=>`<span class="st${p.live?"":" f"}">${p.live?"● ":""}${p.st}</span>`;
+const lead=p=>p.ts-p.os;
+const cells=(p,o={})=>{const ks=o.keys||ORD;return ks.map(k=>`<div class="c${/\//.test(String(p.s[k]))?" w2":""}"${o.cs?` style="${o.cs(k,p)}"`:""}><b${o.bs?` style="${o.bs(k,p)}"`:""}>${p.s[k]}</b>${o.nolab?"":`<u>${k}</u>`}</div>`).join("")};
+const row=(p,right,o={})=>`<div class="r"${o.rs?` style="${o.rs}"`:""}>${o.nophoto?"":ph(p)}${nm(p,o.sub?o.sub(p):undefined)}<div class="sc">${right(p)}</div><div class="stats"${o.ss?` style="${o.ss}"`:""}>${(o.pre?o.pre(p):"")+cells(p,o)}</div></div>`;
+
+const O=[];const add=(t,d,h)=>O.push({t,d,h});
+const row2=(p,col,o={})=>`<div class="r2"${o.rs?` style="${o.rs}"`:""}><div class="ph2">${ph(p)}</div><div class="mid">${nm(p,o.sub?o.sub(p):p.min+" min")}<div class="stats">${cells(p,o)}</div></div><div class="col"${o.cs2?` style="${o.cs2(p)}"`:""}>${col(p)}</div></div>`;
+const list2=(col,o)=>`<div class="box">${P.map(p=>row2(p,col,o)).join("")}</div>`;
+const C={phi:"#006bb6",det:"#c8102e",mem:"#5d76a9",ind:"#002d62",chi:"#ce1141",ny:"#f58426"};
+const clk=p=>`<span style="font:800 10.5px system-ui;color:${p.live?"var(--y)":"var(--sub)"};white-space:nowrap">${p.live?"● ":""}${p.st}</span>`;
+const prog=p=>p.live?(p.st.startsWith("Q4")?.78:p.st.includes("Q3")?.75:.5):1;
+// 1
+add("Plain score column","Logo + score for each team stacked on the right, clock underneath, a thin divider separating it from the stats.",
+ list2(p=>`<div class="tl">${lg(p.tm)}<b style="font-size:15px">${p.ts}</b></div><div class="tl lo">${lg(p.op)}<span style="font-size:15px">${p.os}</span></div>${clk(p)}`,{cs2:()=>"border-left:1px solid #2a2b30"}));
+// 2
+add("Dark scoreboard panel","The column sits in its own darker panel, like a mini scoreboard glued to the right edge.",
+ list2(p=>`<div class="tl">${lg(p.tm)}<b style="font-size:15px">${p.ts}</b></div><div class="tl lo">${lg(p.op)}<span style="font-size:15px">${p.os}</span></div>${clk(p)}`,{cs2:()=>"background:#0c0d0f;margin:-10px 0;padding:10px 6px"}));
+// 3
+add("Team-colour strips","Each team line gets a thin bar in its team colour; easier to tell who's who at a glance.",
+ list2(p=>`<div class="tl" style="border-left:3px solid ${C[p.tm]};padding-left:5px">${lg(p.tm)}<b style="font-size:15px">${p.ts}</b></div><div class="tl lo" style="border-left:3px solid ${C[p.op]};padding-left:5px">${lg(p.op)}<span style="font-size:15px">${p.os}</span></div>${clk(p)}`,{cs2:()=>"border-left:1px solid #2a2b30"}));
+// 4
+add("Big score, vs, clock pill","His team's score big on top, “vs” small, opponent's score below, clock in a yellow pill at the bottom.",
+ list2(p=>`<b style="font:900 19px system-ui">${p.ts}</b><span style="font:700 9px system-ui;color:var(--sub)">vs ${p.op.toUpperCase()}</span><span class="lo" style="font-size:15px">${p.os}</span><span style="font:800 10px system-ui;padding:2px 6px;border-radius:6px;background:${p.live?"rgba(255,198,43,.18)":"#26272c"};color:${p.live?"var(--y)":"var(--sub)"}">${p.st}</span>`,{cs2:()=>"border-left:1px solid #2a2b30"}));
+// 5
+add("Vertical game-progress bar","A thin bar down the right edge fills as the game goes on (yellow while live).",
+ list2(p=>`<div style="display:flex;gap:7px;align-items:stretch"><div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end"><div class="tl">${lg(p.tm)}<b style="font-size:15px">${p.ts}</b></div><div class="tl lo">${lg(p.op)}<span style="font-size:15px">${p.os}</span></div>${clk(p)}</div><div style="width:4px;border-radius:2px;background:#2a2b30;position:relative;overflow:hidden"><i style="position:absolute;left:0;right:0;top:0;height:${prog(p)*100}%;background:${p.live?"var(--y)":"#666"}"></i></div></div>`,{cs2:()=>"border-left:1px solid #2a2b30"}));
+// 6
+add("Lead in the middle","Both scores small, the lead (+5 / −33) big in the centre, coloured green or red.",
+ list2(p=>{const d=p.ts-p.os;return `<span class="tl" style="font-size:12px">${lg(p.tm)}${p.ts}</span><b style="font:900 20px system-ui;color:${d>=0?"var(--g)":"var(--r)"}">${d>0?"+":""}${d}</b><span class="tl lo" style="font-size:12px">${lg(p.op)}${p.os}</span>${clk(p)}`},{cs2:()=>"border-left:1px solid #2a2b30"}));
+// 7
+add("Quarter dots","Scores stacked, then four little dots for the quarters (filled = done, pulsing = current).",
+ list2(p=>{const q=p.live?(p.st.startsWith("Q4")?4:p.st.includes("Q3")?3:2):5;return `<div class="tl">${lg(p.tm)}<b style="font-size:15px">${p.ts}</b></div><div class="tl lo">${lg(p.op)}<span style="font-size:15px">${p.os}</span></div><div style="display:flex;gap:4px;margin-top:2px">${[1,2,3,4].map(i=>`<i style="width:7px;height:7px;border-radius:50%;background:${i<q?"#888":i===q?"var(--y)":"#2a2b30"}"></i>`).join("")}</div><span style="font:700 10px system-ui;color:var(--sub)">${p.live?p.st.replace(/^Q\d /,"").replace("End Q3","end"):"Final"}</span>`},{cs2:()=>"border-left:1px solid #2a2b30"}));
+// 8
+add("Winner highlighted","The leading team's score is bright and green-tinted; the trailing one is dimmed.",
+ list2(p=>{const w=p.ts>=p.os;return `<div class="tl" style="${w?"color:var(--g)":"opacity:.55"}">${lg(p.tm)}<b style="font-size:16px">${p.ts}</b></div><div class="tl" style="${!w?"color:var(--g)":"opacity:.55"}">${lg(p.op)}<b style="font-size:16px">${p.os}</b></div>${clk(p)}`},{cs2:()=>"border-left:1px solid #2a2b30"}));
+// 9
+add("Minimal numbers","No logos: just the two scores stacked and the clock. Narrowest column, most room for stats.",
+ list2(p=>`<b style="font:800 16px system-ui">${p.ts}</b><span class="lo" style="font:700 16px system-ui">${p.os}</span>${clk(p)}`,{cs2:()=>"border-left:1px solid #2a2b30",rs:"grid-template-columns:44px 1fr 56px"}));
+// 10
+add("Clock on top, minutes at the bottom","Clock first, then the scores, then his minutes at the bottom; the name line gets cleaner.",
+ list2(p=>`${clk(p)}<div class="tl">${lg(p.tm)}<b style="font-size:15px">${p.ts}</b></div><div class="tl lo">${lg(p.op)}<span style="font-size:15px">${p.os}</span></div><span style="font:700 10px system-ui;color:var(--sub)">${p.min} min</span>`,{cs2:()=>"border-left:1px solid #2a2b30",sub:()=>""}));
+document.getElementById("o").innerHTML=O.map((x,i)=>`<div class="opt"><div class="oh"><b>${i+1}</b><span>${x.t}</span></div><span class="od">${x.d}</span>${x.h}</div>`).join("");
+</script></body></html>
