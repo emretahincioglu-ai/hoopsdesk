@@ -23,7 +23,10 @@ td.tn,th.tn{text-align:left;padding-left:10px;position:sticky;left:0;background:
 tr{border-top:1px solid var(--line)}tr.me td{background:#1c1a12}tr.me td.tn{color:var(--y)}
 td span{display:inline-grid;place-items:center;width:26px;height:24px;border-radius:7px;font:800 13px "Roboto Condensed",sans-serif}
 .msg{color:var(--sub);padding:30px 12px;text-align:center}
-</style></head><body><div class="w">
+td.pn,th.pn{position:sticky;left:0;z-index:2;background:var(--card);width:26px;min-width:26px;font:800 15px "Roboto Condensed",sans-serif;color:#c9cad0;padding-left:8px}
+td.tn,th.tn{left:26px!important;min-width:112px!important;max-width:112px!important}td.tn b{display:block;font:700 13px system-ui;overflow:hidden;text-overflow:ellipsis}td.tn small{display:block;font:600 10.5px system-ui;color:var(--sub);margin-top:1px}
+td.pt,th.pt{font:800 15px "Roboto Condensed",sans-serif;color:var(--y);padding:0 6px;border-right:1px solid var(--line)}th.pt{font:800 9.5px system-ui;line-height:1.15}tr.me td.pn,tr.me td.pt{background:#1c1a12}
+table{min-width:560px}</style></head><body><div class="w">
 <h1>Rankings</h1><p class="ld" id="sub">Loading…</p>
 <div class="seg" id="mode"><button data-m="season" class="on">Season</button><button data-m="week">This week</button></div>
 <div id="out"><div class="msg">Loading league stats…</div></div></div>
@@ -50,13 +53,12 @@ const fmt=(c,v)=>c.endsWith("%")?v.toFixed(3).replace(/^0/,""):MODE==="week"?Str
 const col=(r,n)=>{const t=(r-1)/Math.max(1,n-1);if(t<=.2)return"background:rgba(74,222,128,.22);color:#86efac";if(t<=.45)return"background:rgba(74,222,128,.08);color:#d1fae5";if(t<.7)return"background:#1e1f23;color:#c9cad0";if(t<.85)return"background:rgba(248,113,113,.1);color:#fecaca";return"background:rgba(248,113,113,.22);color:#fca5a5"};
 function render(){const {rows,n}=compute(),max=rows[0]?rows[0].pts:1;
  document.getElementById("sub").textContent=(MODE==="season"?"Season so far":"This week")+" · "+n+" teams · roto points = sum of category ranks";
- const pr=rows.map((r,i)=>`<div class="pr${r.id===ME?" me":""}"><span class="rk">${i+1}</span><div class="nm"><b>${esc(r.name)}</b><small>${r.rec[0]}-${r.rec[1]}${r.rec[2]?"-"+r.rec[2]:""} record${r.led.length?" · leads "+r.led.join(", "):""}</small><div class="bar"><i style="width:${Math.round(r.pts/max*100)}%"></i></div></div><div class="sc"><b>${r.pts}</b><small>roto pts</small></div></div>`).join("");
  const lead=CATS.map(c=>{const s=[...rows].sort((a,b)=>a.rk[c]-b.rk[c]),a=s[0],b=s[1];return `<div class="lc${a.id===ME?" me":""}"><small>${c}</small><b>${esc(a.name)}</b><em>${fmt(c,a.v[c])}</em><u>2nd ${esc((b||{}).name||"").split(" ")[0]} ${b?fmt(c,b.v[c]):""}</u></div>`}).join("");
- const sr=SORT?[...rows].sort((a,b)=>a.rk[SORT]-b.rk[SORT]):rows;
- const grid=`<div class="gw"><table><tr><th class="tn${SORT?"":" on"}" data-s="">Team</th>${CATS.map(c=>`<th class="${SORT===c?"on":""}" data-s="${c}">${c}</th>`).join("")}</tr>${sr.map(r=>`<tr class="${r.id===ME?"me":""}"><td class="tn">${esc(r.name)}</td>${CATS.map(c=>`<td><span style="${col(r.rk[c],n)}">${r.rk[c]}</span></td>`).join("")}</tr>`).join("")}</table></div>`;
- document.getElementById("out").innerHTML=`<div class="sec"><b>POWER RANKINGS</b><small>by category ranks</small></div><div class="card">${pr}</div>
- <div class="sec"><b>CATEGORY LEADERS</b><small>gold outline = you</small></div><div class="ld9">${lead}</div>
- <div class="sec"><b>EVERY TEAM, EVERY CAT</b><small>tap a cat to sort · 1 = best</small></div><div class="card">${grid}</div>`}
+ const pos={};rows.forEach((r,i)=>pos[r.id]=i+1);
+ const sr=SORT?[...rows].sort((a,b)=>a.rk[SORT]-b.rk[SORT]||pos[a.id]-pos[b.id]):rows;
+ const grid=`<div class="gw"><table><tr><th class="pn">#</th><th class="tn${SORT?"":" on"}" data-s="">Team</th><th class="pt${SORT?"":" on"}" data-s="">ROTO</th>${CATS.map(c=>`<th class="${SORT===c?"on":""}" data-s="${c}">${c}</th>`).join("")}</tr>${sr.map(r=>`<tr class="${r.id===ME?"me":""}"><td class="pn">${pos[r.id]}</td><td class="tn"><b>${esc(r.name)}</b><small>${r.rec[0]}-${r.rec[1]}${r.rec[2]?"-"+r.rec[2]:""}</small></td><td class="pt">${r.pts}</td>${CATS.map(c=>`<td><span style="${col(r.rk[c],n)}">${r.rk[c]}</span></td>`).join("")}</tr>`).join("")}</table></div>`;
+ document.getElementById("out").innerHTML=`<div class="sec"><b>POWER RANKINGS</b><small>tap a cat to sort · 1 = best</small></div><div class="card">${grid}</div>
+ <div class="sec"><b>CATEGORY LEADERS</b><small>gold outline = you</small></div><div class="ld9">${lead}</div>`}
 document.addEventListener("click",e=>{const m=e.target.closest("[data-m]");if(m){MODE=m.dataset.m;document.querySelectorAll("[data-m]").forEach(b=>b.classList.toggle("on",b===m));render();return}
  const s=e.target.closest("[data-s]");if(s){SORT=s.dataset.s||null;render()}});
 load().catch(e=>{document.getElementById("out").innerHTML=`<div class="msg">Couldn't load the league (${esc(e.message)}).</div>`});
