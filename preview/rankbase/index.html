@@ -1,0 +1,63 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rankings Base</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--y:#ffc62b;--g:#4ade80;--r:#f87171;--sub:#8e9096;--card:#141518;--line:#202126}
+*{box-sizing:border-box}body{margin:0;background:#000;color:#f2f3f5;font:14px -apple-system,system-ui,sans-serif}
+.w{max-width:480px;margin:0 auto;padding:14px 10px 60px}
+h1{font:800 24px system-ui;margin:4px 4px 2px}.ld{color:var(--sub);font-size:12.5px;margin:0 4px 12px}
+.seg{display:flex;background:#141518;border-radius:999px;padding:3px;margin:0 0 14px}.seg button{flex:1;border:0;background:none;color:#9a9ca2;font:700 13px system-ui;padding:8px 0;border-radius:999px}.seg button.on{background:#fff;color:#000}
+.sec{display:flex;justify-content:space-between;align-items:baseline;margin:18px 4px 8px}.sec b{font:800 12px system-ui;letter-spacing:.1em;color:var(--sub)}.sec small{color:#6f7076;font-size:11.5px}
+.card{background:var(--card);border-radius:14px;overflow:hidden}
+.pr{display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1px solid var(--line)}.pr:first-child{border-top:0}.pr.me{background:rgba(255,198,43,.07)}
+.pr .rk{width:22px;font:800 18px "Roboto Condensed",sans-serif;text-align:center}.pr .nm{flex:1;min-width:0}.pr .nm b{display:block;font:700 14.5px system-ui;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pr .nm small{color:var(--sub);font-size:11.5px}
+.pr .sc{text-align:right}.pr .sc b{display:block;font:800 17px "Roboto Condensed",sans-serif}.pr .sc small{color:var(--sub);font-size:10.5px}
+.bar{height:4px;border-radius:2px;background:#24252a;margin-top:5px;overflow:hidden}.bar i{display:block;height:100%;background:var(--y)}
+.ld9{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.lc{min-width:0}.lc u{display:block;margin:2px 0 0!important}
+.lc{background:var(--card);border-radius:12px;padding:9px 10px}.lc.me{box-shadow:inset 0 0 0 1.5px var(--y)}
+.lc small{display:block;font:800 10.5px system-ui;letter-spacing:.08em;color:var(--sub)}.lc b{display:block;font:700 13px system-ui;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lc em{font-style:normal;font:800 16px "Roboto Condensed",sans-serif;color:var(--y)}.lc u{text-decoration:none;color:#6f7076;font-size:11px;margin-left:4px}
+.gw{overflow-x:auto;scrollbar-width:none}.gw::-webkit-scrollbar{display:none}
+table{border-collapse:collapse;width:100%;min-width:440px}th,td{text-align:center;padding:8px 2px;font:700 13px system-ui}
+th{font:800 10.5px system-ui;color:var(--sub);letter-spacing:.04em;cursor:pointer;position:sticky;top:0;background:var(--card)}th.on{color:var(--y)}
+td.tn,th.tn{text-align:left;padding-left:10px;position:sticky;left:0;background:var(--card);min-width:118px;max-width:118px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+tr{border-top:1px solid var(--line)}tr.me td{background:#1c1a12}tr.me td.tn{color:var(--y)}
+td span{display:inline-grid;place-items:center;width:26px;height:24px;border-radius:7px;font:800 13px "Roboto Condensed",sans-serif}
+.msg{color:var(--sub);padding:30px 12px;text-align:center}
+</style></head><body><div class="w">
+<h1>Rankings</h1><p class="ld" id="sub">Loading…</p>
+<div class="seg" id="mode"><button data-m="season" class="on">Season</button><button data-m="week">This week</button></div>
+<div id="out"><div class="msg">Loading league stats…</div></div></div>
+<script>
+const W="https://fantasy-plus.emre-tahincioglu.workers.dev",q=new URLSearchParams(location.search),LID=q.get("lid")||"982825862",ME=q.get("me")||"1";
+const CATS=["PTS","REB","AST","STL","BLK","3PM","FG%","FT%","TO"],REV=["TO"];
+let L=null,SEA=null,MODE="season",SORT=null;
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const j=u=>fetch(u,{cache:"no-store"}).then(r=>r.json());
+async function load(){L=await j(`${W}/live?lid=${LID}`);
+ if(L.ST&&Object.keys(L.ST).length){SEA=L.ST}else{const T={};const add=s=>{for(const id in s){T[id]=T[id]||{};for(const k in s[id])if(typeof s[id][k]==="number")T[id][k]=(T[id][k]||0)+s[id][k]}};
+  const sps=[];for(let i=1;i<L.sp;i++)sps.push(i);const res=await Promise.all(sps.map(sp=>j(`${W}/live?lid=${LID}&sp=${sp}`).catch(()=>null)));
+  res.forEach(r=>{if(!r||!r.P)return;const s={};for(const id in r.P){const a={};(r.P[id]||[]).forEach(p=>{const st=p.s||{};for(const k in st)if(typeof st[k]==="number")a[k]=(a[k]||0)+st[k]});s[id]=a}add(s)});
+  const cur={};(L.m||[]).forEach(m=>[m.h,m.a].forEach(x=>{if(x)cur[x.id]=x.s}));SEA=Object.keys(T).length?T:null;if(!SEA)SEA=cur}
+ render()}
+function stats(){if(MODE==="week"){const o={};(L.m||[]).forEach(m=>[m.h,m.a].forEach(x=>{if(x&&x.s)o[x.id]=x.s}));return o}return SEA||{}}
+function pct(s,c){if(c==="FG%")return s.FGA?s.FGM/s.FGA:(s["FG%"]||0);if(c==="FT%")return s.FTA?s.FTM/s.FTA:(s["FT%"]||0);return +s[c]||0}
+function compute(){const S=stats(),ids=Object.keys(L.teams).filter(id=>S[id]);const rk={},val={};
+ CATS.forEach(c=>{const arr=ids.map(id=>({id,v:pct(S[id],c)})).sort((a,b)=>REV.includes(c)?a.v-b.v:b.v-a.v);
+  arr.forEach((x,i)=>{rk[x.id]=rk[x.id]||{};val[x.id]=val[x.id]||{};let r=i+1;if(i&&x.v===arr[i-1].v)r=rk[arr[i-1].id][c];rk[x.id][c]=r;val[x.id][c]=x.v})});
+ const n=ids.length,rows=ids.map(id=>{const pts=CATS.reduce((a,c)=>a+(n+1-rk[id][c]),0),rec=(L.rec||{})[id]||[0,0,0];return{id,name:L.teams[id],pts,rk:rk[id],v:val[id],rec,led:CATS.filter(c=>rk[id][c]===1)}}).sort((a,b)=>b.pts-a.pts);
+ return{rows,n}}
+const fmt=(c,v)=>c.endsWith("%")?v.toFixed(3).replace(/^0/,""):MODE==="week"?String(Math.round(v)):String(Math.round(v));
+const col=(r,n)=>{const t=(r-1)/Math.max(1,n-1);if(t<=.2)return"background:rgba(74,222,128,.22);color:#86efac";if(t<=.45)return"background:rgba(74,222,128,.08);color:#d1fae5";if(t<.7)return"background:#1e1f23;color:#c9cad0";if(t<.85)return"background:rgba(248,113,113,.1);color:#fecaca";return"background:rgba(248,113,113,.22);color:#fca5a5"};
+function render(){const {rows,n}=compute(),max=rows[0]?rows[0].pts:1;
+ document.getElementById("sub").textContent=(MODE==="season"?"Season so far":"This week")+" · "+n+" teams · roto points = sum of category ranks";
+ const pr=rows.map((r,i)=>`<div class="pr${r.id===ME?" me":""}"><span class="rk">${i+1}</span><div class="nm"><b>${esc(r.name)}</b><small>${r.rec[0]}-${r.rec[1]}${r.rec[2]?"-"+r.rec[2]:""} record${r.led.length?" · leads "+r.led.join(", "):""}</small><div class="bar"><i style="width:${Math.round(r.pts/max*100)}%"></i></div></div><div class="sc"><b>${r.pts}</b><small>roto pts</small></div></div>`).join("");
+ const lead=CATS.map(c=>{const s=[...rows].sort((a,b)=>a.rk[c]-b.rk[c]),a=s[0],b=s[1];return `<div class="lc${a.id===ME?" me":""}"><small>${c}</small><b>${esc(a.name)}</b><em>${fmt(c,a.v[c])}</em><u>2nd ${esc((b||{}).name||"").split(" ")[0]} ${b?fmt(c,b.v[c]):""}</u></div>`}).join("");
+ const sr=SORT?[...rows].sort((a,b)=>a.rk[SORT]-b.rk[SORT]):rows;
+ const grid=`<div class="gw"><table><tr><th class="tn${SORT?"":" on"}" data-s="">Team</th>${CATS.map(c=>`<th class="${SORT===c?"on":""}" data-s="${c}">${c}</th>`).join("")}</tr>${sr.map(r=>`<tr class="${r.id===ME?"me":""}"><td class="tn">${esc(r.name)}</td>${CATS.map(c=>`<td><span style="${col(r.rk[c],n)}">${r.rk[c]}</span></td>`).join("")}</tr>`).join("")}</table></div>`;
+ document.getElementById("out").innerHTML=`<div class="sec"><b>POWER RANKINGS</b><small>by category ranks</small></div><div class="card">${pr}</div>
+ <div class="sec"><b>CATEGORY LEADERS</b><small>gold outline = you</small></div><div class="ld9">${lead}</div>
+ <div class="sec"><b>EVERY TEAM, EVERY CAT</b><small>tap a cat to sort · 1 = best</small></div><div class="card">${grid}</div>`}
+document.addEventListener("click",e=>{const m=e.target.closest("[data-m]");if(m){MODE=m.dataset.m;document.querySelectorAll("[data-m]").forEach(b=>b.classList.toggle("on",b===m));render();return}
+ const s=e.target.closest("[data-s]");if(s){SORT=s.dataset.s||null;render()}});
+load().catch(e=>{document.getElementById("out").innerHTML=`<div class="msg">Couldn't load the league (${esc(e.message)}).</div>`});
+</script></body></html>
