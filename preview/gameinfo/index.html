@@ -1,0 +1,57 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Game Info Options</title>
+<style>
+:root{--bg:#0b0b0d;--card:#141518;--line:#202126;--fg:#f2f3f5;--sub:#8e9096;--y:#ffc62b;--g:#4ade80;--r:#f87171;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px -apple-system,system-ui,sans-serif}
+.wrap{max-width:430px;margin:0 auto;padding:16px 10px 60px}
+h1{font:800 22px system-ui;margin:4px 6px 2px}.lede{color:var(--sub);font-size:13px;margin:0 6px 10px;line-height:1.4}
+.opt{margin:24px 0 0}.oh{display:flex;gap:8px;align-items:baseline;margin:0 6px 2px}.oh b{color:var(--y);font:800 16px system-ui}.oh span{font:700 15px system-ui}.od{display:block;color:var(--sub);font-size:12px;margin:0 6px 8px;line-height:1.35}
+.box{background:var(--card);border-radius:14px;overflow:hidden}
+.r{position:relative;display:flex;gap:9px;padding:9px 10px 9px 13px;border-top:1px solid var(--line)}.r:first-child{border-top:0}
+.r.lv{background:rgba(255,198,43,.05)}.r.lv::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;background:var(--y)}
+.ph{flex:none;width:40px;height:40px;border-radius:50%;background:#26272c;overflow:hidden;display:grid;place-items:center;font:800 12px system-ui;color:#999;position:relative}.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 12%}
+.m{flex:1;min-width:0}.top{display:flex;align-items:center;gap:8px;min-height:20px}.nm{font:700 15px system-ui;white-space:nowrap}.mn{font:600 11px system-ui;color:var(--sub)}
+.gi{margin-left:auto;display:flex;align-items:center;gap:5px;white-space:nowrap;font:700 12px system-ui}
+.lg{width:16px;height:16px;object-fit:contain;vertical-align:-3px}
+.y{color:var(--y)}.s{color:var(--sub)}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--y);animation:b 1.4s infinite}@keyframes b{50%{opacity:.25}}
+.st{display:grid;grid-template-columns:repeat(6,minmax(0,1fr)) minmax(0,1.35fr) minmax(0,1.35fr) minmax(0,1fr);margin-top:6px}
+.c{text-align:center}.c b{display:block;font:800 16px system-ui;letter-spacing:-.4px}.c u{display:block;text-decoration:none;font:700 9px system-ui;color:var(--sub)}.c.t u{color:#9fc6ff}
+</style></head><body><div class="wrap">
+<h1>Game + quarter · 20 options</h1>
+<p class="lede">Compact, side-by-side ways to show a player's NBA game on the matchup row: score, clock and quarter on one short line next to the name. Positions removed. Each option shows a live game, a final, and one that hasn't started.</p>
+<div id="o"></div></div>
+<script>
+const L=a=>`https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/${a}.png`;
+const lg=a=>`<img class="lg" src="${L(a)}" onerror="this.replaceWith(document.createTextNode('${a.toUpperCase()}'))">`;
+const P=[
+ {n:"J. Embiid",id:3059318,min:33,tm:"phi",op:"det",ts:111,os:106,q:4,clk:"0:12.5",state:"live",time:"",s:[26,14,2,1,0,0,"100%","44%",3]},
+ {n:"C. Coward",id:4903027,min:36,tm:"mem",op:"ind",ts:118,os:109,q:4,clk:"",state:"fin",time:"",s:[17,4,4,3,0,3,"100%","55%",1]},
+ {n:"A. Reaves",id:4066457,min:0,tm:"lal",op:"sac",ts:0,os:0,q:0,clk:"",state:"pre",time:"10:30 PM",s:["–","–","–","–","–","–","–","–","–"]}];
+const K=["PTS","REB","AST","STL","BLK","3PM","FT","FG","TO"];
+const stats=p=>`<div class="st">${p.s.map((v,i)=>`<div class="c${i===6||i===7?" t":""}"><b>${v}</b><u>${K[i]}</u></div>`).join("")}</div>`;
+const ph=p=>`<span class="ph">${p.n.replace(/[^A-Z]/g,"").slice(0,2)}<img src="https://a.espncdn.com/i/headshots/nba/players/full/${p.id}.png" onerror="this.remove()"></span>`;
+const row=(p,f,o={})=>`<div class="r${p.state==="live"?" lv":""}">${ph(p)}<div class="m"><div class="top"><span class="nm">${p.n}</span>${o.min===false?"":`<span class="mn">${p.min?p.min+" min":""}</span>`}<span class="gi">${f(p)}</span></div>${o.sub?`<div style="margin-top:2px">${o.sub(p)}</div>`:""}${stats(p)}</div></div>`;
+const lead=p=>p.ts-p.os,Q=p=>p.state==="live"?`Q${p.q} ${p.clk}`:p.state==="fin"?"Final":p.time;
+const O=[];const add=(t,d,f,o)=>O.push({t,d,h:`<div class="box">${P.map(p=>row(p,f,o)).join("")}</div>`});
+add("Logos, score, clock","Team logo · score · opponent logo, then the yellow clock, all on one line.",p=>p.state==="pre"?`${lg(p.tm)} <span class="s">vs</span> ${lg(p.op)} <span class="s">${p.time}</span>`:`${lg(p.tm)}<b>${p.ts}–${p.os}</b>${lg(p.op)} <span class="${p.state==="live"?"y":"s"}">${Q(p)}</span>`);
+add("Abbreviations only","No logos: “PHI 111–106 DET · Q4 0:12”. Smallest and clearest.",p=>p.state==="pre"?`<span class="s">vs ${p.op.toUpperCase()} · ${p.time}</span>`:`<span>${p.tm.toUpperCase()} <b>${p.ts}–${p.os}</b> ${p.op.toUpperCase()}</span><span class="${p.state==="live"?"y":"s"}">· ${Q(p)}</span>`);
+add("Opponent only","“vs DET 111–106 · Q4 0:12”. His own team is implied.",p=>`<span class="s">vs</span>${lg(p.op)}${p.state==="pre"?`<span class="s">${p.time}</span>`:`<b>${p.ts}–${p.os}</b><span class="${p.state==="live"?"y":"s"}">${Q(p)}</span>`}`);
+add("Lead + clock","Just the lead and the clock: “▲5 · Q4 0:12”, green when ahead, red when behind.",p=>p.state==="pre"?`<span class="s">${lg(p.op)} ${p.time}</span>`:`<b style="color:${lead(p)>=0?"var(--g)":"var(--r)"}">${lead(p)>=0?"▲":"▼"}${Math.abs(lead(p))}</b><span class="${p.state==="live"?"y":"s"}">${Q(p)}</span>`);
+add("Pulsing dot + quarter","Yellow pulsing dot, then “Q4 0:12”, then the score in grey.",p=>p.state==="live"?`<span class="dot"></span><span class="y">Q4 0:12</span><span class="s">${p.ts}–${p.os}</span>`:p.state==="fin"?`<span class="s">Final ${p.ts}–${p.os}</span>`:`<span class="s">${p.time}</span>`);
+add("Clock pill","The clock in a small yellow pill, score next to it.",p=>`${p.state==="pre"?"":`<b>${p.ts}–${p.os}</b>`}<span style="padding:2px 7px;border-radius:999px;font:800 10.5px system-ui;background:${p.state==="live"?"rgba(255,198,43,.18)":"#26272c"};color:${p.state==="live"?"var(--y)":"var(--sub)"}">${Q(p)}</span>`);
+add("Quarter boxes","Four tiny boxes for Q1–Q4 (filled = done, yellow = now) + score.",p=>`${p.state==="pre"?`<span class="s">${p.time}</span>`:`<b>${p.ts}–${p.os}</b>`}<span style="display:flex;gap:2px">${[1,2,3,4].map(i=>`<i style="width:7px;height:10px;border-radius:2px;background:${p.state==="fin"||i<p.q?"#777":i===p.q&&p.state==="live"?"var(--y)":"#2a2b30"}"></i>`).join("")}</span>`);
+add("Progress bar","A short bar fills as the game goes, score above it, clock to its right.",p=>{const pr=p.state==="fin"?1:p.state==="live"?.97:0;return `${p.state==="pre"?`<span class="s">${p.time}</span>`:`<b>${p.ts}–${p.os}</b>`}<span style="width:38px;height:4px;border-radius:2px;background:#2a2b30;overflow:hidden;display:inline-block"><i style="display:block;height:100%;width:${pr*100}%;background:${p.state==="live"?"var(--y)":"#777"}"></i></span>`});
+add("W / L letter","Finals show a green W or red L; live shows the lead colour; upcoming shows the tip time.",p=>p.state==="fin"?`<b style="color:${lead(p)>0?"var(--g)":"var(--r)"}">${lead(p)>0?"W":"L"}</b><span class="s">${p.ts}–${p.os}</span>`:p.state==="live"?`<b style="color:${lead(p)>=0?"var(--g)":"var(--r)"}">${p.ts}–${p.os}</b><span class="y">Q4 0:12</span>`:`<span class="s">${p.time}</span>`);
+add("Minutes moved in","Drops the minutes line; game info sits where minutes were: “33′ · 111–106 · Q4”.",p=>`<span class="s">${p.min?p.min+"′":""}</span>${p.state==="pre"?`<span class="s">${p.time}</span>`:`<b>${p.ts}–${p.os}</b><span class="${p.state==="live"?"y":"s"}">${p.state==="live"?"Q4":"F"}</span>`}`,{min:false});
+add("Two-tone score","His team's score bright, opponent's dim, clock small: tells you who's winning at a glance.",p=>p.state==="pre"?`<span class="s">${p.time}</span>`:`<b>${p.ts}</b><span class="s">${p.os}</span><span class="${p.state==="live"?"y":"s"}" style="font-size:10.5px">${Q(p)}</span>`);
+add("Quarter only","Live shows just “Q4” (or “HALF”), finals “F”. Least clutter; tap for the full score.",p=>p.state==="pre"?`<span class="s">${p.time}</span>`:`<span class="${p.state==="live"?"y":"s"}" style="font-weight:800">${p.state==="live"?"● Q4":"F"}</span>`);
+add("Score under the name","Game info moves to a small line under the name; the right side stays empty.",p=>"",{sub:p=>`<span style="font:600 11px system-ui;color:var(--sub)">${p.min?p.min+" min · ":""}${p.state==="pre"?"vs "+p.op.toUpperCase()+" "+p.time:`${p.tm.toUpperCase()} ${p.ts}–${p.os} ${p.op.toUpperCase()} · <span class="${p.state==="live"?"y":""}">${Q(p)}</span>`}</span>`});
+add("Logos stacked tiny","Two tiny logos stacked with their scores, clock beside them. Narrow but complete.",p=>p.state==="pre"?`<span class="s">${p.time}</span>`:`<span style="display:flex;flex-direction:column;font:700 10.5px system-ui;line-height:1.15"><span>${lg(p.tm)} ${p.ts}</span><span class="s">${lg(p.op)} ${p.os}</span></span><span class="${p.state==="live"?"y":"s"}" style="font-size:10.5px">${p.state==="live"?"Q4<br>0:12":"Final"}</span>`);
+add("Scoreboard chip","One dark rounded chip holding score and clock, like a tiny TV scoreboard.",p=>`<span style="display:inline-flex;gap:6px;align-items:center;background:#0c0d0f;border:1px solid #2a2b30;border-radius:7px;padding:2px 7px">${p.state==="pre"?`<span class="s">${p.time}</span>`:`<b>${p.ts}–${p.os}</b><span class="${p.state==="live"?"y":"s"}" style="font-size:10.5px">${Q(p)}</span>`}</span>`);
+add("Clock first","Clock leads (it's what you check most), score after: “Q4 0:12 · 111–106”.",p=>p.state==="pre"?`<span class="s">${p.time}</span>`:`<span class="${p.state==="live"?"y":"s"}">${Q(p)}</span><b>${p.ts}–${p.os}</b>`);
+add("Home / away marker","“vs” for home, “@” for away, opponent logo, then score and clock.",p=>`<span class="s">${p.tm==="phi"||p.tm==="mem"?"vs":"@"}</span>${lg(p.op)}${p.state==="pre"?`<span class="s">${p.time}</span>`:`<b>${p.ts}–${p.os}</b><span class="${p.state==="live"?"y":"s"}">${p.state==="live"?"Q4":"F"}</span>`}`);
+add("Close-game flame","Same as #1, plus a small 🔥 when the game is within 5 in the 4th (more minutes for starters).",p=>p.state==="pre"?`<span class="s">${p.time}</span>`:`${lg(p.tm)}<b>${p.ts}–${p.os}</b>${lg(p.op)}<span class="${p.state==="live"?"y":"s"}">${p.state==="live"?"Q4":"F"}</span>${p.state==="live"&&Math.abs(lead(p))<=5?"🔥":""}`);
+add("Blowout warning","Flags blowouts (15+ in the 4th) in red, since starters may sit.",p=>p.state==="pre"?`<span class="s">${p.time}</span>`:`<b>${p.ts}–${p.os}</b><span class="${p.state==="live"?"y":"s"}">${Q(p)}</span>${p.state==="live"&&Math.abs(lead(p))>=15?`<span style="color:var(--r);font:800 9px system-ui">BLOWOUT</span>`:""}`);
+add("Ultra-minimal","Only the clock for live games and nothing else; finals and upcoming are greyed text.",p=>`<span class="${p.state==="live"?"y":"s"}" style="font-size:11.5px">${p.state==="live"?"● Q4 0:12":p.state==="fin"?"Final":p.time}</span>`);
+document.getElementById("o").innerHTML=O.map((x,i)=>`<div class="opt"><div class="oh"><b>${i+1}</b><span>${x.t}</span></div><span class="od">${x.d}</span>${x.h}</div>`).join("");
+</script></body></html>
