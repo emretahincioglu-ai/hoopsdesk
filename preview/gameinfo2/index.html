@@ -1,0 +1,51 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Game Info Without Numbers</title>
+<style>
+:root{--bg:#0b0b0d;--card:#141518;--line:#202126;--fg:#f2f3f5;--sub:#8e9096;--y:#ffc62b;--g:#4ade80;--r:#f87171;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px -apple-system,system-ui,sans-serif}
+.wrap{max-width:430px;margin:0 auto;padding:16px 10px 60px}
+h1{font:800 22px system-ui;margin:4px 6px 2px}.lede{color:var(--sub);font-size:13px;margin:0 6px 10px;line-height:1.4}
+.opt{margin:24px 0 0}.oh{display:flex;gap:8px;align-items:baseline;margin:0 6px 2px}.oh b{color:var(--y);font:800 16px system-ui}.oh span{font:700 15px system-ui}.od{display:block;color:var(--sub);font-size:12px;margin:0 6px 8px;line-height:1.35}
+.box{background:var(--card);border-radius:14px;overflow:hidden}
+.r{position:relative;display:flex;gap:10px;padding:9px 10px 9px 13px;border-top:1px solid var(--line);align-items:flex-start}.r:first-child{border-top:0}
+.ph{flex:none;width:42px;height:42px;border-radius:50%;background:#26272c;display:grid;place-items:center;font:800 12px system-ui;color:#999;position:relative}
+.ph .im{position:absolute;inset:0;border-radius:50%;overflow:hidden}.ph img.h{width:100%;height:100%;object-fit:cover;object-position:50% 12%}
+.m{flex:1;min-width:0}.top{display:flex;align-items:center;gap:7px;min-height:20px}.nm{font:700 15px system-ui;white-space:nowrap}
+.gi{margin-left:auto;display:flex;align-items:center;gap:6px;white-space:nowrap;font:700 11.5px system-ui}
+.lg{width:20px;height:20px;object-fit:contain}
+.y{color:var(--y)}.s{color:var(--sub)}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--y);animation:b 1.4s infinite}@keyframes b{50%{opacity:.25}}
+.st{display:grid;grid-template-columns:repeat(6,minmax(0,1fr)) minmax(0,1.35fr) minmax(0,1.35fr) minmax(0,1fr);margin-top:6px}
+.c{text-align:center}.c b{display:block;font:800 16px system-ui;letter-spacing:-.4px}.c u{display:block;text-decoration:none;font:700 9px system-ui;color:var(--sub)}
+.gh{display:flex;align-items:center;gap:8px;padding:9px 12px;background:#101114;border-top:1px solid var(--line);font:800 12px system-ui}
+</style></head><body><div class="wrap">
+<h1>Game info, no extra numbers · 12 ideas</h1>
+<p class="lede">The stats are the numbers that matter. These show the NBA game with colour, shape and icons instead of scores and clocks, so the row only has one set of numbers. Each shows a live game (Embiid), a final (Coward) and one that hasn't started (Reaves).</p>
+<div id="o"></div></div>
+<script>
+const L=a=>`https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/${a}.png`;
+const lg=(a,st="")=>`<img class="lg" style="${st}" src="${L(a)}" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'${a.toUpperCase()}',style:'font:800 10px system-ui;color:#9a9ca2'}))">`;
+const P=[
+ {n:"J. Embiid",id:3059318,tm:"phi",op:"det",lead:5,prog:.97,q:"4TH",state:"live",time:"",s:[26,14,2,1,0,0,"100%","44%",3]},
+ {n:"C. Coward",id:4903027,tm:"mem",op:"ind",lead:9,prog:1,q:"",state:"fin",time:"",s:[17,4,4,3,0,3,"100%","55%",1]},
+ {n:"A. Reaves",id:4066457,tm:"lal",op:"sac",lead:0,prog:0,q:"",state:"pre",time:"10:30",s:["–","–","–","–","–","–","–","–","–"]}];
+const K=["PTS","REB","AST","STL","BLK","3PM","FT","FG","TO"];
+const stats=p=>`<div class="st">${p.s.map((v,i)=>`<div class="c"><b style="${p.state==="pre"?"color:#55575c":""}">${v}</b><u>${K[i]}</u></div>`).join("")}</div>`;
+const head=p=>`<img class="h" src="https://a.espncdn.com/i/headshots/nba/players/full/${p.id}.png" onerror="this.remove()">`;
+const ph=(p,ring="")=>`<span class="ph">${ring}<span class="im" style="${ring?"inset:3px":""}">${head(p)}</span>${p.n.replace(/[^A-Z]/g,"").slice(0,2)}</span>`;
+const row=(p,o)=>`<div class="r" style="${o.rs?o.rs(p):""}">${o.ph?o.ph(p):ph(p)}<div class="m"><div class="top"><span class="nm">${p.n}</span><span class="gi">${o.gi?o.gi(p):""}</span></div>${stats(p)}</div>${o.after?o.after(p):""}</div>`;
+const O=[];const add=(t,d,o,html)=>O.push({t,d,h:html||`<div class="box">${P.map(p=>row(p,o)).join("")}</div>`});
+const ring=p=>{const deg=p.prog*360,c=p.state==="live"?"var(--y)":p.state==="fin"?"#555":"#2a2b30";return `<i style="position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(${c} ${deg}deg,#2a2b30 0)"></i>`};
+add("Progress ring on the photo","A ring around his photo fills as the game goes. Yellow = live, grey = finished, empty = not started. No text at all.",{ph:p=>`<span class="ph" style="width:44px;height:44px">${ring(p)}<span class="im" style="inset:0;border:2px solid var(--card)">${head(p)}</span></span>`});
+add("Opponent logo + state dot","Only the opponent's logo. A pulsing yellow dot if live, a grey check if final, the tip time if later.",{gi:p=>`${lg(p.op)}${p.state==="live"?'<span class="dot"></span>':p.state==="fin"?'<span class="s">✓</span>':`<span class="s">${p.time}</span>`}`});
+add("Quarter as a word","“4TH” or “HALF” in yellow for live, “FINAL” grey. Words read faster than a clock.",{gi:p=>p.state==="live"?`<span class="y" style="font-weight:900;letter-spacing:.06em">${p.q}</span>`:p.state==="fin"?`<span class="s" style="letter-spacing:.06em">FINAL</span>`:`<span class="s">${p.time}</span>`});
+add("Row fills like a progress bar","The row's background tint fills left to right as the game goes. You see who's still playing at a glance.",{rs:p=>`background:linear-gradient(90deg,rgba(255,198,43,${p.state==="live"?.09:p.state==="fin"?.0:0}) ${p.prog*100}%,transparent ${p.prog*100}%)`,gi:p=>lg(p.op)});
+add("Icons only","▶ live, ✓ final, a small clock icon with the tip time for later games.",{gi:p=>p.state==="live"?`<span class="y" style="font-size:13px">▶</span>`:p.state==="fin"?`<span class="s">✓</span>`:`<span class="s">🕥 ${p.time}</span>`});
+add("Winning / losing ring on the logo","Opponent logo with a green ring if his team is ahead, red if behind, grey when done.",{gi:p=>`<span style="display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;box-shadow:0 0 0 2px ${p.state==="pre"?"#2a2b30":p.state==="fin"?"#555":p.lead>=0?"var(--g)":"var(--r)"}">${lg(p.op)}</span>`});
+add("Game mood chip","One word instead of the score: CLOSE (yellow), COMFY (green) or BLOWOUT (red: starters may sit).",{gi:p=>p.state==="live"?`<span style="font:900 10px system-ui;letter-spacing:.06em;padding:2px 7px;border-radius:999px;background:rgba(255,198,43,.16);color:var(--y)">CLOSE</span>`:p.state==="fin"?`<span class="s" style="font-size:10.5px">FINAL</span>`:`<span class="s">${p.time}</span>`});
+add("Stripe tells the story","The left stripe does all the work: yellow and pulsing while live, grey when done, none if not started. Nothing on the right.",{rs:p=>"",after:p=>`<i style="position:absolute;left:0;top:8px;bottom:8px;width:4px;border-radius:2px;background:${p.state==="live"?"var(--y)":p.state==="fin"?"#444":"transparent"};${p.state==="live"?"animation:b 1.4s infinite":""}"></i>`});
+add("Group by game (ESPN-style header)","Players in the same NBA game sit under one header line: “PHI vs DET · 4th”. Each row then has zero game info.",{},`<div class="box"><div class="gh">${lg("phi")}<span>vs</span>${lg("det")}<span class="y" style="margin-left:auto">● 4TH</span></div>${row(P[0],{})}${row({...P[0],n:"T. Maxey",id:4431678,s:[17,1,7,0,0,3,"100%","31%",2]},{})}<div class="gh">${lg("mem")}<span>vs</span>${lg("ind")}<span class="s" style="margin-left:auto">FINAL</span></div>${row(P[1],{})}<div class="gh">${lg("lal")}<span>vs</span>${lg("sac")}<span class="s" style="margin-left:auto">10:30 PM</span></div>${row(P[2],{})}</div>`);
+add("Tap for the game","Rows show nothing about the game. Tap the photo and a small scoreboard pops up (score, clock, box score link).",{gi:p=>""});
+add("Live players first, dimmed when done","Order carries the meaning: live players on top in full colour, finished ones dimmed, upcoming at the bottom greyed.",{rs:p=>p.state==="fin"?"opacity:.6":p.state==="pre"?"opacity:.4":"",gi:p=>p.state==="live"?'<span class="dot"></span>':""});
+add("Logo badge on the photo","A small opponent logo sits on the photo's corner, with a yellow border while the game is live.",{ph:p=>`<span class="ph">${`<span class="im">${head(p)}</span>`}<span style="position:absolute;right:-5px;bottom:-4px;width:20px;height:20px;border-radius:50%;background:#0c0d0f;display:grid;place-items:center;box-shadow:0 0 0 2px ${p.state==="live"?"var(--y)":"#2a2b30"}">${lg(p.op,"width:14px;height:14px")}</span></span>`});
+document.getElementById("o").innerHTML=O.map((x,i)=>`<div class="opt"><div class="oh"><b>${i+1}</b><span>${x.t}</span></div><span class="od">${x.d}</span>${x.h}</div>`).join("");
+</script></body></html>
