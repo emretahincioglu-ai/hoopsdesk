@@ -26,20 +26,21 @@ td span{display:inline-grid;place-items:center;width:26px;height:24px;border-rad
 td.pn,th.pn{position:sticky;left:0;z-index:2;background:var(--card);width:26px;min-width:26px;font:800 15px "Roboto Condensed",sans-serif;color:#c9cad0;padding-left:8px}
 td.tn,th.tn{left:26px!important;min-width:112px!important;max-width:112px!important}td.tn b{display:block;font:700 13px system-ui;overflow:hidden;text-overflow:ellipsis}td.tn small{display:block;font:600 10.5px system-ui;color:var(--sub);margin-top:1px}
 td.pt,th.pt{font:800 15px "Roboto Condensed",sans-serif;color:var(--y);padding:0 6px;border-right:1px solid var(--line)}th.pt{font:800 9.5px system-ui;line-height:1.15}tr.me td.pn,tr.me td.pt{background:#1c1a12}
-table{min-width:560px}</style></head><body><div class="w">
+table{min-width:560px}.ch{padding:10px 8px 10px}.legs{display:flex;flex-wrap:wrap;gap:5px;margin:0 2px 8px}.lg{display:flex;align-items:center;gap:5px;border:1px solid #2a2b30;background:none;color:#c9cad0;font:600 11px system-ui;padding:4px 8px;border-radius:999px}.lg i{width:8px;height:8px;border-radius:2px}.lg.on{border-color:#fff;color:#fff;background:#1e1f23}
+.rkh{font:800 10px system-ui;letter-spacing:.08em;color:var(--sub);margin:2px 2px 4px;text-transform:uppercase}.rkrow{display:grid;font:800 11px "Roboto Condensed",sans-serif;text-align:center;color:#c9cad0}.rkrow .g{color:var(--g)}.rkrow .y{color:var(--y)}.chn{color:#6f7076;font-size:11px;margin:8px 2px 0;line-height:1.35}</style></head><body><div class="w">
 <h1>Rankings</h1><p class="ld" id="sub">Loading…</p>
 <div class="seg" id="mode"><button data-m="season" class="on">Season</button><button data-m="week">This week</button></div>
 <div id="out"><div class="msg">Loading league stats…</div></div></div>
 <script>
 const W="https://fantasy-plus.emre-tahincioglu.workers.dev",q=new URLSearchParams(location.search),LID=q.get("lid")||"982825862",ME=q.get("me")||"1";
 const CATS=["PTS","REB","AST","STL","BLK","3PM","FG%","FT%","TO"],REV=["TO"];
-let L=null,SEA=null,MODE="season",SORT=null;
+let L=null,SEA=null,MODE="season",SORT=null,DAYS=[],PRE=null,HL=null;
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const j=u=>fetch(u,{cache:"no-store"}).then(r=>r.json());
-async function load(){L=await j(`${W}/live?lid=${LID}`);
- if(L.ST&&Object.keys(L.ST).length){SEA=L.ST}else{const T={};const add=s=>{for(const id in s){T[id]=T[id]||{};for(const k in s[id])if(typeof s[id][k]==="number")T[id][k]=(T[id][k]||0)+s[id][k]}};
+async function load(){[L,PRE]=await Promise.all([j(`${W}/live?lid=${LID}`),fetch("pre.json").then(r=>r.json()).catch(()=>null)]);HL=ME;
+ {const T={};const add=s=>{for(const id in s){T[id]=T[id]||{};for(const k in s[id])if(typeof s[id][k]==="number")T[id][k]=(T[id][k]||0)+s[id][k]}};
   const sps=[];for(let i=1;i<L.sp;i++)sps.push(i);const res=await Promise.all(sps.map(sp=>j(`${W}/live?lid=${LID}&sp=${sp}`).catch(()=>null)));
-  res.forEach(r=>{if(!r||!r.P)return;const s={};for(const id in r.P){const a={};(r.P[id]||[]).forEach(p=>{const st=p.s||{};for(const k in st)if(typeof st[k]==="number")a[k]=(a[k]||0)+st[k]});s[id]=a}add(s)});
+  DAYS=res;res.forEach(r=>{if(!r||!r.P)return;const s={};for(const id in r.P){const a={};(r.P[id]||[]).forEach(p=>{const st=p.s||{};for(const k in st)if(typeof st[k]==="number")a[k]=(a[k]||0)+st[k]});s[id]=a}add(s)});
   const cur={};(L.m||[]).forEach(m=>[m.h,m.a].forEach(x=>{if(x)cur[x.id]=x.s}));SEA=Object.keys(T).length?T:null;if(!SEA)SEA=cur}
  render()}
 function stats(){if(MODE==="week"){const o={};(L.m||[]).forEach(m=>[m.h,m.a].forEach(x=>{if(x&&x.s)o[x.id]=x.s}));return o}return SEA||{}}
@@ -51,6 +52,31 @@ function compute(){const S=stats(),ids=Object.keys(L.teams).filter(id=>S[id]);co
  return{rows,n}}
 const fmt=(c,v)=>c.endsWith("%")?v.toFixed(3).replace(/^0/,""):MODE==="week"?String(Math.round(v)):String(Math.round(v));
 const col=(r,n)=>{const t=(r-1)/Math.max(1,n-1);if(t<=.2)return"background:rgba(74,222,128,.22);color:#86efac";if(t<=.45)return"background:rgba(74,222,128,.08);color:#d1fae5";if(t<.7)return"background:#1e1f23;color:#c9cad0";if(t<.85)return"background:rgba(248,113,113,.1);color:#fecaca";return"background:rgba(248,113,113,.22);color:#fca5a5"};
+
+const COLS=["#ffc62b","#ff8a3d","#f87171","#e879f9","#a78bfa","#60a5fa","#22d3ee","#4ade80","#a3e635","#fde68a","#94a3b8","#fb7185"];
+const nrm=s=>String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z]/g,"");
+function rotoOf(S){const ids=Object.keys(L.teams).filter(id=>S[id]),n=ids.length,pts={},rk={};
+ CATS.forEach(c=>{const arr=ids.map(id=>({id,v:pct(S[id],c)})).sort((a,b)=>REV.includes(c)?a.v-b.v:b.v-a.v);arr.forEach((x,i)=>{let r=i+1;if(i&&x.v===arr[i-1].v)r=rk[arr[i-1].id];rk[x.id]=r;pts[x.id]=(pts[x.id]||0)+(n+1-r)})});
+ const ord=ids.sort((a,b)=>pts[b]-pts[a]);const pos={};ord.forEach((id,i)=>pos[id]=i+1);return{pts,pos}}
+function series(){const pts=[],lab=[];
+ if(PRE){const ros={};DAYS.slice(0,7).forEach(r=>{if(!r||!r.P)return;for(const id in r.P){ros[id]=ros[id]||new Set();(r.P[id]||[]).forEach(p=>ros[id].add(nrm(p.n)))}});
+  const S={};for(const id in ros){const t={PTS:0,"3PM":0,REB:0,AST:0,STL:0,BLK:0,FGM:0,FGA:0,FTM:0,FTA:0,TO:0};ros[id].forEach(n=>{const q=PRE[n];if(!q)return;const g=q[11]||70;t.PTS+=q[0]*g;t["3PM"]+=q[1]*g;t.REB+=q[2]*g;t.AST+=q[3]*g;t.STL+=q[4]*g;t.BLK+=q[5]*g;t.FGM+=q[6]*q[7]*g;t.FGA+=q[7]*g;t.FTM+=q[8]*q[9]*g;t.FTA+=q[9]*g;t.TO+=q[10]*g});S[id]=t}
+  if(Object.keys(S).length){pts.push(rotoOf(S));lab.push("Pre")}}
+ const T={};DAYS.forEach((r,i)=>{if(!r||!r.P)return;for(const id in r.P){T[id]=T[id]||{};(r.P[id]||[]).forEach(p=>{const st=p.s||{};for(const k in st)if(typeof st[k]==="number")T[id][k]=(T[id][k]||0)+st[k]})}
+  const d=new Date(Date.UTC(2026,9,19+(i+1)));if(i%2===0||i===DAYS.length-1){pts.push(rotoOf(JSON.parse(JSON.stringify(T))));lab.push((d.getUTCMonth()+1)+"/"+d.getUTCDate())}});
+ return{pts,lab}}
+function chartHtml(){const {pts,lab}=series();if(pts.length<2)return"";const ids=Object.keys(L.teams).filter(id=>pts.some(p=>p.pts[id]!=null));
+ const Wd=360,Ht=214,pl=28,pr=12,pt=10,pb=36,all=[];pts.forEach(p=>ids.forEach(id=>p.pts[id]!=null&&all.push(p.pts[id])));
+ const lo=Math.floor(Math.min(...all)/5)*5,hi=Math.ceil(Math.max(...all)/5)*5,X=i=>pl+i*(Wd-pl-pr)/(pts.length-1),Y=v=>pt+(hi-v)*(Ht-pt-pb)/((hi-lo)||1);
+ const col={};ids.forEach((id,i)=>col[id]=COLS[i%COLS.length]);
+ let g="";for(let v=lo;v<=hi;v+=Math.max(5,Math.round((hi-lo)/4/5)*5))g+=`<line x1="${pl}" x2="${Wd-pr}" y1="${Y(v)}" y2="${Y(v)}" stroke="#24252a"/><text x="${pl-5}" y="${Y(v)+3}" fill="#6f7076" font-size="8.5" text-anchor="end">${v}</text>`;
+ const ln=id=>`<polyline fill="none" stroke="${col[id]}" stroke-width="${id===HL?2.6:1.3}" stroke-opacity="${HL&&id!==HL?.28:1}" stroke-linejoin="round" points="${pts.map((p,i)=>p.pts[id]!=null?X(i)+","+Y(p.pts[id]):"").join(" ")}"/>${id===HL?pts.map((p,i)=>p.pts[id]!=null?`<circle cx="${X(i)}" cy="${Y(p.pts[id])}" r="2.6" fill="${col[id]}"/>`:"").join(""):""}`;
+ const order=[...ids.filter(id=>id!==HL),HL].filter(Boolean);
+ const xl=lab.map((l,i)=>`<text x="${X(i)}" y="${Ht-22}" fill="#8e9096" font-size="8.5" text-anchor="middle">${l}</text>`).join("");
+ const hlP=HL?pts.map(p=>p.pos[HL]):[];
+ const rk=`<div class="rkrow" style="grid-template-columns:${pl}px repeat(${pts.length},1fr)"><span></span>${hlP.map(v=>`<span class="${v===1?"g":v<=3?"y":""}">${v?v+(v===1?"st":v===2?"nd":v===3?"rd":"th"):""}</span>`).join("")}</div>`;
+ const leg=ids.map(id=>`<button class="lg${id===HL?" on":""}" data-hl="${id}"><i style="background:${col[id]}"></i>${esc(L.teams[id])}</button>`).join("");
+ return `<div class="sec"><b>PROGRESS</b><small>roto points over time · tap a team</small></div><div class="card ch"><div class="legs">${leg}</div><svg viewBox="0 0 ${Wd} ${Ht}" width="100%">${g}${order.map(ln).join("")}${xl}${HL?hlP.map((v,i)=>v?`<text x="${X(i)}" y="${Ht-6}" fill="${v===1?"#4ade80":v<=3?"#ffc62b":"#c9cad0"}" font-size="9.5" font-weight="800" text-anchor="middle">${v}${v===1?"st":v===2?"nd":v===3?"rd":"th"}</text>`:"").join(""):""}</svg><p class="chn">Pre = preseason Basketball Monster projections for each team's week-1 roster. Then real stats, cumulative.</p></div>`}
 function render(){const {rows,n}=compute(),max=rows[0]?rows[0].pts:1;
  document.getElementById("sub").textContent=(MODE==="season"?"Season so far":"This week")+" · "+n+" teams · roto points = sum of category ranks";
  const lead=CATS.map(c=>{const s=[...rows].sort((a,b)=>a.rk[c]-b.rk[c]),a=s[0],b=s[1];return `<div class="lc${a.id===ME?" me":""}"><small>${c}</small><b>${esc(a.name)}</b><em>${fmt(c,a.v[c])}</em><u>2nd ${esc((b||{}).name||"").split(" ")[0]} ${b?fmt(c,b.v[c]):""}</u></div>`}).join("");
@@ -58,8 +84,9 @@ function render(){const {rows,n}=compute(),max=rows[0]?rows[0].pts:1;
  const sr=SORT?[...rows].sort((a,b)=>a.rk[SORT]-b.rk[SORT]||pos[a.id]-pos[b.id]):rows;
  const grid=`<div class="gw"><table><tr><th class="pn">#</th><th class="tn${SORT?"":" on"}" data-s="">Team</th><th class="pt${SORT?"":" on"}" data-s="">ROTO</th>${CATS.map(c=>`<th class="${SORT===c?"on":""}" data-s="${c}">${c}</th>`).join("")}</tr>${sr.map(r=>`<tr class="${r.id===ME?"me":""}"><td class="pn">${pos[r.id]}</td><td class="tn"><b>${esc(r.name)}</b><small>${r.rec[0]}-${r.rec[1]}${r.rec[2]?"-"+r.rec[2]:""}</small></td><td class="pt">${r.pts}</td>${CATS.map(c=>`<td><span style="${col(r.rk[c],n)}">${r.rk[c]}</span></td>`).join("")}</tr>`).join("")}</table></div>`;
  document.getElementById("out").innerHTML=`<div class="sec"><b>POWER RANKINGS</b><small>tap a cat to sort · 1 = best</small></div><div class="card">${grid}</div>
- <div class="sec"><b>CATEGORY LEADERS</b><small>gold outline = you</small></div><div class="ld9">${lead}</div>`}
+ ${MODE==="season"?chartHtml():""}<div class="sec"><b>CATEGORY LEADERS</b><small>gold outline = you</small></div><div class="ld9">${lead}</div>`}
 document.addEventListener("click",e=>{const m=e.target.closest("[data-m]");if(m){MODE=m.dataset.m;document.querySelectorAll("[data-m]").forEach(b=>b.classList.toggle("on",b===m));render();return}
+ const h=e.target.closest("[data-hl]");if(h){HL=HL===h.dataset.hl?null:h.dataset.hl;render();return}
  const s=e.target.closest("[data-s]");if(s){SORT=s.dataset.s||null;render()}});
 load().catch(e=>{document.getElementById("out").innerHTML=`<div class="msg">Couldn't load the league (${esc(e.message)}).</div>`});
 </script></body></html>
