@@ -1,0 +1,108 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Matchup Row Score Options</title>
+<style>
+:root{--bg:#0b0b0d;--card:#141518;--line:#202126;--fg:#f2f3f5;--sub:#8e9096;--y:#ffc62b;--g:#4ade80;--r:#f87171;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px -apple-system,system-ui,sans-serif}
+.wrap{max-width:430px;margin:0 auto;padding:16px 10px 60px}
+h1{font:800 22px system-ui;margin:4px 6px 2px}.lede{color:var(--sub);font-size:13px;margin:0 6px 10px;line-height:1.4}
+.opt{margin:26px 0 0}.oh{display:flex;gap:8px;align-items:baseline;margin:0 6px 2px}.oh b{color:var(--y);font:800 16px system-ui}.oh span{font:700 15px system-ui}.od{display:block;color:var(--sub);font-size:12px;margin:0 6px 8px;line-height:1.35}
+.box{background:var(--card);border-radius:14px;overflow:hidden}
+.r{position:relative;display:grid;grid-template-columns:44px 1fr auto;gap:8px 9px;padding:10px 10px 10px 14px;border-top:1px solid var(--line);background:rgba(255,198,43,.045)}.r:first-child{border-top:0}
+.r::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;background:var(--y)}
+.ph{width:44px;height:44px;border-radius:50%;background:#26272c;overflow:hidden;display:grid;place-items:center;font:800 13px system-ui;color:#999;position:relative}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 12%}
+.nm{min-width:0;align-self:center}.nm b{font:700 15px system-ui;white-space:nowrap}.nm i{font-style:normal;color:var(--sub);font-size:12px;margin-left:4px}.nm .sl{display:inline-block;font:800 10px system-ui;color:#5b9bff;border:1.5px solid #5b9bff;border-radius:8px;padding:0 5px;margin-left:5px;vertical-align:1px}
+.nm small{display:block;color:var(--sub);font-size:11.5px;margin-top:2px}
+.lg{width:16px;height:16px;object-fit:contain;vertical-align:-3px}
+.sc{align-self:center;text-align:right;font:700 13px system-ui;white-space:nowrap}
+.sc .st{display:block;color:var(--y);font:800 11px system-ui;margin-top:3px}.sc .st.f{color:var(--sub)}
+.stats{grid-column:1/-1;display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;mask-image:linear-gradient(90deg,#000 88%,transparent);-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent)}
+.stats::-webkit-scrollbar{display:none}
+.c{flex:none;width:20%;scroll-snap-align:start;text-align:center}.c b{display:block;font:800 22px system-ui;line-height:1.1}.c u{display:block;text-decoration:none;font:700 10px system-ui;color:var(--sub);letter-spacing:.05em;margin-top:2px}
+.c.w2 {width:24%}
+.lo{color:var(--sub)!important}.hi{color:var(--fg)}
+</style></head><body><div class="wrap">
+<h1>Matchup rows · 20 options</h1>
+<p class="lede">Game score moves to the right side of the player strip. Stats get bigger and scroll sideways like ESPN, with about 4–5 showing before you swipe. Swipe the stat rows to try them. Real players from tonight.</p>
+<div id="o"></div></div>
+<script>
+const L=a=>`https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/${a}.png`;
+const P=[
+ {n:"J. Embiid",pos:"C",sl:"UTIL",id:3059318,tm:"phi",op:"det",ts:111,os:106,st:"Q4 12.5",live:1,min:33,s:{PTS:26,REB:14,AST:2,STL:1,BLK:0,"3PM":0,FT:"10/10","FT%":"1.000",FG:"8/18","FG%":".444",TO:3}},
+ {n:"T. Maxey",pos:"PG/SG",sl:"PG",id:4431678,tm:"phi",op:"det",ts:111,os:106,st:"Q4 12.5",live:1,min:34,s:{PTS:17,REB:1,AST:7,STL:0,BLK:0,"3PM":3,FT:"4/4","FT%":"1.000",FG:"5/16","FG%":".313",TO:2}},
+ {n:"C. Coward",pos:"SG/SF",sl:"SG",id:4903027,tm:"mem",op:"ind",ts:82,os:80,st:"End Q3",live:1,min:26,s:{PTS:17,REB:4,AST:4,STL:3,BLK:0,"3PM":3,FT:"2/2","FT%":"1.000",FG:"6/11","FG%":".545",TO:1}},
+ {n:"M. Buzelis",pos:"SF/PF",sl:"PF",id:0,tm:"chi",op:"ny",ts:96,os:129,st:"Final",live:0,min:26,s:{PTS:12,REB:5,AST:3,STL:1,BLK:0,"3PM":1,FT:"1/1","FT%":"1.000",FG:"5/11","FG%":".455",TO:2}}];
+const ORD=["PTS","REB","AST","STL","BLK","3PM","FT","FT%","FG","FG%","TO"];
+const ini=n=>n.replace(/[^A-Z]/g,"").slice(0,2);
+const ph=p=>`<span class="ph">${ini(p.n)}${p.id?`<img src="https://a.espncdn.com/i/headshots/nba/players/full/${p.id}.png" onerror="this.remove()">`:""}</span>`;
+const nm=(p,sub)=>`<div class="nm"><b>${p.n}</b><i>${p.pos}</i><span class="sl">${p.sl}</span>${sub!==undefined?`<small>${sub}</small>`:""}</div>`;
+const lg=a=>`<img class="lg" src="${L(a)}" onerror="this.replaceWith(document.createTextNode('${a.toUpperCase()}'))">`;
+const stt=p=>`<span class="st${p.live?"":" f"}">${p.live?"● ":""}${p.st}</span>`;
+const lead=p=>p.ts-p.os;
+const cells=(p,o={})=>{const ks=o.keys||ORD;return ks.map(k=>`<div class="c${/\//.test(String(p.s[k]))?" w2":""}"${o.cs?` style="${o.cs(k,p)}"`:""}><b${o.bs?` style="${o.bs(k,p)}"`:""}>${p.s[k]}</b>${o.nolab?"":`<u>${k}</u>`}</div>`).join("")};
+const row=(p,right,o={})=>`<div class="r"${o.rs?` style="${o.rs}"`:""}>${o.nophoto?"":ph(p)}${nm(p,o.sub?o.sub(p):undefined)}<div class="sc">${right(p)}</div><div class="stats"${o.ss?` style="${o.ss}"`:""}>${(o.pre?o.pre(p):"")+cells(p,o)}</div></div>`;
+const O=[];
+const add=(t,d,h,css="")=>O.push({t,d,h,css});
+const list=(right,o)=>`<div class="box">${P.map(p=>row(p,right,o)).join("")}</div>`;
+// 1
+add("Stacked score lines","Two team lines on the right (logo + score), clock under them. Stats below at 22px, 5 visible.",
+ list(p=>`<div>${lg(p.tm)} <b>${p.ts}</b></div><div class="lo">${lg(p.op)} ${p.os}</div>${stt(p)}`,{sub:p=>p.min+" min"}));
+// 2
+add("Score pill","One pill on the right: “111–106” with logos, clock in yellow below. Name line keeps minutes.",
+ list(p=>`<span style="display:inline-flex;align-items:center;gap:5px;background:#202126;border-radius:999px;padding:4px 9px">${lg(p.tm)}<b>${p.ts}–${p.os}</b>${lg(p.op)}</span>${stt(p)}`,{sub:p=>p.min+" min"}));
+// 3
+add("Mini scoreboard card","A small dark scoreboard box on the right, both logos side by side, clock at the bottom.",
+ list(p=>`<div style="background:#0c0d0f;border:1px solid #2a2b30;border-radius:10px;padding:5px 8px;text-align:center"><div style="display:flex;gap:6px;align-items:center;justify-content:center">${lg(p.tm)}<b style="font-size:15px">${p.ts}</b><span class="lo">–</span><b class="lo" style="font-size:15px">${p.os}</b>${lg(p.op)}</div>${stt(p)}</div>`,{sub:p=>p.min+" min"}));
+// 4
+add("Lead number","Right side shows only the lead: “+5” green or “−33” red, with the clock. Full score on tap.",
+ list(p=>`<b style="font:900 22px system-ui;color:${lead(p)>=0?"var(--g)":"var(--r)"}">${lead(p)>0?"+":""}${lead(p)}</b>${stt(p)}`,{sub:p=>`${p.tm.toUpperCase()} vs ${p.op.toUpperCase()} · ${p.min} min`}));
+// 5
+add("Score + clock chip","Score in plain text, clock as a yellow chip right under it. Clean and narrow.",
+ list(p=>`<b style="font-size:15px">${p.ts}–${p.os}</b><span style="display:block;margin-top:4px;font:800 10px system-ui;padding:2px 6px;border-radius:5px;background:${p.live?"rgba(255,198,43,.18)":"#26272c"};color:${p.live?"var(--y)":"var(--sub)"}">${p.st}</span>`,{sub:p=>`vs ${p.op.toUpperCase()} · ${p.min} min`}));
+// 6
+add("Stat tiles","Each stat in its own rounded tile. Easier to tap and scan; 4.5 tiles visible.",
+ list(p=>`<div>${lg(p.tm)} <b>${p.ts}</b></div><div class="lo">${lg(p.op)} ${p.os}</div>${stt(p)}`,{sub:p=>p.min+" min",ss:"gap:6px",cs:()=>"width:21%;background:#1d1e22;border-radius:9px;padding:6px 0"}));
+// 7
+add("Coloured tiles","Tiles tinted by how good the number is tonight (green = strong, red = hurting).",
+ list(p=>`<b>${p.ts}–${p.os}</b>${stt(p)}`,{sub:p=>p.min+" min",ss:"gap:6px",cs:(k,p)=>{const v=p.s[k];const good=(k==="PTS"&&v>=20)||(k==="REB"&&v>=10)||(k==="AST"&&v>=7)||(k==="STL"&&v>=2)||(k==="3PM"&&v>=3)||(k==="FG%"&&parseFloat(v)>=.5);const bad=(k==="FG%"&&parseFloat(v)<.4)||(k==="TO"&&v>=4);return "width:21%;border-radius:9px;padding:6px 0;background:"+(good?"rgba(74,222,128,.16)":bad?"rgba(248,113,113,.16)":"#1d1e22")}}));
+// 8
+add("Sticky PTS","PTS stays pinned on the left, bigger; the rest scrolls next to it.",
+ list(p=>`<div>${lg(p.tm)} <b>${p.ts}</b></div><div class="lo">${lg(p.op)} ${p.os}</div>${stt(p)}`,{sub:p=>p.min+" min",keys:ORD.slice(1),pre:p=>`<div class="c" style="position:sticky;left:0;z-index:2;background:#191a1c;width:22%;border-right:1px solid #2a2b30"><b style="font-size:28px;color:var(--y)">${p.s.PTS}</b><u>PTS</u></div>`}));
+// 9
+add("Two tiers, no scroll","Counting stats big on one line, shooting splits small underneath. Nothing hidden.",
+ `<div class="box">${P.map(p=>`<div class="r">${ph(p)}${nm(p,p.min+" min")}<div class="sc"><div>${lg(p.tm)} <b>${p.ts}</b></div><div class="lo">${lg(p.op)} ${p.os}</div>${stt(p)}</div><div class="stats" style="mask-image:none;-webkit-mask-image:none">${cells(p,{keys:["PTS","REB","AST","STL","BLK","3PM"]}).replace(/width:20%/g,"")}</div><div style="grid-column:1/-1;display:flex;justify-content:space-around;color:var(--sub);font:600 12px system-ui">${["FG","FG%","FT","FT%","TO"].map(k=>`<span><b style="color:#ddd">${p.s[k]}</b> ${k}</span>`).join("")}</div></div>`).join("").replace(/class="c"/g,'class="c" style="width:16.6%"')}</div>`);
+// 10
+add("Scroll hint arrow","Same big stats, with a fade and a small › on the right edge so people know to swipe.",
+ list(p=>`<div>${lg(p.tm)} <b>${p.ts}</b></div><div class="lo">${lg(p.op)} ${p.os}</div>${stt(p)}`,{sub:p=>p.min+" min"}).replace(/<div class="stats"/g,'<div style="grid-column:1/-1;position:relative"><span style="position:absolute;right:2px;top:10px;z-index:3;color:var(--sub);font:800 18px system-ui">›</span><div class="stats"').replace(/(<\/div>)(<\/div><div class="r"|<\/div><\/div>$)/g,"$1</div>$2"));
+// 11
+add("Score in the name row","Name on the left, score + clock on the same line at the right. Photo shrinks; stats get the full width.",
+ `<div class="box">${P.map(p=>`<div class="r" style="grid-template-columns:34px 1fr auto"><span class="ph" style="width:34px;height:34px">${ini(p.n)}${p.id?`<img src="https://a.espncdn.com/i/headshots/nba/players/full/${p.id}.png" onerror="this.remove()">`:""}</span><div class="nm"><b>${p.n}</b><span class="sl">${p.sl}</span><small>${p.min} min</small></div><div class="sc" style="display:flex;gap:6px;align-items:center">${lg(p.tm)}<b>${p.ts}–${p.os}</b>${lg(p.op)}<span class="st" style="margin:0">${p.live?"●":""} ${p.st}</span></div><div class="stats">${cells(p)}</div></div>`).join("")}</div>`);
+// 12
+add("Game progress bar","Under the score, a thin bar shows how far the game is (Q4 12.5 ≈ 75%).",
+ list(p=>{const pr=p.live?(p.st.startsWith("Q4")?0.78:p.st.includes("Q3")?0.75:0.5):1;return `<div>${lg(p.tm)} <b>${p.ts}</b> <span class="lo">${p.os}</span> ${lg(p.op)}</div><div style="height:4px;width:86px;margin:6px 0 0 auto;background:#2a2b30;border-radius:2px;overflow:hidden"><i style="display:block;height:100%;width:${pr*100}%;background:${p.live?"var(--y)":"#666"}"></i></div>${stt(p)}`},{sub:p=>p.min+" min"}));
+// 13
+add("PTS hero number","PTS shown large next to the name; the scroller starts at REB.",
+ list(p=>`<div>${lg(p.tm)} <b>${p.ts}</b></div><div class="lo">${lg(p.op)} ${p.os}</div>${stt(p)}`,{sub:p=>`<b style="font:900 20px system-ui;color:var(--fg)">${p.s.PTS}</b> PTS · ${p.min} min`,keys:ORD.slice(1)}));
+// 14
+add("ESPN table, one header","Category labels shown once at the top, not on every row. Rows are just big numbers.",
+ `<div class="box"><div style="display:flex;padding:8px 10px 6px 14px;color:var(--sub);font:800 10px system-ui;letter-spacing:.05em;border-bottom:1px solid var(--line)">${ORD.slice(0,5).map(k=>`<span style="width:20%;text-align:center">${k}</span>`).join("")}</div>${P.map(p=>row(p,q=>`<div>${lg(q.tm)} <b>${q.ts}</b></div><div class="lo">${lg(q.op)} ${q.os}</div>${stt(q)}`,{sub:q=>q.min+" min",nolab:1})).join("")}</div>`);
+// 15
+add("ESPN table, sticky players","True ESPN layout: player column pinned on the left, the whole stat grid scrolls together.",
+ `<div class="box" style="display:grid;grid-template-columns:150px 1fr"><div>${['<div style="height:30px"></div>'].concat(P.map(p=>`<div style="height:62px;display:flex;gap:6px;align-items:center;padding:0 6px 0 10px;border-top:1px solid var(--line)"><span class="ph" style="width:30px;height:30px;flex:none">${ini(p.n)}${p.id?`<img src="https://a.espncdn.com/i/headshots/nba/players/full/${p.id}.png" onerror="this.remove()">`:""}</span><div style="min-width:0"><b style="font:700 13px system-ui;white-space:nowrap">${p.n}</b><small style="display:block;font-size:11px;color:var(--sub);white-space:nowrap">${p.ts}–${p.os} <span style="color:${p.live?"var(--y)":"var(--sub)"}">${p.st}</span></small></div></div>`)).join("")}</div><div style="overflow-x:auto;scrollbar-width:none"><div style="width:max-content">${['<div style="height:30px;display:flex;align-items:center">'+ORD.map(k=>`<span style="width:58px;text-align:center;color:var(--sub);font:800 10px system-ui">${k}</span>`).join("")+'</div>'].concat(P.map(p=>`<div style="height:62px;display:flex;align-items:center;border-top:1px solid var(--line)">${ORD.map(k=>`<b style="width:58px;text-align:center;font:800 19px system-ui">${p.s[k]}</b>`).join("")}</div>`)).join("")}</div></div></div>`);
+// 16
+add("Team-colour score blocks","Two small coloured blocks on the right in team colours, score inside each.",
+ list(p=>{const C={phi:"#006bb6",det:"#c8102e",mem:"#5d76a9",ind:"#002d62",chi:"#ce1141",ny:"#f58426"};return `<div style="display:flex;gap:3px;justify-content:flex-end"><span style="background:${C[p.tm]};padding:3px 7px;border-radius:6px 0 0 6px;font:800 14px system-ui">${p.ts}</span><span style="background:${C[p.op]};opacity:.75;padding:3px 7px;border-radius:0 6px 6px 0;font:800 14px system-ui">${p.os}</span></div>${stt(p)}`},{sub:p=>p.min+" min"}));
+// 17
+add("No photo, max room","Drops the headshot. Name, score and clock on top; the biggest stat numbers of all (26px).",
+ list(p=>`<b>${p.tm.toUpperCase()} ${p.ts}–${p.os} ${p.op.toUpperCase()}</b>${stt(p)}`,{nophoto:1,sub:p=>p.min+" min",bs:()=>"font-size:26px"}).replace(/grid-template-columns:44px 1fr auto/g,"").replace(/class="r"/g,'class="r" style="grid-template-columns:1fr auto"'));
+// 18
+add("Clock on top, score under","Yellow live clock sits top-right where the minutes were; score right below it.",
+ list(p=>`${stt(p).replace('class="st','style="margin:0 0 4px" class="st')}<div>${lg(p.tm)} <b>${p.ts}</b> <span class="lo">– ${p.os}</span> ${lg(p.op)}</div>`,{sub:p=>p.min+" min played"}));
+// 19
+add("Fantasy impact dots","Score on the right, plus small dots under the name: green for each category he's helping tonight.",
+ list(p=>`<div>${lg(p.tm)} <b>${p.ts}</b></div><div class="lo">${lg(p.op)} ${p.os}</div>${stt(p)}`,{sub:p=>{const g=[p.s.PTS>=17,p.s.REB>=8,p.s.AST>=5,p.s.STL>=2,p.s["3PM"]>=3,parseFloat(p.s["FG%"])>=.48];return g.map(x=>`<i style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:3px;background:${x?"var(--g)":"#3a3b40"}"></i>`).join("")+" "+p.min+" min"}}));
+// 20
+add("Labels on top, dividers","Labels above the numbers with thin dividers between stats, score block on the right. Tighter, very ESPN.",
+ list(p=>`<div>${lg(p.tm)} <b>${p.ts}</b></div><div class="lo">${lg(p.op)} ${p.os}</div>${stt(p)}`,{sub:p=>p.min+" min",cs:()=>"border-left:1px solid #2a2b30"}).replace(/<b>([^<]*)<\/b><u>([^<]*)<\/u>/g,'<u style="margin:0 0 3px">$2</u><b>$1</b>'));
+document.getElementById("o").innerHTML=O.map((x,i)=>`<div class="opt"><div class="oh"><b>${i+1}</b><span>${x.t}</span></div><span class="od">${x.d}</span>${x.h}</div>`).join("");
+</script></body></html>
