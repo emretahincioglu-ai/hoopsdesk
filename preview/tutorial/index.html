@@ -1,0 +1,86 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tutorial Builder</title>
+<style>
+:root{color-scheme:dark;--y:#ffc62b;--bg:#0b0b0d;--card:#141518;--line:#24252a;--sub:#8e9096;--g:#4ade80;--r:#f87171}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;background:var(--bg);color:#f2f3f5;font:15px -apple-system,system-ui,sans-serif}
+.w{max-width:520px;margin:0 auto;padding:14px 12px 120px}
+h1{font:800 22px system-ui;margin:4px 4px 2px}.ld{color:var(--sub);font-size:13px;margin:0 4px 12px;line-height:1.4}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -12px 12px;padding:0 12px}.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;border:1px solid var(--line);background:none;color:#c9cad0;font:700 13px system-ui;padding:8px 13px;border-radius:999px}
+.tabs button.on{background:var(--y);color:#000;border-color:var(--y)}.tabs button i{font-style:normal;opacity:.6;margin-left:4px}
+.sec{font:800 11px system-ui;letter-spacing:.1em;color:var(--sub);margin:16px 4px 8px;text-transform:uppercase}
+.chips{display:flex;flex-wrap:wrap;gap:6px}.chips button{border:1px dashed #3a3b40;background:none;color:#c9cad0;font:600 13px system-ui;padding:7px 11px;border-radius:999px}
+.chips button.used{border-style:solid;border-color:#2a2b30;color:#55575c}
+.it{background:var(--card);border-radius:14px;padding:12px;margin-bottom:10px;border:1px solid transparent}.it.must{border-color:rgba(255,198,43,.5)}.it.skip{opacity:.55}
+.ih{display:flex;align-items:center;gap:8px}.ih .n{flex:none;width:24px;height:24px;border-radius:50%;background:#26272c;display:grid;place-items:center;font:800 12px system-ui}
+.ih input{flex:1;min-width:0;background:none;border:0;color:#fff;font:700 16px system-ui;padding:4px 0;outline:none}
+.ih .ic{flex:none;border:0;background:#1e1f23;color:#9a9ca2;width:30px;height:30px;border-radius:8px;font-size:14px}
+.f{margin-top:10px}.f label{display:block;font:800 10.5px system-ui;letter-spacing:.08em;color:var(--sub);margin-bottom:4px}.f label b{color:var(--y)}
+.f textarea{width:100%;min-height:42px;resize:vertical;background:#0f1012;border:1px solid var(--line);border-radius:10px;color:#f2f3f5;font:15px/1.35 system-ui;padding:9px 10px;outline:none}
+.f textarea:focus{border-color:#55575c}
+.seg{display:flex;background:#0f1012;border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px}.seg button{flex:1;border:0;background:none;color:#9a9ca2;font:700 13px system-ui;padding:7px 0;border-radius:7px}
+.seg button.on.must{background:var(--y);color:#000}.seg button.on.nice{background:#2d4a7a;color:#cfe0ff}.seg button.on.skip{background:#3a2224;color:#ff9a92}.seg button.on.y{background:#3a2224;color:#ff9a92}.seg button.on.n{background:#173a24;color:#9ff0b8}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.add{width:100%;border:1px dashed #3a3b40;background:none;color:#c9cad0;font:700 14px system-ui;padding:12px;border-radius:12px;margin-top:4px}
+.one{background:var(--card);border-radius:14px;padding:12px;border:1px solid rgba(255,198,43,.35)}
+.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(11,11,13,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom))}
+.bar .in{max-width:520px;margin:0 auto;display:flex;align-items:center;gap:10px}.prog{flex:1}.prog small{display:block;color:var(--sub);font:600 12px system-ui}.prog b{font:800 14px system-ui}
+.pb{height:4px;border-radius:2px;background:#26272c;margin-top:5px;overflow:hidden}.pb i{display:block;height:100%;background:var(--y)}
+.sv{font:700 12px system-ui;color:var(--sub);white-space:nowrap}.sv.ok{color:var(--g)}.sv.err{color:var(--r)}
+.hint{color:var(--sub);font-size:12.5px;margin:6px 4px 0;line-height:1.4}
+.empty{color:var(--sub);text-align:center;padding:18px 10px;font-size:13.5px}
+.rev{background:var(--card);border-radius:14px;padding:12px}.rev ol{margin:0;padding-left:20px}.rev li{margin:6px 0;line-height:1.4}.rev li small{display:block;color:var(--sub)}
+</style></head><body><div class="w">
+<h1>Tutorial builder</h1>
+<p class="ld">Go through a page top to bottom. Tap a part of the screen to add it, fill in what you see and what you do. Saves by itself and syncs to Claude. Tip: tap the mic on the keyboard to dictate.</p>
+<div class="tabs" id="tabs"></div>
+<div id="main"></div></div>
+<div class="bar"><div class="in"><div class="prog"><b id="pt"></b><small id="ps"></small><div class="pb"><i id="pbi"></i></div></div><span class="sv" id="sv">Saved</span></div></div>
+<script>
+const PAGES={
+ matchup:{n:"Matchup",parts:["Scoreboard","Swipe cards (dots)","Date bar","Daily games row","Team switch (MM / Matchup / L)","Category table","Live now rows","Final rows","Still to play rows","FT / FG flip","Swipe for TO / MIN","Tap a player","Week Plan button"]},
+ weekplan:{n:"Week Plan",parts:["Day strip","Plan-day badge","Player card","Stat filter in card","Tags","Notes","Drop options A / B","Add from teams","Add player","Order arrows"]},
+ profile:{n:"Player profile",parts:["Header","Analyst tag","Ranks","Stats / game log","News","Schedule"]},
+ waivers:{n:"Waivers",parts:["Tabs","For you","Next week","B2B / Mon-Wed-Thu switch","Stat window chips","FA table sort"]},
+ home:{n:"Home",parts:["Scoreboard card","Category chips","Last night","Daily story","Weekly story","League ranks"]}};
+const KEYS=Object.keys(PAGES),URL0="https://fantasy-plus.emre-tahincioglu.workers.dev/plan?lid=tutorial_v1";
+let S;try{S=JSON.parse(localStorage.getItem("fp_tut")||"null")}catch(e){}
+S=S||{p:"matchup",d:{}};KEYS.forEach(k=>S.d[k]=S.d[k]||{items:[],one:""});
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const cur=()=>S.d[S.p];
+let tm,dirty=false;const sv=document.getElementById("sv");
+function save(){S.ts=Date.now();try{localStorage.setItem("fp_tut",JSON.stringify(S))}catch(e){}dirty=true;sv.textContent="Saving…";sv.className="sv";clearTimeout(tm);tm=setTimeout(push,900);bar()}
+async function push(){try{const r=await fetch(URL0,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(S)});if(!r.ok)throw 0;dirty=false;sv.textContent="Synced ✓";sv.className="sv ok"}catch(e){sv.textContent="Saved on phone · retrying";sv.className="sv err";clearTimeout(tm);tm=setTimeout(push,5000)}}
+async function pull(){try{const j=await (await fetch(URL0+"&t="+Date.now(),{cache:"no-store"})).json();if(j&&j.d&&(j.ts||0)>(S.ts||0)){const p=S.p;S=j;S.p=p;KEYS.forEach(k=>S.d[k]=S.d[k]||{items:[],one:""});try{localStorage.setItem("fp_tut",JSON.stringify(S))}catch(e){}render()}else if(!j||!j.d){push()}}catch(e){}}
+const done=it=>it.what&&it.see&&it.keep;
+function bar(){const its=cur().items,n=its.filter(done).length;document.getElementById("pt").textContent=PAGES[S.p].n+" · "+its.length+" part"+(its.length===1?"":"s");
+ document.getElementById("ps").textContent=its.length?`${n} of ${its.length} filled · ${its.filter(i=>i.keep==="must").length} must`:"Tap a part below to start";
+ document.getElementById("pbi").style.width=(its.length?n/its.length*100:0)+"%";
+ document.querySelectorAll("#tabs button").forEach(b=>{const d=S.d[b.dataset.p];b.querySelector("i").textContent=d.items.length||""})}
+const seg=(k,i,opts,val)=>`<div class="seg">${opts.map(([v,l])=>`<button data-seg="${k}" data-i="${i}" data-v="${v}" class="${val===v?"on "+v:""}">${l}</button>`).join("")}</div>`;
+function itemHtml(it,i,n){return `<div class="it ${it.keep||""}"><div class="ih"><span class="n">${i+1}</span><input data-f="what" data-i="${i}" value="${esc(it.what)}" placeholder="What part of the screen?"><button class="ic" data-mv="-1" data-i="${i}" ${i?"":"disabled"}>↑</button><button class="ic" data-mv="1" data-i="${i}" ${i<n-1?"":"disabled"}>↓</button><button class="ic" data-del="${i}">✕</button></div>
+ <div class="f"><label>SEE · what does it tell you?</label><textarea data-f="see" data-i="${i}" placeholder="e.g. who's winning each cat + the chance to hold it">${esc(it.see)}</textarea></div>
+ <div class="f"><label><b>DO</b> · what do you do because of it?</label><textarea data-f="do" data-i="${i}" placeholder="e.g. if a cat is close, I stream for it (or leave empty)">${esc(it.do)}</textarea></div>
+ <div class="two"><div class="f"><label>WOULD ALI GET CONFUSED?</label>${seg("ali",i,[["y","Yes"],["n","No"]],it.ali)}</div><div class="f"><label>KEEP</label>${seg("keep",i,[["must","Must"],["nice","Nice"],["skip","Skip"]],it.keep)}</div></div>
+ ${it.ali==="y"?`<div class="f"><label>WHY · what confuses him?</label><textarea data-f="why" data-i="${i}" placeholder="e.g. didn't know what the % means">${esc(it.why)}</textarea></div>`:""}</div>`}
+function render(){document.getElementById("tabs").innerHTML=KEYS.map(k=>`<button data-p="${k}" class="${S.p===k?"on":""}">${PAGES[k].n}<i></i></button>`).join("");
+ const c=cur(),used=new Set(c.items.map(i=>i.what));
+ document.getElementById("main").innerHTML=`<div class="sec">Parts of the screen · tap to add, top to bottom</div><div class="chips">${PAGES[S.p].parts.map(p=>`<button data-chip="${esc(p)}" class="${used.has(p)?"used":""}">${used.has(p)?"✓ ":"+ "}${esc(p)}</button>`).join("")}</div>
+ <p class="hint">Missing something? Use "Add your own" at the bottom.</p>
+ <div class="sec">Your walkthrough</div>${c.items.length?c.items.map((it,i)=>itemHtml(it,i,c.items.length)).join(""):`<div class="empty">Nothing yet. Start with the first thing you look at.</div>`}
+ <button class="add" data-addown="1">+ Add your own</button>
+ <div class="sec">Last · the #1 thing Ali must get from this page</div><div class="one"><div class="f" style="margin:0"><textarea data-one="1" placeholder="One sentence">${esc(c.one)}</textarea></div></div>
+ ${c.items.some(i=>i.keep==="must")?`<div class="sec">Preview · tutorial steps (must only)</div><div class="rev"><ol>${c.items.filter(i=>i.keep==="must").map(i=>`<li><b>${esc(i.what)}</b><small>${esc(i.see)}${i.do?" → "+esc(i.do):""}</small></li>`).join("")}</ol></div>`:""}`;
+ bar()}
+document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)return;const c=cur();
+ if(t.dataset.p){S.p=t.dataset.p;save();render();scrollTo(0,0);return}
+ if(t.dataset.chip){if(!c.items.some(i=>i.what===t.dataset.chip)){c.items.push({what:t.dataset.chip,see:"",do:"",ali:"",keep:""});save();render();setTimeout(()=>{const a=document.querySelectorAll('textarea[data-f="see"]');a[a.length-1]&&a[a.length-1].focus()},50)}return}
+ if(t.dataset.addown){c.items.push({what:"",see:"",do:"",ali:"",keep:""});save();render();setTimeout(()=>{const a=document.querySelectorAll('input[data-f="what"]');a[a.length-1]&&a[a.length-1].focus()},50);return}
+ if(t.dataset.del!=null){if(confirm("Remove this part?")){c.items.splice(+t.dataset.del,1);save();render()}return}
+ if(t.dataset.mv){const i=+t.dataset.i,j=i+ +t.dataset.mv;[c.items[i],c.items[j]]=[c.items[j],c.items[i]];save();render();return}
+ if(t.dataset.seg){const it=c.items[+t.dataset.i];it[t.dataset.seg]=it[t.dataset.seg]===t.dataset.v?"":t.dataset.v;save();render();return}});
+document.addEventListener("input",e=>{const t=e.target,c=cur();if(t.dataset.one){c.one=t.value;save();return}if(t.dataset.f){c.items[+t.dataset.i][t.dataset.f]=t.value;save();if(t.dataset.f==="what"){}}});
+
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&!dirty)pull()});
+render();pull();
+</script></body></html>
