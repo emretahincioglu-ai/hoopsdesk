@@ -86,7 +86,7 @@ const THEMES=[
  {id:"classic",name:"Classic Maple",kind:"classic",floor:"wood",wood:["#d9a86c","#e6b97f","#c8945a"],paint:"#b3262e",pa:1,line:"#ffffff",apron:"#b3262e",center:"#b3262e",logo:"#ffffff",seats:"#7b1d23",crowd:[[0,.55,.45],[0,0,.92]],led:["#ffffff","#e8333c"],bg:"#16110e",pad:"#b3262e",exp:1.15},
  {id:"garden",name:"Garden Navy",kind:"classic",floor:"wood",wood:["#c99561","#d8a874","#b78250"],paint:"#1d428a",pa:1,line:"#ffffff",apron:"#1d428a",center:"#f58426",logo:"#ffffff",seats:"#1a2c55",crowd:[[.6,.65,.45],[.08,.85,.55]],led:["#ffffff","#f58426"],bg:"#0d1018",pad:"#1d428a",exp:1.12},
  {id:"parquet",name:"Parquet",kind:"classic",floor:"parquet",wood:["#c8925a","#a8743f","#d9a56b"],paint:"#0f6b3a",pa:1,line:"#ffffff",apron:"#0f6b3a",center:"#0f6b3a",logo:"#ffffff",seats:"#0d4a2a",crowd:[[.38,.65,.4],[0,0,.92]],led:["#ffffff","#2fb36b"],bg:"#0c140f",pad:"#0f6b3a",exp:1.12},
- {id:"natural",name:"Natural Light",kind:"classic",floor:"wood",wood:["#e8c393","#f1d1a6","#dab183"],paint:"rgba(0,0,0,0)",pa:0,line:"#1b1b1f",apron:"#26272c",center:"rgba(0,0,0,0)",logo:"#1b1b1f",seats:"#3a3c44",crowd:[[0,0,.85],[0,0,.25]],led:["#ffffff","#bdbdbd"],bg:"#121316",pad:"#26272c",exp:1.1},
+ {id:"natural",name:"Natural Light",kind:"classic",floor:"wood",wood:["#c4996a","#cfa475","#b88d5f"],paint:"rgba(0,0,0,0)",pa:0,line:"#1b1b1f",apron:"#26272c",center:"rgba(0,0,0,0)",logo:"#1b1b1f",seats:"#3a3c44",crowd:[[0,0,.85],[0,0,.25]],led:["#ffffff","#bdbdbd"],bg:"#0a0b0d",pad:"#26272c",exp:.92},
  {id:"royal",name:"Royal Gold",kind:"classic",floor:"wood",wood:["#d4a066","#e3b27a","#c28e55"],paint:"#552583",pa:1,line:"#fdb927",apron:"#552583",center:"#fdb927",logo:"#552583",seats:"#3b1a5c",crowd:[[.13,.95,.55],[.76,.55,.38]],led:["#fdb927","#ffffff"],bg:"#120d18",pad:"#552583",exp:1.12},
  {id:"espresso",name:"Espresso",kind:"creative",floor:"wood",wood:["#5a3a22","#6b462a","#4a2f1b"],paint:"#c9a24a",pa:.9,line:"#e9d7a6",apron:"#141210",center:"#c9a24a",logo:"#141210",seats:"#2b2420",crowd:[[.1,.7,.5],[0,0,.15]],led:["#e9d7a6","#c9a24a"],bg:"#0b0a09",pad:"#141210",exp:1.25},
  {id:"whiteout",name:"Whiteout",kind:"creative",floor:"wood",wood:["#efe6da","#f6efe6","#e4d9cb"],paint:"#111216",pa:1,line:"#111216",apron:"#f2f2f2",center:"#111216",logo:"#ffffff",seats:"#d9dbe0",crowd:[[0,0,.96],[0,0,.82]],led:["#111216","#e11d48"],bg:"#1b1c20",pad:"#111216",exp:1.05},
@@ -188,7 +188,7 @@ window.__theme=id=>applyTheme(THEMES.find(t=>t.id===id)||THEMES[0]);
 
 {const th=document.getElementById("th");th.innerHTML=["classic","creative"].map(k=>`<div class="thk">${k==="classic"?"Classic":"Creative"}</div><div class="thr">`+THEMES.filter(t=>t.kind===k).map((t,i)=>`<button data-id="${t.id}"><span class="sw2" style="background:linear-gradient(135deg,${t.wood[0]} 0 50%,${t.pa?t.paint:t.line} 50% 100%)"></span>${THEMES.indexOf(t)+1}. ${t.name}</button>`).join("")+`</div>`).join("");
  th.onclick=e=>{const b=e.target.closest("button");if(b)window.__theme(b.dataset.id)};
- let init=(location.hash.match(/t=(\w+)/)||[])[1];if(!init)try{init=localStorage.getItem("gc6_theme2")}catch(e){}window.__theme(location.hash.match(/t=(\w+)/)?init:"royal")}
+ let init=(location.hash.match(/t=(\w+)/)||[])[1];if(!init)try{init=localStorage.getItem("gc6_theme2")}catch(e){}window.__theme(location.hash.match(/t=(\w+)/)?init:"natural")}
 /* ---------- figure ---------- */
 const skin=new THREE.MeshStandardMaterial({color:0x2c2f37,roughness:.38,metalness:.15});
 const shoe=new THREE.MeshStandardMaterial({color:0xf2f2f2,roughness:.5});
