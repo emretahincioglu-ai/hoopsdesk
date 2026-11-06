@@ -82,6 +82,7 @@ const k2=new THREE.SpotLight(0xdfe6ff,260,60,.7,.6,1.6);k2.position.set(14,16,-8
 const k3=new THREE.DirectionalLight(0xffffff,.35);k3.position.set(-5,8,10);S.add(k3);
 /* ---------- themes ---------- */
 const THEMES=[
+ {id:"original",name:"Original",kind:"classic",floor:"wood",wood:["#c8945e","#d6a56d","#b9844e"],paint:"#f5b82e",paint2:"#9d7bff",pa:.48,line:"#ffffff",apron:"#1d140c",center:"rgba(0,0,0,0)",logo:"rgba(50,25,8,.4)",seats:"#22232a",crowd:[[.11,.7,.3],[.72,.45,.32]],led:["#ffffff","#f5b82e"],bg:"#06070a",pad:"#2a2160",exp:1.08},
  {id:"classic",name:"Classic Maple",kind:"classic",floor:"wood",wood:["#d9a86c","#e6b97f","#c8945a"],paint:"#b3262e",pa:1,line:"#ffffff",apron:"#b3262e",center:"#b3262e",logo:"#ffffff",seats:"#7b1d23",crowd:[[0,.55,.45],[0,0,.92]],led:["#ffffff","#e8333c"],bg:"#16110e",pad:"#b3262e",exp:1.15},
  {id:"garden",name:"Garden Navy",kind:"classic",floor:"wood",wood:["#c99561","#d8a874","#b78250"],paint:"#1d428a",pa:1,line:"#ffffff",apron:"#1d428a",center:"#f58426",logo:"#ffffff",seats:"#1a2c55",crowd:[[.6,.65,.45],[.08,.85,.55]],led:["#ffffff","#f58426"],bg:"#0d1018",pad:"#1d428a",exp:1.12},
  {id:"parquet",name:"Parquet",kind:"classic",floor:"parquet",wood:["#c8925a","#a8743f","#d9a56b"],paint:"#0f6b3a",pa:1,line:"#ffffff",apron:"#0f6b3a",center:"#0f6b3a",logo:"#ffffff",seats:"#0d4a2a",crowd:[[.38,.65,.4],[0,0,.92]],led:["#ffffff","#2fb36b"],bg:"#0c140f",pad:"#0f6b3a",exp:1.12},
@@ -104,7 +105,7 @@ function courtTex(T){const c=document.createElement("canvas");c.width=2048;c.hei
  floorBase(x,W,H,s,T);
  const X=v=>W/2+v*s,Y=v=>H/2+v*s;
  // keys + center
- [-1,1].forEach(d=>{const bx=d*14.325;x.globalAlpha=T.pa;x.fillStyle=T.paint;x.fillRect(Math.min(X(bx),X(bx-d*5.8)),Y(-2.45),5.8*s,4.9*s);x.globalAlpha=1});
+ [-1,1].forEach(d=>{const bx=d*14.325;x.globalAlpha=T.pa;x.fillStyle=T.paint2&&d>0?T.paint2:T.paint;x.fillRect(Math.min(X(bx),X(bx-d*5.8)),Y(-2.45),5.8*s,4.9*s);x.globalAlpha=1});
  x.fillStyle=T.center;x.beginPath();x.arc(W/2,H/2,1.8*s,0,7);x.fill();
  x.strokeStyle=T.line;x.lineWidth=.06*s;if(T.glow){x.shadowColor=T.line;x.shadowBlur=18}
  x.strokeRect(x.lineWidth/2,x.lineWidth/2,W-x.lineWidth,H-x.lineWidth);x.beginPath();x.moveTo(W/2,0);x.lineTo(W/2,H);x.stroke();x.beginPath();x.arc(W/2,H/2,1.8*s,0,7);x.stroke();x.beginPath();x.arc(W/2,H/2,.6*s,0,7);x.stroke();
@@ -168,6 +169,7 @@ const ring=new THREE.Mesh(new THREE.BoxGeometry(48,.45,.1),ringMat);ring.positio
 const ringL=new THREE.Mesh(new THREE.BoxGeometry(.1,.45,28),ringMat);ringL.position.set(-19.4-12*.62-.35,ring.position.y,0);S.add(ringL);
 const ringR=ringL.clone();ringR.position.x*=-1;S.add(ringR);
 const fillA=new THREE.AmbientLight(0xffffff,.35);S.add(fillA);
+{const kL=new THREE.SpotLight(0xfff1dc,520,60,.62,.55,1.6);kL.position.set(-6,18,6);kL.target.position.set(-9,0,0);S.add(kL,kL.target);const kL2=new THREE.SpotLight(0xdfe6ff,260,60,.7,.6,1.6);kL2.position.set(-14,16,-8);kL2.target.position.set(-9,0,0);S.add(kL2,kL2.target);}
 function applyTheme(T){CTH=T;if(courtMat.map)courtMat.map.dispose();courtMat.map=courtTex(T);courtMat.roughness=T.floor==="asphalt"?.85:T.floor==="solid"?.4:.28;courtMat.needsUpdate=true;
  if(apronMat.map)apronMat.map.dispose();apronMat.map=apronTex(T);apronMat.needsUpdate=true;
  if(ledMat.map)ledMat.map.dispose();ledMat.map=ledTex(T);ledMat.needsUpdate=true;ringMat.map=ledMat.map;ringMat.needsUpdate=true;
