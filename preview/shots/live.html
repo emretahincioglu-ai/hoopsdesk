@@ -1,0 +1,79 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Live Shot Chart</title>
+<style>
+:root{color-scheme:dark;--y:#ffc62b;--sub:#8e9096;--card:#141518;--line:#24252a}
+*{box-sizing:border-box}body{margin:0;background:#000;color:#f2f3f5;font:14px -apple-system,system-ui,sans-serif}
+.w{max-width:460px;margin:0 auto;padding:16px 12px 60px}h1{font:800 20px system-ui;margin:4px}.ld{color:var(--sub);font-size:13px;margin:0 4px 14px;line-height:1.4}
+.sh{background:var(--card);border-radius:18px;padding:10px}
+.hd{display:flex;align-items:center;gap:8px;margin-bottom:8px}.hd .ph{width:30px;height:30px;border-radius:50%;background:#26272c}.hd b{font:800 14px system-ui}.hd small{color:var(--sub);font:700 11px system-ui}
+.hd .ln{margin-left:auto;font:800 12px ui-monospace,monospace}
+.gr{display:grid;grid-template-columns:1.1fr 1fr;gap:8px}
+.st{height:214px;overflow:hidden;position:relative}
+.pl{font:600 11.5px/1.3 system-ui;padding:5px 6px;border-radius:7px;display:flex;gap:6px;align-items:center;cursor:pointer;transition:background .3s}
+.pl .q{flex:none;font:800 9.5px ui-monospace,monospace;color:var(--sub);width:38px}.pl .d{flex:none;width:7px;height:7px;border-radius:50%}
+.pl.hi{background:rgba(255,198,43,.16)}.pl.nw{animation:nw 1.6s}
+@keyframes nw{0%{background:rgba(255,198,43,.35);transform:translateY(-10px);opacity:0}25%{transform:none;opacity:1}100%{background:transparent}}
+.court{display:block;background:#1a1410;border-radius:10px;width:100%}
+.court .ln2{stroke:#3a3b42;fill:none;stroke-width:.5}
+.sl{margin-top:10px;display:flex;align-items:center;gap:8px}
+.sl input{flex:1;accent-color:var(--y)}
+.lv{flex:none;border:0;border-radius:999px;padding:5px 10px;font:900 10.5px system-ui;letter-spacing:.06em;display:flex;align-items:center;gap:5px;background:#2a1414;color:#f87171}
+.lv i{width:7px;height:7px;border-radius:50%;background:#ef4444;animation:bl 1.4s infinite}
+.lv.off{background:#26272c;color:#fff}.lv.off i{background:#55575c;animation:none}
+@keyframes bl{50%{opacity:.25}}
+.qs{position:relative;height:13px;font:800 9.5px system-ui;color:var(--sub);margin:3px 0 0}.qs span{position:absolute;transform:translateX(-2px)}
+.at{font:700 11px system-ui;color:var(--sub);margin-top:6px;min-height:15px}
+.note{margin:18px 4px 0;color:var(--sub);font-size:12.5px;line-height:1.5}.note b{color:#fff}
+</style></head><body><div class="w">
+<h1>Shot chart · live + slider</h1>
+<p class="ld">#2 Live replay + the slider from #6. The game is live: a new play lands every few seconds on the right and on the court at the same time. Drag the slider back to rewind, tap LIVE to jump back. Tap a dot or a play to link them.</p>
+<div class="sh">
+ <div class="hd"><span class="ph"></span><b>Tyrese Maxey</b><small>PHI vs DET</small><span class="ln" id="ln"></span></div>
+ <div class="gr"><div id="cv"></div><div class="st" id="st"></div></div>
+ <div class="sl"><input type="range" id="r" min="0" value="0"><button class="lv" id="lv"><i></i><span>LIVE</span></button></div>
+ <div class="qs" id="qs"></div>
+ <div class="at" id="at"></div>
+</div>
+<p class="note"><b>How it behaves</b><br>• Opens on LIVE: slider at the end, newest play on top.<br>• New play arrives → slides into the stream and the shot drops onto the court together (green dot = make, red X = miss, yellow ring flash).<br>• Drag back → court and stream show the game only up to that moment. New plays keep coming in the background; the button shows “+2 new” so you know.<br>• Tap LIVE → snaps back to now.<br>• After the game: same view, slider becomes a full-game replay.</p>
+</div>
+<script>
+const KC={make:"#4ade80",miss:"#f87171",REB:"#60a5fa",AST:"#c4a7ff",STL:"#ffc62b",TO:"#fb923c",FT:"#4ade80"};
+// [time, text, kind, x, y, pts]  (x 0-50, y 0-47 ft from baseline)
+const ALL=[["Q1 11:20","made layup","make",25,5,2],["Q1 9:20","defensive rebound","REB"],["Q1 8:40","made three-pointer","make",38,22,3],["Q1 6:05","missed jumper","miss",12,14],["Q1 5:10","assist to Embiid","AST"],["Q1 3:30","made three-pointer","make",25,26,3],
+["Q2 11:02","made floater","make",30,8,2],["Q2 9:30","steal","STL"],["Q2 7:44","missed corner 3","miss",4,3],["Q2 6:20","turnover (bad pass)","TO"],["Q2 4:10","made layup","make",22,4,2],["Q2 2:05","assist to George","AST"],["Q2 1:12","made three-pointer","make",44,10,3],
+["Q3 9:50","missed pull-up","miss",18,20],["Q3 8:15","missed layup","miss",26,6],["Q3 7:40","offensive rebound","REB"],["Q3 6:30","made three-pointer","make",33,24,3],["Q3 5:02","made jumper","make",24,13,2],["Q3 4:22","missed three-pointer","miss",8,19],["Q3 3:55","made free throw 1 of 2","FT",0,0,1],["Q3 3:55","made free throw 2 of 2","FT",0,0,1],["Q3 2:40","made dunk","make",27,3,2],
+["Q4 11:15","assist to Oubre","AST"],["Q4 10:02","made three-pointer","make",46,14,3],["Q4 8:48","missed floater","miss",20,9],["Q4 7:30","defensive rebound","REB"],["Q4 6:41","made layup","make",24,5,2],["Q4 5:10","made three-pointer","make",14,25,3]];
+const P=ALL.map((a,i)=>({i,t:a[0],txt:a[1],k:a[2],x:a[3],y:a[4],shot:a[2]==="make"||a[2]==="miss",pts:a[5]||0}));
+const qPos=t=>{const q=+t[1],m=t.slice(3).split(":");return ((q-1)*720+(720-(+m[0]*60+ +m[1])))/2880};
+let have=16,pos=16,live=true,sel=null;
+const r=document.getElementById("r"),st=document.getElementById("st"),cv=document.getElementById("cv"),lv=document.getElementById("lv");
+const base=`<rect class="ln2" x="0" y="0" width="50" height="47"/><rect class="ln2" x="17" y="0" width="16" height="19"/><circle class="ln2" cx="25" cy="19" r="6"/><path class="ln2" d="M3 0 V14 A23.75 23.75 0 0 0 47 14 V0"/><circle class="ln2" cx="25" cy="5.25" r=".75"/><line class="ln2" x1="22" y1="4" x2="28" y2="4"/><path class="ln2" d="M19 47 A6 6 0 0 1 31 47"/>`;
+cv.innerHTML=`<svg class="court" viewBox="0 0 50 47">${base}<g id="dots"></g><g id="fx"></g></svg>`;
+const dots=document.getElementById("dots"),fx=document.getElementById("fx");
+const dot=p=>p.k==="make"?`<circle data-s="${p.i}" cx="${p.x}" cy="${p.y}" r="1.6" fill="#4ade80" stroke="#0b0b0d" stroke-width=".4"/>`:`<g data-s="${p.i}" stroke="#f87171" stroke-width=".7"><line x1="${p.x-1.2}" y1="${p.y-1.2}" x2="${p.x+1.2}" y2="${p.y+1.2}"/><line x1="${p.x+1.2}" y1="${p.y-1.2}" x2="${p.x-1.2}" y2="${p.y+1.2}"/></g><rect data-s="${p.i}" x="${p.x-2}" y="${p.y-2}" width="4" height="4" fill="transparent"/>`;
+const row=(p,nw)=>`<div class="pl${nw?" nw":""}${sel===p.i?" hi":""}" data-s="${p.i}"><span class="q">${p.t}</span><span class="d" style="background:${KC[p.k]}"></span><span>${p.txt}</span></div>`;
+function render(newI){
+ const vis=P.slice(0,pos);
+ dots.innerHTML=vis.filter(p=>p.shot).map(dot).join("");
+ st.innerHTML=vis.slice().reverse().map(p=>row(p,p.i===newI)).join("");
+ const pts=vis.reduce((a,p)=>a+p.pts,0),fg=vis.filter(p=>p.shot),fm=fg.filter(p=>p.k==="make").length;
+ document.getElementById("ln").textContent=`${pts} PTS · ${fm}/${fg.length} FG`;
+ r.max=have;r.value=pos;
+ const last=vis[vis.length-1];document.getElementById("at").textContent=live?`Live · ${last?last.t:""}`:`Rewound to ${last?last.t:"tip-off"} · ${pos}/${have} plays`;
+ lv.classList.toggle("off",!live);lv.querySelector("span").textContent=live?"LIVE":(have>pos&&newSince?`LIVE · +${newSince} new`:"LIVE");
+ const W=r.offsetWidth;document.getElementById("qs").innerHTML=[1,2,3,4].map(q=>{const k=P.findIndex(p=>+p.t[1]===q);return k>=0&&k<have?`<span style="left:${Math.round(8+(k/have)*(W-16))}px">Q${q}</span>`:""}).join("");
+ if(sel!=null)hl(sel,false);
+}
+let newSince=0;
+function flash(p){if(!p.shot)return;fx.insertAdjacentHTML("beforeend",`<circle cx="${p.x}" cy="${p.y}" r="1" fill="none" stroke="#ffc62b" stroke-width=".6"><animate attributeName="r" from="1" to="6" dur=".9s" fill="freeze"/><animate attributeName="opacity" from="1" to="0" dur=".9s" fill="freeze"/></circle>`);const d=dots.querySelector(`[data-s="${p.i}"]`);d&&d.animate([{transform:"translateY(-6px)",opacity:0},{transform:"none",opacity:1}],{duration:400,easing:"cubic-bezier(.3,1.5,.5,1)"});setTimeout(()=>fx.firstChild&&fx.firstChild.remove(),1000)}
+function hl(i,scroll=true){sel=i;st.querySelectorAll(".pl").forEach(x=>x.classList.toggle("hi",+x.dataset.s===i));dots.querySelectorAll("[data-s]").forEach(x=>x.style.opacity=+x.dataset.s===i?1:.25);const p=P[i];if(p.shot){fx.insertAdjacentHTML("beforeend",`<circle cx="${p.x}" cy="${p.y}" r="3" fill="none" stroke="#ffc62b" stroke-width=".5"/>`);setTimeout(()=>fx.lastChild&&fx.lastChild.remove(),900)}if(scroll){const el=st.querySelector(`[data-s="${i}"]`);el&&(st.scrollTop=el.offsetTop-60)}}
+document.addEventListener("click",e=>{const t=e.target.closest("[data-s]");if(t){const i=+t.dataset.s;if(sel===i){sel=null;render()}else hl(i)}});
+r.oninput=()=>{pos=+r.value;live=pos>=have;if(live)newSince=0;sel=null;render()};
+lv.onclick=()=>{pos=have;live=true;newSince=0;sel=null;render()};
+function tick(){
+ if(have>=P.length){setTimeout(()=>{have=16;pos=16;live=true;newSince=0;render()},5000);return}
+ const p=P[have];have++;
+ if(live){pos=have;render(p.i);flash(p)}else{newSince++;render()}
+}
+render();setInterval(tick,3200);
+</script></body></html>
