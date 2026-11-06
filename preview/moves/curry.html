@@ -29,7 +29,7 @@ canvas#gl{display:block;width:100%;height:100%}
 </style>
 <script type="importmap">{"imports":{"three":"./three.module.min.js"}}</script>
 </head><body><div class="w">
-<div class="hdr"><h1>3D Moves · Preview</h1><p>Stephen Curry model (your upload) in all eight plays. The fantasy player making the play wears his NBA team colours; everyone else is in gray.</p></div>
+<div class="hdr"><h1>3D Moves · Preview</h1><p>Curry and Anthony Davis models (your uploads) in all eight plays. AD makes the steal and the block. The fantasy player making the play wears his NBA team colours; everyone else is in gray.</p></div>
 <div class="stage" id="st"><canvas id="gl"></canvas><div class="tag" id="tag"><i></i>Mid-range</div><div class="big" id="big"></div></div>
 <div class="menu" id="menu"></div>
 <div class="row2"><button id="auto" class="on">Auto-play all</button><button id="slow">Slow-mo</button><button id="rep">Replay</button></div>
@@ -181,7 +181,7 @@ const POOL={MX:figure({col:0x006bb6,trim:0xed174c,num:"0",name:"MAXEY",numCol:"#
  G2:figure({...GRAY,num:"24",skin:0xb07a52,hair:"puff",beard:1})};
 let FIG={};
 if(document.fonts)document.fonts.ready.then(()=>TEX.forEach(d=>d()));
-const NAMES={MX:["Stephen Curry","me"],CC:["Cade Cunningham","op"],PT:["Teammate","me"]};
+const NAMES={MX:["Stephen Curry","me"],CC:["Anthony Davis","op"],PT:["Teammate","me"]};
 /* ---------- ball ---------- */
 function ballTex(){const c=document.createElement("canvas");c.width=256;c.height=128;const x=c.getContext("2d");x.fillStyle="#d4621f";x.fillRect(0,0,256,128);for(let i=0;i<2500;i++){x.fillStyle=`rgba(0,0,0,${Math.random()*.12})`;x.fillRect(Math.random()*256,Math.random()*128,1.5,1.5)}x.strokeStyle="#2a1206";x.lineWidth=3;[64,128,192].forEach(v=>{x.beginPath();x.moveTo(v,0);x.lineTo(v,128);x.stroke()});x.beginPath();x.moveTo(0,64);x.lineTo(256,64);x.stroke();const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t}
 const ball=new THREE.Mesh(new THREE.SphereGeometry(.12,24,18),new THREE.MeshStandardMaterial({map:ballTex(),roughness:.7}));ball.castShadow=true;S.add(ball);
@@ -263,15 +263,15 @@ function hairGroup(K){const g=new THREE.Group(),hm=new THREE.MeshStandardMateria
  if(K.band){const b=new THREE.Mesh(new THREE.TorusGeometry(.0465,.0055,8,28),new THREE.MeshStandardMaterial({color:K.band,roughness:.7}));add(b,[0,.957,-.004],[.9,1,1.06],Math.PI/2-.28)}
  return g}
 const LD=new GLTFLoader();LD.setMeshoptDecoder(MeshoptDecoder);
-LD.load("curry.glb",cg=>{LD.load("player.glb",g=>{Object.entries(POOL).forEach(([k,F])=>{const K=KIT[k];const SPECIAL=k==="MX";const r=SU.clone(SPECIAL?cg.scene:g.scene);
-  if(SPECIAL){r.updateMatrixWorld(true);let top=-1e9,bot=1e9;r.traverse(o=>{if(o.isBone){const p=o.getWorldPosition(new THREE.Vector3());top=Math.max(top,p.y);bot=Math.min(bot,p.y)}});const sc=1.88/(top-bot);r.scale.multiplyScalar(sc);r.updateMatrixWorld(true);let mb=1e9;r.traverse(o=>{if(o.isBone)mb=Math.min(mb,o.getWorldPosition(new THREE.Vector3()).y)});r.position.y=-mb+.03;window.__cs=[top,bot,sc]}
+LD.load("curry.glb",cg=>{LD.load("ad.glb",ag=>{LD.load("player.glb",g=>{const SP={MX:[cg,1.88],CC:[ag,2.08]};Object.entries(POOL).forEach(([k,F])=>{const K=KIT[k];const SPECIAL=!!SP[k];const r=SU.clone(SPECIAL?SP[k][0].scene:g.scene);
+  if(SPECIAL){r.updateMatrixWorld(true);let top=-1e9,bot=1e9;r.traverse(o=>{if(o.isBone){const p=o.getWorldPosition(new THREE.Vector3());top=Math.max(top,p.y);bot=Math.min(bot,p.y)}});const sc=SP[k][1]/(top-bot);r.scale.multiplyScalar(sc);r.updateMatrixWorld(true);let mb=1e9;r.traverse(o=>{if(o.isBone)mb=Math.min(mb,o.getWorldPosition(new THREE.Vector3()).y)});r.position.y=-mb+.03;window.__cs=[top,bot,sc]}
   else r.scale.set(K.h*K.w,K.h,K.h*K.w);S.add(r);r.visible=false;
   const b={};r.traverse(o=>{if(o.isBone){const n=o.name.replace(/^(mixamorig|rig):?/,"");b[n]=o}if(o.isMesh){o.castShadow=true;o.frustumCulled=false;if(!SPECIAL)o.material=kitMat(o.material,k)}});
   r.updateMatrixWorld(true);BN.forEach(n=>{const o=b[n];if(!o)return;o.userData.rq=o.quaternion.clone();const ch=o.children.find(x=>x.isBone);o.userData.L=ch?ch.position.clone().normalize():new THREE.Vector3(0,1,0)});
   b.Hips.userData.rw=b.Hips.getWorldQuaternion(new THREE.Quaternion());
   if(!SPECIAL)["Left","Right"].forEach(S2=>{b[S2+"ForeArm"].position.multiplyScalar(1.13);b[S2+"Hand"].position.multiplyScalar(1.1)});
   let sm;r.traverse(o=>{if(o.isSkinnedMesh&&!sm)sm=o});r.updateMatrixWorld(true);const hg=SPECIAL?new THREE.Group():hairGroup(K);hg.matrixAutoUpdate=false;const hi=sm.skeleton.bones.indexOf(b.Head);hg.matrix.copy(sm.skeleton.boneInverses[hi].clone().multiply(sm.bindMatrix));b.Head.add(hg);
-  MX[k]={r,b,hg,sm};F.root.traverse(o=>{if(o.isMesh)o.visible=false})});REAL=true;window.__real=1})});
+  MX[k]={r,b,hg,sm};F.root.traverse(o=>{if(o.isMesh)o.visible=false})});REAL=true;window.__real=1})})});
 const _q=new THREE.Quaternion(),_q2=new THREE.Quaternion(),_v=new THREE.Vector3(),_a=new THREE.Vector3(),_b=new THREE.Vector3();
 function aimB(bone,a,b){const pq=bone.parent.getWorldQuaternion(_q);const wq=_q2.copy(pq).multiply(bone.userData.rq);const cur=_v.copy(bone.userData.L).applyQuaternion(wq);const d=_a.copy(b).sub(a).normalize();
  const dq=new THREE.Quaternion().setFromUnitVectors(cur,d);const nw=dq.multiply(wq);bone.quaternion.copy(pq.invert().multiply(nw));bone.updateMatrixWorld(true)}
