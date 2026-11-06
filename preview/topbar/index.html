@@ -1,0 +1,91 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Header Options</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--g:#f5b82e;--bg:#000;--card:#16171b;--line:#24252b;--mute:#8b8e97;--C:"Barlow Condensed","Arial Narrow",sans-serif}
+*{box-sizing:border-box}html,body{margin:0;background:#050506;color:#eef0f3;font:14px Inter,-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.top{max-width:980px;margin:0 auto;padding:18px 16px 4px}.top h1{margin:0;font:800 26px/1 var(--C);letter-spacing:.04em;text-transform:uppercase}.top p{color:var(--mute);margin:6px 0 0;line-height:1.45;font-size:13px}
+.grid{max-width:980px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;padding:14px 16px 60px}
+.opt h3{margin:0 0 7px;font:700 15px/1.1 var(--C);letter-spacing:.06em;text-transform:uppercase}.opt h3 b{color:var(--g);margin-right:6px}.opt p{margin:7px 2px 0;color:var(--mute);font-size:12px;line-height:1.4}
+.ph{position:relative;border-radius:22px;overflow:hidden;background:#000;border:1px solid #1d1e23;height:300px}
+.sb{height:26px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 12px Inter;color:#fff}
+/* shared bits */
+.hd{display:flex;align-items:center;height:48px;padding:0 12px;gap:10px}
+.lg{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 50% 40%,#fff 0 48%,#1d3c8a 49%);flex:none;position:relative}
+.lg:after{content:"";position:absolute;inset:9px 6px;border-radius:3px;background:linear-gradient(#2a56c6,#2a56c6) center/100% 3px no-repeat}
+.chev{width:10px;height:10px;flex:none;opacity:.7}
+.tt{font:800 22px/1 var(--C);letter-spacing:.01em;display:flex;align-items:center;gap:7px}
+.tt .gl{width:17px;height:17px}
+.ic{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tabs{display:flex;gap:18px;padding:0 14px;height:36px;align-items:stretch;font:700 13.5px/1 Inter;color:#9a9da6;border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap}
+.tabs span{display:flex;align-items:center;position:relative}.tabs .on{color:#fff}.tabs .on:after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;border-radius:3px 3px 0 0;background:var(--g)}
+.body{position:relative;padding:10px 12px}.mu{display:flex;align-items:center;justify-content:space-between;background:var(--card);border-radius:12px;padding:12px;border-left:3px solid #2a56c6}
+.mu b{font:800 30px/1 var(--C)}.mu small{color:var(--mute);font:600 11px Inter;display:block}.mu .c{text-align:center;font:700 11px var(--C);letter-spacing:.14em;color:var(--mute)}.mu .c i{display:block;font-style:normal;color:#30d158;font-size:16px;letter-spacing:0}
+.row{height:30px;margin-top:8px;border-radius:9px;background:var(--card)}
+.sp{flex:1}
+/* button styles */
+.b0{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#dfe1e6;flex:none}
+.circ{background:#1c1d22}
+.ghost{background:none;color:#cfd2d8}
+</style></head><body>
+<div class="top"><h1>Header · 20 options</h1><p>Every option fixes the "sticker" problem the same way under the hood: the logo, title, buttons and tabs become <b>one solid bar that's pinned to the top</b>, and the page scrolls underneath it, so nothing drifts on its own. The options below only change the look.</p></div>
+<div class="grid" id="g"></div>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="s" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
+<symbol id="h" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.1-2.4 3.6"/><circle cx="12" cy="17.2" r=".6" fill="currentColor"/></symbol>
+<symbol id="dots" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="19" cy="12" r="1.3" fill="currentColor"/></symbol>
+<symbol id="ball" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5.6 5.6c3 3 3 9.8 0 12.8M18.4 5.6c-3 3-3 9.8 0 12.8"/></symbol>
+<symbol id="cv" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></symbol>
+</defs></svg>
+<script>
+const I=(id,c="")=>`<svg class="ic ${c}"><use href="#${id}"/></svg>`;
+const LG=`<span class="lg"></span><svg class="ic chev" style="width:14px;height:14px"><use href="#cv"/></svg>`;
+const TT=(t="Matchup",g=1)=>`<span class="tt">${g?`<svg class="ic gl" style="color:var(--g)"><use href="#ball"/></svg>`:""}${t}</span>`;
+const TABS=`<div class="tabs"><span>Overview</span><span>Team</span><span class="on">Matchup</span><span>Players</span><span>League</span></div>`;
+const BODY=`<div class="body"><div class="mu"><div><small>Mastika Magics</small><b>6</b></div><div class="c">WK 3<i>40%</i></div><div style="text-align:right"><small>LeTakim</small><b>3</b></div></div><div class="row"></div><div class="row"></div><div class="row"></div></div>`;
+const SB=`<div class="sb"><span>3:32</span><span>●●● ◔</span></div>`;
+const O=[
+["Flat icons, no bubbles","Drop the grey circles. Search and help become plain white icons in the same row as the title, the way Apple's own apps do it.",
+`<div class="hd">${LG}<span class="sp"></span>${TT()}<span class="sp"></span><span class="b0 ghost">${I("s")}</span><span class="b0 ghost" style="margin-left:-8px">${I("h")}</span></div>${TABS}`],
+["One capsule","Search and help share one rounded pill with a hairline divider, so they read as one control instead of two floating stickers.",
+`<div class="hd">${LG}<span class="sp"></span>${TT()}<span class="sp"></span><span style="display:flex;align-items:center;background:#1c1d22;border-radius:999px;height:34px;padding:0 4px">${`<span class="b0" style="width:32px;height:32px">${I("s")}</span>`}<span style="width:1px;height:16px;background:#34353c"></span><span class="b0" style="width:32px;height:32px">${I("h")}</span></span></div>${TABS}`],
+["Search field under the title","A full-width search field sits between the title and the tabs. Help moves to a small icon next to the logo.",
+`<div class="hd">${LG}<span class="sp"></span>${TT()}<span class="sp"></span><span class="b0 ghost">${I("h")}</span></div><div style="padding:0 12px 8px"><div style="height:34px;border-radius:10px;background:#1c1d22;display:flex;align-items:center;gap:8px;padding:0 10px;color:#8b8e97;font-size:13px">${I("s")}Search players, teams</div></div>${TABS}`],
+["Search inside the tab row","The magnifier sits pinned to the right end of the tabs with a fade behind it. The title row stays clean: logo, title, help.",
+`<div class="hd">${LG}<span class="sp"></span>${TT()}<span class="sp"></span><span class="b0 ghost">${I("h")}</span></div><div style="position:relative">${TABS}<span style="position:absolute;right:0;top:0;bottom:1px;width:64px;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;background:linear-gradient(90deg,transparent,#000 40%);color:#cfd2d8">${I("s")}</span></div>`],
+["Large left title (iOS style)","The title moves left and gets big. The logo becomes the team switcher on the right, next to search, with no circles.",
+`<div class="hd" style="height:30px;justify-content:flex-end;gap:2px"><span class="b0 ghost">${I("s")}</span><span class="b0 ghost">${I("h")}</span>${LG}</div><div style="padding:2px 14px 8px;font:800 32px/1 var(--C)">Matchup</div>${TABS}`],
+["Frosted glass bar","The bar is translucent with a blur, so content glides under it. The icons sit inside the glass and never look stuck on top.",
+`<div style="position:absolute;inset:26px 0 auto;height:300px;background:linear-gradient(160deg,#1f2a4a,#000 60%)"></div><div style="position:relative;background:rgba(18,19,24,.62);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.08)"><div class="hd">${LG}<span class="sp"></span>${TT()}<span class="sp"></span><span class="b0 ghost">${I("s")}</span><span class="b0 ghost" style="margin-left:-8px">${I("h")}</span></div>${TABS.replace('border-bottom:1px solid var(--line)','')}</div>`],
+["Help lives in the team menu","Search is the only button up top. Help, settings and switching league all live under the logo chevron.",
+`<div class="hd">${LG}<span class="sp"></span>${TT()}<span class="sp"></span><span class="b0 ghost">${I("s")}</span></div>${TABS}<div style="position:absolute;left:12px;top:78px;width:170px;background:#1c1d22;border-radius:12px;padding:6px;font-size:12.5px;box-shadow:0 10px 30px rgba(0,0,0,.6)"><div style="padding:8px">Switch league</div><div style="padding:8px">Settings</div><div style="padding:8px;display:flex;gap:7px;align-items:center;color:var(--g)">${I("h")}Help &amp; guide</div></div>`],
+["Search pill with label","A compact pill on the right that says \"Search\". It's clearer than a lone icon and looks deliberately placed.",
+`<div class="hd">${LG}<span class="sp"></span>${TT()}<span class="sp"></span><span style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px 0 9px;border-radius:999px;background:#1c1d22;color:#cfd2d8;font:600 12.5px Inter">${I("s")}Search</span></div>${TABS}`],
+["Search moves to the bottom bar","Nothing on the right of the header. Search joins Home and More in the floating bottom bar, where your thumb already is.",
+`<div class="hd">${LG}<span class="sp"></span>${TT()}<span class="sp"></span><span style="width:46px"></span></div>${TABS}<div style="position:absolute;left:10px;right:10px;bottom:10px;display:flex;gap:8px"><span style="width:50px;height:50px;border-radius:50%;background:#16171b;display:grid;place-items:center;font-size:10px;color:#ccc">Home</span><span style="flex:1;height:50px;border-radius:25px;background:#16171b;display:flex;align-items:center;justify-content:center;gap:20px;font:600 12.5px Inter"><span style="color:var(--g)">Matchup</span><span>Week Plan</span></span><span style="width:50px;height:50px;border-radius:50%;background:#16171b;display:grid;place-items:center;color:#fff">${I("s")}</span></div>`],
+["Pull down to search","The header is just the logo and title. Pulling the page down reveals a search field, the same gesture as iPhone Settings.",
+`<div class="hd">${LG}<span class="sp"></span>${TT()}<span class="sp"></span><span class="b0 ghost">${I("h")}</span></div><div style="padding:0 12px 8px"><div style="height:30px;border-radius:9px;background:#141519;display:flex;align-items:center;gap:7px;padding:0 10px;color:#6c6f78;font-size:12.5px;opacity:.85">${I("s")}Search</div><div style="text-align:center;font:600 10px Inter;color:#55585f;margin-top:4px">↓ pull to reveal</div></div>${TABS}`],
+["Gold outline rings","The buttons keep their circles but as thin gold-tinted outlines that match the tab underline, so they look branded rather than default.",
+`<div class="hd">${LG}<span class="sp"></span>${TT()}<span class="sp"></span><span class="b0" style="width:32px;height:32px;border:1.5px solid rgba(245,184,46,.45);color:var(--g)">${I("s")}</span><span class="b0" style="width:32px;height:32px;border:1.5px solid rgba(245,184,46,.45);color:var(--g)">${I("h")}</span></div>${TABS}`],
+["Rounded squares","Square-ish 10px corners, the same shape as your cards, so the buttons belong to the app's design family.",
+`<div class="hd">${LG}<span class="sp"></span>${TT()}<span class="sp"></span><span class="b0" style="width:34px;height:34px;border-radius:10px;background:#16171b;border:1px solid #26272d">${I("s")}</span><span class="b0" style="width:34px;height:34px;border-radius:10px;background:#16171b;border:1px solid #26272d">${I("h")}</span></div>${TABS}`],
+["Help as a tiny ⓘ by the title","The help button shrinks to a small info mark next to the page title. Search stays alone on the right.",
+`<div class="hd">${LG}<span class="sp"></span><span class="tt">Matchup<svg class="ic" style="width:15px;height:15px;color:#6f727b"><use href="#info"/></svg></span><span class="sp"></span><span class="b0 ghost">${I("s")}</span></div>${TABS}`],
+["Tap the title to search","No buttons at all. The title gets a small magnifier, and tapping it turns the title into a search field (Spotlight-style).",
+`<div class="hd">${LG}<span class="sp"></span><span style="display:flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:999px;background:#141519;border:1px solid #23242a"><span class="tt" style="font-size:19px">Matchup</span><svg class="ic" style="width:16px;height:16px;color:#8b8e97"><use href="#s"/></svg></span><span class="sp"></span><span class="b0 ghost">${I("h")}</span></div>${TABS}`],
+["Swap sides","Search goes left where your thumb starts reading. The team logo moves right like an account avatar. Help sits in the menu.",
+`<div class="hd"><span class="b0 ghost" style="margin-left:-6px">${I("s")}</span><span class="sp"></span>${TT()}<span class="sp"></span><svg class="ic chev" style="width:14px;height:14px"><use href="#cv"/></svg><span class="lg"></span></div>${TABS}`],
+["Solid header card","The whole header is a dark card with rounded bottom corners, so the icons visibly sit inside a container.",
+`<div style="background:#111216;border-radius:0 0 18px 18px;box-shadow:0 6px 20px rgba(0,0,0,.6)"><div class="hd">${LG}<span class="sp"></span>${TT()}<span class="sp"></span><span class="b0 ghost">${I("s")}</span><span class="b0 ghost" style="margin-left:-8px">${I("h")}</span></div>${TABS.replace('border-bottom:1px solid var(--line)','border:0')}</div>`],
+["One ⋯ menu","The right side is a single \"⋯\" button that opens Search, Help and Settings. It's the most minimal, but search takes one extra tap.",
+`<div class="hd">${LG}<span class="sp"></span>${TT()}<span class="sp"></span><span class="b0 ghost">${I("dots")}</span></div>${TABS}<div style="position:absolute;right:12px;top:78px;width:160px;background:#1c1d22;border-radius:12px;padding:6px;font-size:12.5px;box-shadow:0 10px 30px rgba(0,0,0,.6)"><div style="padding:8px;display:flex;gap:8px;align-items:center">${I("s")}Search</div><div style="padding:8px;display:flex;gap:8px;align-items:center">${I("h")}Help</div></div>`],
+["Collapsing big header","A big title with a search field at the top of the page. As you scroll it shrinks into a thin bar with just the title and a magnifier.",
+`<div class="hd" style="height:30px;justify-content:space-between">${LG}<span class="b0 ghost">${I("h")}</span></div><div style="padding:0 14px 6px;font:800 30px/1 var(--C)">Matchup</div><div style="padding:0 12px 8px"><div style="height:32px;border-radius:10px;background:#1c1d22;display:flex;align-items:center;gap:8px;padding:0 10px;color:#8b8e97;font-size:12.5px">${I("s")}Search</div></div>${TABS}<div style="text-align:center;font:600 10px Inter;color:#55585f;margin-top:6px">↑ collapses on scroll</div>`],
+["Underlined text links","Typographic, no icons. \"Search\" and \"Help\" are small caps text in the header, styled like the tabs.",
+`<div class="hd">${LG}<span class="sp"></span>${TT()}<span class="sp"></span><span style="font:700 11px var(--C);letter-spacing:.16em;color:#cfd2d8">SEARCH</span><span style="font:700 11px var(--C);letter-spacing:.16em;color:#7d808a">HELP</span></div>${TABS}`],
+["Gold search, quiet help","Search is the main action, so it gets a solid gold circle with a black icon. Help is a faint outline icon. There's clear hierarchy, nothing fake-looking.",
+`<div class="hd">${LG}<span class="sp"></span>${TT()}<span class="sp"></span><span class="b0 ghost" style="color:#6f727b">${I("h")}</span><span class="b0" style="width:34px;height:34px;background:var(--g);color:#000">${I("s")}</span></div>${TABS}`],
+];
+document.getElementById("g").innerHTML=O.map(([t,d,h],i)=>`<div class="opt"><h3><b>${i+1}</b>${t}</h3><div class="ph">${SB}${h}${/bottom:10px/.test(h)||/collapses/.test(h)?"":BODY}</div><p>${d}</p></div>`).join("");
+</script></body></html>
