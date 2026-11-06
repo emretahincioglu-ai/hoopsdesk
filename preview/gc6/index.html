@@ -66,7 +66,7 @@ canvas#gl{display:block;width:100%;height:100%}
 </head><body><div class="w">
 <div class="bug"><div class="tm"><span class="sw" style="background:#f5b82e"></span><span class="nm" id="mn">You</span><span class="sc" id="sm" style="margin-left:auto">5</span></div><div class="mid"><span class="lv"><i></i>LIVE</span><span class="wp" id="wp">WIN 50%</span></div><div class="tm r"><span class="sw" style="background:#9d7bff"></span><span class="nm" id="on">Them</span><span class="sc" id="so" style="margin-right:auto">4</span></div></div><div class="tick" id="tick"></div>
 <div class="stage" id="st"><canvas id="gl"></canvas><div class="tag" id="tag"><i></i>Mid-range</div><div class="big" id="big"></div><div class="imp" id="imp"></div><div class="l3" id="l3"></div></div>
-<div class="th" id="th"></div><p class="demo">Demo · simulated plays from your real matchup rosters</p><div class="pbp"><div class="pbh"><span>PLAY-BY-PLAY</span><span id="pbn"></span></div><div id="feed"></div></div><div id="pq" hidden></div><div id="pl" hidden></div><div id="cur" hidden></div><button id="auto" hidden></button><button id="slow" hidden></button><button id="rep" hidden></button><div id="menu" hidden></div>
+<div class="th" id="th" hidden></div><p class="demo">Demo · simulated plays from your real matchup rosters</p><div class="pbp"><div class="pbh"><span>PLAY-BY-PLAY</span><span id="pbn"></span></div><div id="feed"></div></div><div id="pq" hidden></div><div id="pl" hidden></div><div id="cur" hidden></div><button id="auto" hidden></button><button id="slow" hidden></button><button id="rep" hidden></button><div id="menu" hidden></div>
 </div>
 <script type="module">
 import * as THREE from "three";import {GLTFLoader} from "../moves/GLTFLoader.js";import * as SU from "../moves/SkeletonUtils.js";import {MeshoptDecoder} from "../moves/meshopt_decoder.module.js";
@@ -188,7 +188,7 @@ window.__theme=id=>applyTheme(THEMES.find(t=>t.id===id)||THEMES[0]);
 
 {const th=document.getElementById("th");th.innerHTML=["classic","creative"].map(k=>`<div class="thk">${k==="classic"?"Classic":"Creative"}</div><div class="thr">`+THEMES.filter(t=>t.kind===k).map((t,i)=>`<button data-id="${t.id}"><span class="sw2" style="background:linear-gradient(135deg,${t.wood[0]} 0 50%,${t.pa?t.paint:t.line} 50% 100%)"></span>${THEMES.indexOf(t)+1}. ${t.name}</button>`).join("")+`</div>`).join("");
  th.onclick=e=>{const b=e.target.closest("button");if(b)window.__theme(b.dataset.id)};
- let init=(location.hash.match(/t=(\w+)/)||[])[1];if(!init)try{init=localStorage.getItem("gc6_theme2")}catch(e){}window.__theme(init||"original")}
+ let init=(location.hash.match(/t=(\w+)/)||[])[1];if(!init)try{init=localStorage.getItem("gc6_theme2")}catch(e){}window.__theme(location.hash.match(/t=(\w+)/)?init:"royal")}
 /* ---------- figure ---------- */
 const skin=new THREE.MeshStandardMaterial({color:0x2c2f37,roughness:.38,metalness:.15});
 const shoe=new THREE.MeshStandardMaterial({color:0xf2f2f2,roughness:.5});
@@ -415,7 +415,7 @@ function dress(r,info){const T=info.gray?["","#8f9299","#55585e","#b9bcc2"]:(TEA
  r.traverse(o=>{if(!o.isMesh)return;const f=m0=>{const m=new THREE.MeshStandardMaterial({name:m0.name,map:m0.map,color:m0.color.clone(),transparent:m0.transparent,alphaTest:m0.alphaTest,opacity:m0.opacity,side:m0.side,alphaMap:m0.alphaMap,roughness:.62,metalness:0});const n=m.name;
   if(n==="JTJersey"){m.map=jt}else if(n==="Shorts"){m.map=st}else if(/^(JTTrim|ShortsTrim|Waistband|AddOn)$/.test(n)){m.map=null;m.color.set(T[2])}else if(n==="AddOn_1"){m.map=null;m.color.set(T[3])}
   else if(SKINM.test(n)){m.color.copy(tint);m.roughness=.55}return m};o.material=Array.isArray(o.material)?o.material.map(f):f(o.material)})}
-function buildRole(k,scene,info){if(MX[k]){S.remove(MX[k].r);delete MX[k]}const F=POOL[k];const r=SU.clone(scene);
+function buildRole(k,scene,info){if(MX[k]){const o=MX[k].r;if(o.parent)o.parent.remove(o);delete MX[k]}const F=POOL[k];const r=SU.clone(scene);
  {const rm=[];r.traverse(o=>{if(!o.isBone&&!o.isSkinnedMesh&&o!==r&&/ball/i.test(o.name))rm.push(o)});rm.forEach(o=>o.parent.remove(o))}
  r.updateMatrixWorld(true);{const bb={};r.traverse(o=>{if(o.isBone)bb[o.name.replace(/^(mixamorig|rig):?/,"")]=o});const wp=n=>bb[n]&&bb[n].getWorldPosition(new THREE.Vector3());
   const up=wp("Head").sub(wp("Hips")).normalize();r.quaternion.premultiply(new THREE.Quaternion().setFromUnitVectors(up,new THREE.Vector3(0,1,0)));r.updateMatrixWorld(true);
