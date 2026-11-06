@@ -1,0 +1,183 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Player Looks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--y:#ffc62b;--sub:#8b8e96;--card:#141519;--line:#22232a;--C:"Barlow Condensed","Arial Narrow",sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;background:#07080a;color:#eef0f3;font:14px Inter,-apple-system,system-ui,sans-serif}
+.w{max-width:760px;margin:0 auto;padding:0 0 80px}
+.top{position:sticky;top:0;z-index:5;background:rgba(7,8,10,.94);backdrop-filter:blur(10px);padding:calc(env(safe-area-inset-top) + 12px) 12px 10px;border-bottom:1px solid var(--line)}
+.top h1{margin:0;font:800 24px/1 var(--C);letter-spacing:.04em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.top h1 small{font:700 13px/1 var(--C);letter-spacing:.12em;color:var(--sub)}
+.bar{height:4px;border-radius:2px;background:#1c1d22;margin:10px 0 8px;overflow:hidden}.bar i{display:block;height:100%;background:var(--y);width:0;transition:width .4s}
+.ctl{display:flex;gap:6px}.ctl input,.ctl select{flex:1;min-width:0;background:#121318;border:1px solid #26272e;color:#eef0f3;border-radius:9px;padding:9px 10px;font:600 14px Inter}
+.ctl select{flex:none;width:auto}
+.sync{font:600 11px Inter;color:var(--sub);margin-left:auto}
+.list{padding:6px 8px}
+.row{display:flex;align-items:center;gap:10px;padding:8px 8px;border-radius:12px;cursor:pointer}
+.row:active{background:#15161b}
+.row .rk{width:28px;text-align:right;font:700 13px var(--C);color:#5d6069}
+.ph{flex:none;width:46px;height:46px;border-radius:50%;overflow:hidden;background:#1b1c22;position:relative}.ph img{position:absolute;left:50%;top:0;width:64px;transform:translateX(-50%)}
+.row .nm{flex:1;min-width:0}.row .nm b{display:block;font:700 15px Inter;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.row .nm small{font:600 11.5px Inter;color:var(--sub)}
+.row .mini{flex:none;width:40px;height:50px}
+.row .ck{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid #2c2d34;display:grid;place-items:center;font:800 13px Inter;color:#000}.row .ck.on{background:#4ade80;border-color:#4ade80}
+/* editor */
+.ed{position:fixed;inset:0;z-index:20;background:#07080a;display:none;flex-direction:column}
+.ed.open{display:flex}
+.edh{display:flex;align-items:center;gap:8px;padding:calc(env(safe-area-inset-top) + 10px) 10px 10px;border-bottom:1px solid var(--line)}
+.edh button{background:#16171c;border:1px solid #26272e;color:#eef0f3;border-radius:9px;padding:8px 11px;font:700 13px Inter}
+.edh .t{flex:1;min-width:0;text-align:center}.edh .t b{display:block;font:800 18px/1.1 var(--C);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.edh .t small{font:600 11px Inter;color:var(--sub)}
+.edb{flex:1;overflow:auto;-webkit-overflow-scrolling:touch}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px}
+.hero .ref,.hero .pv{background:var(--card);border-radius:14px;height:240px;position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.hero .ref img{width:120%;max-width:none}.hero .lbl{position:absolute;left:10px;top:9px;font:700 10px var(--C);letter-spacing:.18em;color:var(--sub)}
+.hero .pv svg{height:100%}
+.sec{padding:4px 12px 12px}.sec h3{margin:10px 2px 8px;font:700 13px var(--C);letter-spacing:.16em;text-transform:uppercase;color:#c9ccd3;display:flex;align-items:center;gap:8px}.sec h3 em{font-style:normal;color:var(--y);letter-spacing:.06em;text-transform:none;font:600 12px Inter}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+@media(min-width:560px){.grid{grid-template-columns:repeat(8,1fr)}}
+.op{background:var(--card);border:2px solid transparent;border-radius:12px;padding:6px 4px 7px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;color:#d5d8de}
+.op svg{width:100%;height:auto;max-width:72px}.op span{font:600 11px/1.15 Inter;text-align:center}
+.op.on{border-color:var(--y);background:#1e1a0e}
+.sw{display:flex;flex-wrap:wrap;gap:8px}.sw button{width:38px;height:38px;border-radius:50%;border:3px solid transparent;cursor:pointer}.sw button.on{border-color:var(--y);box-shadow:0 0 0 2px #07080a inset}
+.sw label{display:flex;align-items:center;gap:6px;font:600 12px Inter;color:var(--sub)}.sw input[type=color]{width:38px;height:38px;border:0;padding:0;background:none;border-radius:50%}
+.seg{display:flex;flex-wrap:wrap;gap:6px}.seg button{background:var(--card);border:2px solid transparent;color:#d5d8de;border-radius:9px;padding:8px 12px;font:700 12.5px Inter}.seg button.on{border-color:var(--y);background:#1e1a0e;color:#fff}
+.edf{display:flex;gap:8px;padding:10px 12px calc(env(safe-area-inset-bottom) + 10px);border-top:1px solid var(--line);background:#07080a}
+.edf button{flex:1;border:0;border-radius:11px;padding:13px;font:800 14px Inter}
+.edf .done{background:var(--y);color:#111}.edf .cp{background:#16171c;color:#eef0f3;border:1px solid #26272e}
+.pick{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.6);display:none;align-items:flex-end}.pick.open{display:flex}
+.pick .in{width:100%;max-height:70vh;overflow:auto;background:#101115;border-radius:18px 18px 0 0;padding:14px}
+.pick input{width:100%;background:#121318;border:1px solid #26272e;color:#eef0f3;border-radius:9px;padding:10px;font:600 14px Inter;margin-bottom:8px}
+.note{margin:14px 14px 0;color:var(--sub);font-size:12px;line-height:1.5}
+</style></head><body><div class="w">
+<div class="top"><h1>Player Looks <small id="cnt"></small><span class="sync" id="sync"></span></h1><div class="bar"><i id="prog"></i></div>
+<div class="ctl"><input id="q" placeholder="Search player…"><select id="tf"><option value="">All teams</option></select><select id="sf"><option value="">All</option><option value="todo">To do</option><option value="done">Done</option></select></div></div>
+<div class="list" id="list"></div>
+<p class="note">Top 200 by Basketball Monster rest-of-season rank. Tap a player, pick his look, hit Done. Saves to every device automatically. Jersey colours, number and height come from ESPN.</p>
+</div>
+<div class="ed" id="ed"><div class="edh"><button id="bk">‹ List</button><div class="t"><b id="en"></b><small id="es"></small></div><button id="pr">↑</button><button id="nx">↓</button></div>
+<div class="edb" id="edb"></div>
+<div class="edf"><button class="cp" id="cpb">Copy from…</button><button class="done" id="dn">Done ✓ Next</button></div></div>
+<div class="pick" id="pick"><div class="in"><input id="pq" placeholder="Copy look from…"><div id="pl"></div></div></div>
+<script>
+const NAMES=["Nikola Jokic", "Shai Gilgeous-Alexander", "Luka Doncic", "Victor Wembanyama", "Giannis Antetokounmpo", "Cade Cunningham", "Jalen Johnson", "Jayson Tatum", "Anthony Edwards", "Cooper Flagg", "Donovan Mitchell", "Tyrese Maxey", "LaMelo Ball", "Domantas Sabonis", "Jalen Brunson", "Scottie Barnes", "Kevin Durant", "Amen Thompson", "Trae Young", "Karl-Anthony Towns", "Devin Booker", "Tyrese Haliburton", "Alperen Sengun", "Josh Giddey", "Anthony Davis", "Stephen Curry", "Pascal Siakam", "James Harden", "Austin Reaves", "Jamal Murray", "Jaylen Brown", "Bam Adebayo", "Deni Avdija", "LeBron James", "Kawhi Leonard", "Evan Mobley", "Jalen Duren", "Derrick White", "Naz Reid", "De'Aaron Fox", "Desmond Bane", "Darius Garland", "Michael Porter Jr.", "Kon Knueppel", "Stephon Castle", "Nickeil Alexander-Walker", "Paolo Banchero", "Mikal Bridges", "Dyson Daniels", "Kyrie Irving", "Julius Randle", "Zion Williamson", "Lauri Markkanen", "Ty Jerome", "Tyler Herro", "Brandon Miller", "Dejounte Murray", "Damian Lillard", "Joel Embiid", "Jarrett Allen", "Franz Wagner", "Caleb Wilson", "Walker Kessler", "Cameron Boozer", "Keyonte George", "Dylan Harper", "Trey Murphy", "Onyeka Okongwu", "VJ Edgecombe", "Norman Powell", "Rudy Gobert", "AJ Dybantsa", "Donovan Clingan", "Paul George", "O.G. Anunoby", "Jaden McDaniels", "Brandin Podziemski", "Alexandre Sarr", "Ivica Zubac", "Kel'el Ware", "Matas Buzelis", "Miles Bridges", "Jaren Jackson Jr.", "Yaxel Lendeborg", "C.J. McCollum", "Darius Acuff Jr.", "Josh Hart", "DeMar DeRozan", "Jalen Green", "Derik Queen", "Payton Pritchard", "Fred VanVleet", "Coby White", "Ausar Thompson", "Reed Sheppard", "Immanuel Quickley", "R.J. Barrett", "Ayo Dosunmu", "Jabari Smith Jr.", "Ryan Rollins", "John Collins", "Zach LaVine", "Darryn Peterson", "Andrew Wiggins", "Nikola Vucevic", "Jaime Jaquez Jr.", "Brandon Ingram", "Tobias Harris", "Jeremiah Fears", "Egor Demin", "Ace Bailey", "Zach Edey", "Andrew Nembhard", "Peyton Watson", "Nicolas Claxton", "Collin Gillespie", "Davion Mitchell", "Myles Turner", "Keegan Murray", "Jakob Poeltl", "Julian Champagnie", "Cedric Coward", "Kyshawn George", "Isaiah Hartenstein", "Jonathan Kuminga", "Aaron Gordon", "Anthony Black", "Collin Sexton", "Daniel Gafford", "Dillon Brooks", "Jrue Holiday", "Ajay Mitchell", "Draymond Green", "Devin Vassell", "Jared McCain", "Wendell Carter Jr.", "Moussa Diabate", "Toumani Camara", "Neemias Queta", "Mitchell Robinson", "Oso Ighodaro", "Duncan Robinson", "Alex Caruso", "PJ Washington", "Aday Mara", "Rui Hachimura", "Saddiq Bey", "Grayson Allen", "Bobby Portis", "Jalen Suggs", "Kris Dunn", "Precious Achiuwa", "Paul Reed", "Anfernee Simons", "Meleek Thomas", "Keaton Wagler", "Aaron Wiggins", "Jaylin Williams", "Jalen Smith", "Kentavious Caldwell-Pope", "Collin Murray-Boyles", "Kelly Oubre", "Terrence Shannon Jr.", "Dean Wade", "Christian Braun", "Day'Ron Sharpe", "Sandro Mamukelashvili", "Luke Kornet", "Tari Eason", "Brandon Williams", "Joan Beringer", "Al Horford", "Scoot Henderson", "Jay Huff", "Kingston Flemings", "Pelle Larsson", "Gary Payton II", "Jock Landale", "Jaxson Hayes", "Matisse Thybulle", "Isaiah Stewart", "De'Anthony Melton", "Mikel Brown", "Dylan Cardwell", "Daniss Jenkins", "Javonte Green", "Obi Toppin", "Jake LaRavia", "Zaccharie Risacher", "Yanic Konan Niederhauser", "Allen Graves", "Quenton Jackson", "Sam Hauser", "Jordan Goodwin", "Josh Minott", "Luke Kennard", "Chaney Johnson", "Dru Smith", "Marcus Smart", "Maxime Raynaud"];
+const SITE="https://site.api.espn.com/apis/site/v2/sports/basketball/nba",WK="https://fantasy-plus.emre-tahincioglu.workers.dev",LID="looks_v1";
+const norm=s=>String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/\b(jr|sr|ii|iii|iv)\b/g,"").replace(/[^a-z]/g,"");
+/* ---------- options ---------- */
+const SKIN=["#f1d2b6","#e2b48e","#c8956b","#a8754f","#8a5a3b","#6e432b","#54311f","#3a2117"];
+const HAIRC=[["Black","#111111"],["Dark brown","#3b2416"],["Brown","#6b4428"],["Light brown","#9a6b3f"],["Blond","#d8b46a"],["Platinum","#ecebe6"],["Red","#9b3a1c"],["Gray","#8f8f92"]];
+const HAIR=[["bald","Bald"],["buzz","Buzz cut"],["fade","Fade"],["twists","Twists"],["afro","Afro"],["hightop","High-top"],["locs","Locs"],["braids","Braids"],["long","Long / bun"]];
+const BEARD=[["none","None"],["stubble","Stubble"],["mustache","Mustache"],["goatee","Goatee"],["chinstrap","Chin strap"],["short","Short beard"],["full","Full beard"],["long","Long beard"]];
+const GEARC=[["White","#f4f4f4"],["Black","#151515"],["Team","team"],["Team 2","team2"],["Gray","#8a8d93"]];
+const SIDE=[["none","None"],["L","Left"],["R","Right"],["both","Both"]];
+const DEF={skin:4,hair:"buzz",hairc:"#111111",beard:"none",band:"none",bandc:"#f4f4f4",sleeve:"none",sleevec:"#f4f4f4",wrist:"none",wristc:"#f4f4f4",elbow:"none",tights:"none",tightsc:"#151515",legs:"none",legsc:"#151515",knee:"none",goggles:0,build:"regular"};
+/* ---------- svg parts ---------- */
+const HEAD=(skin)=>`<path d="M14 64c0-11 8-17 18-17s18 6 18 17z" fill="#2a2c33"/><rect x="27" y="38" width="10" height="11" rx="3" fill="${skin}"/><ellipse cx="32" cy="27" rx="12.5" ry="15" fill="${skin}"/><ellipse cx="19.6" cy="28" rx="2.2" ry="3.6" fill="${skin}"/><ellipse cx="44.4" cy="28" rx="2.2" ry="3.6" fill="${skin}"/><ellipse cx="27" cy="27" rx="1.3" ry="1.1" fill="#1b1410"/><ellipse cx="37" cy="27" rx="1.3" ry="1.1" fill="#1b1410"/><path d="M29 36q3 1.6 6 0" stroke="#3a2117" stroke-width="1.1" fill="none" stroke-linecap="round"/>`;
+function hairSvg(k,c){const S=`fill="${c}"`;switch(k){
+ case "bald":return `<path d="M24 16q8-6 16 0" stroke="#fff" stroke-opacity=".35" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+ case "buzz":return `<path d="M19.5 25q-.5-14 12.5-15t12.5 15q-2-7-12.5-7.5T19.5 25z" ${S} opacity=".85"/>`;
+ case "fade":return `<defs><linearGradient id="fd" x1="0" y1="0" x2="0" y2="1"><stop offset=".4" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></linearGradient></defs><path d="M19.4 29q-1-19 12.6-19.5T44.6 29q-1.5-9-12.6-10T19.4 29z" fill="url(#fd)"/><path d="M21 19q1-10 11-10.5t11 10.5q-4-4-11-4.5t-11 4.5z" ${S}/>`;
+ case "twists":return `<path d="M19.5 24q0-14 12.5-14.5T44.5 24q-3-6-12.5-6.5T19.5 24z" ${S}/>`+[[22,14],[26,11],[31,9.5],[36,10.5],[41,13],[24,17.5],[29,15],[34,15],[39,16.5],[43.2,18]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.6" ${S}/>`).join("");
+ case "afro":return `<ellipse cx="32" cy="19" rx="19" ry="15" ${S}/>`;
+ case "hightop":return `<path d="M20 22V5h24v17q-3-5-12-5.5T20 22z" ${S}/>`;
+ case "locs":return `<path d="M19.5 25q0-15 12.5-15.5T44.5 25q-3-7-12.5-7.5T19.5 25z" ${S}/>`+[18.5,20.5,43.5,45.5,22.5,41.5].map((x,i)=>`<path d="M${x} ${22+i%2*2}q${i<2||i==4?-1.5:1.5} 10 0 ${18+i%3*3}" stroke="${c}" stroke-width="2.6" fill="none" stroke-linecap="round"/>`).join("");
+ case "braids":return `<path d="M19.5 25q0-15 12.5-15.5T44.5 25q-3-7-12.5-7.5T19.5 25z" ${S}/>`+[24,28,32,36,40].map(x=>`<path d="M${x} 11.5Q${x} 18 ${x+(x-32)*.15} 22" stroke="#000" stroke-opacity=".35" stroke-width=".9" fill="none"/>`).join("");
+ case "long":return `<path d="M19.5 26q0-16 12.5-16.5T44.5 26q-3-7.5-12.5-8T19.5 26z" ${S}/><circle cx="32" cy="7.5" r="5" ${S}/>`;}return ""}
+function beardSvg(k,c){const S=`fill="${c}"`;switch(k){
+ case "none":return "";
+ case "stubble":return `<path d="M20 28q1 14 12 15t12-15q-2 8-12 8.5T20 28z" ${S} opacity=".35"/>`;
+ case "mustache":return `<path d="M27 33.5q5-2.2 10 0q-2 1.8-5 1t-5-1z" ${S}/>`;
+ case "goatee":return `<path d="M27 33.5q5-2.2 10 0q-2 1.8-5 1t-5-1z" ${S}/><path d="M28.5 37.5q3.5 1.5 7 0l-.8 4.5q-2.7 1.5-5.4 0z" ${S}/>`;
+ case "chinstrap":return `<path d="M20 27q1 15 12 15.5T44 27q-1 13-12 13.5T20 27z" ${S}/>`;
+ case "short":return `<path d="M20 27q0 16 12 16.5T44 27q-1 7-4 8.5q-3-2.5-8-2.5t-8 2.5q-3-1.5-4-8.5z" ${S}/><path d="M29 36q3 1.6 6 0" stroke="#e8c9a8" stroke-opacity=".5" stroke-width="1" fill="none"/>`;
+ case "full":return `<path d="M19.5 25q-1 20 12.5 21t12.5-21q-1 9-5 10.5q-3-2.5-7.5-2.5t-7.5 2.5q-4-1.5-5-10.5z" ${S}/><path d="M29 36q3 1.6 6 0" stroke="#e8c9a8" stroke-opacity=".5" stroke-width="1" fill="none"/>`;
+ case "long":return `<path d="M19.5 25q-1 22 12.5 27t12.5-27q-1 9-5 10.5q-3-2.5-7.5-2.5t-7.5 2.5q-4-1.5-5-10.5z" ${S}/><path d="M29 36q3 1.6 6 0" stroke="#e8c9a8" stroke-opacity=".5" stroke-width="1" fill="none"/>`;}return ""}
+const headIcon=(o,hairOverride,beardOverride)=>{const skin=SKIN[o.skin]||SKIN[4];const h=hairOverride!=null?hairOverride:o.hair,b=beardOverride!=null?beardOverride:o.beard;const hc=o.hairc||"#111";
+ const back=h==="afro"||h==="locs"?hairSvg(h,hc):"",front=h==="afro"||h==="locs"?(h==="locs"?`<path d="M19.5 25q0-15 12.5-15.5T44.5 25q-3-7-12.5-7.5T19.5 25z" fill="${hc}"/>`:`<path d="M19 24q0-14 13-14.5T45 24q-3-7-13-7.5T19 24z" fill="${hc}"/>`):hairSvg(h,hc);
+ const band=o.band&&o.band!=="none"&&hairOverride==null?`<path d="M19.6 21.5q12.4-6 24.8 0v3.4q-12.4-6-24.8 0z" fill="${gc(o.bandc)}"/>`:"";
+ const gog=o.goggles&&hairOverride==null?`<rect x="22" y="24" width="20" height="6" rx="3" fill="#cfe8ff" fill-opacity=".55" stroke="#222" stroke-width="1"/>`:"";
+ return `<svg viewBox="11 2 42 54">${back}${HEAD(skin)}${beardSvg(b,hc)}${front}${band}${gog}</svg>`};
+let TEAM={},CUR=null;const gc=v=>v==="team"?(CUR&&CUR.c1)||"#1d428a":v==="team2"?(CUR&&CUR.c2)||"#c8102e":v;
+/* full body preview */
+function body(o,p,mini){const sk=SKIN[o.skin]||SKIN[4],c1=p&&p.c1||"#1d428a",c2=p&&p.c2||"#ffffff",num=p&&p.num||"";const w=o.build==="slim"?.9:o.build==="strong"?1.12:1;
+ const has=(v,s)=>v==="both"||v===s;const T=`translate(60 0) scale(${w} 1) translate(-60 0)`;
+ const arm=(s,x,dir)=>{const sl=has(o.sleeve,s)?`<rect x="${x-5}" y="70" width="10" height="56" rx="5" fill="${gc(o.sleevec)}"/>`:"";const wb=has(o.wrist,s)?`<rect x="${x-5.5}" y="118" width="11" height="7" rx="2" fill="${gc(o.wristc)}"/>`:"";const eb=has(o.elbow,s)?`<rect x="${x-5.5}" y="94" width="11" height="5" rx="2" fill="${gc(o.wristc)}"/>`:"";
+  return `<rect x="${x-5}" y="66" width="10" height="62" rx="5" fill="${sk}"/>${sl}${eb}${wb}<circle cx="${x}" cy="131" r="5.5" fill="${sk}"/>`};
+ const leg=(s,x)=>{const tg=o.tights==="full"?`<rect x="${x-7}" y="128" width="14" height="74" rx="6" fill="${gc(o.tightsc)}"/>`:o.tights==="34"?`<rect x="${x-7}" y="128" width="14" height="48" rx="6" fill="${gc(o.tightsc)}"/>`:"";
+  const ls=has(o.legs,s)?`<rect x="${x-6.8}" y="168" width="13.6" height="34" rx="6" fill="${gc(o.legsc)}"/>`:"";const kp=has(o.knee,s)?`<rect x="${x-8}" y="158" width="16" height="16" rx="6" fill="#1a1a1a"/>`:"";
+  return `<rect x="${x-7}" y="128" width="14" height="76" rx="6" fill="${sk}"/>${tg}${ls}${kp}<rect x="${x-6}" y="200" width="12" height="8" fill="#f4f4f4"/><path d="M${x-8} 214v-6h18q4 0 4 6z" fill="#e9e9e9"/>`};
+ const head=headIcon(o).replace('<svg viewBox="11 2 42 54">','').replace('</svg>','');
+ return `<svg viewBox="0 0 120 ${mini?220:220}" xmlns="http://www.w3.org/2000/svg"><g transform="${T}">${arm("L",31)}${arm("R",89)}${leg("L",50)}${leg("R",70)}
+ <path d="M38 60q22-10 44 0l3 70H35z" fill="${c1}"/><path d="M38 60q4 18 22 18t22-18" fill="none" stroke="${c2}" stroke-width="3"/><path d="M35 124h50l2 22H62l-2-8-2 8H33z" fill="${c1}"/><path d="M33 146h25M62 146h25" stroke="${c2}" stroke-width="2"/>
+ <text x="60" y="110" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,sans-serif" font-weight="800" font-size="24" fill="${c2}">${num}</text></g>
+ <g transform="translate(20 -6) scale(1.25)">${head}</g></svg>`}
+const gearIcon=(type,on)=>{const sk="#a8754f",g=on?"#ffc62b":"#3a3c44";
+ if(type==="arm")return `<svg viewBox="0 0 64 64"><rect x="26" y="6" width="12" height="50" rx="6" fill="${sk}"/>${on==="sleeve"?`<rect x="26" y="10" width="12" height="44" rx="6" fill="#f4f4f4"/>`:""}${on==="wrist"?`<rect x="25" y="45" width="14" height="8" rx="2" fill="#f4f4f4"/>`:""}${on==="elbow"?`<rect x="25" y="28" width="14" height="6" rx="2" fill="#f4f4f4"/>`:""}</svg>`;
+ if(type==="leg")return `<svg viewBox="0 0 64 64"><rect x="24" y="4" width="16" height="54" rx="7" fill="${sk}"/>${on==="tights"?`<rect x="24" y="4" width="16" height="54" rx="7" fill="#151515"/>`:""}${on==="t34"?`<rect x="24" y="4" width="16" height="36" rx="7" fill="#151515"/>`:""}${on==="legs"?`<rect x="24" y="34" width="16" height="24" rx="7" fill="#f4f4f4"/>`:""}${on==="knee"?`<rect x="22" y="24" width="20" height="16" rx="7" fill="#1a1a1a"/>`:""}</svg>`;
+ return ""};
+/* ---------- state ---------- */
+let P=[],LOOK={},dirty=false,lastPull=0;
+try{LOOK=JSON.parse(localStorage.getItem("fp_looks")||"{}")}catch(e){}
+const key=p=>p.id?("e"+p.id):("n"+norm(p.n));
+const get=p=>Object.assign({},DEF,LOOK[key(p)]||{});
+function save(p,o){LOOK[key(p)]=Object.assign({},o,{t:Date.now()});try{localStorage.setItem("fp_looks",JSON.stringify(LOOK))}catch(e){}dirty=true;clearTimeout(save._t);save._t=setTimeout(push,900);status("Saving…")}
+function status(t){document.getElementById("sync").textContent=t}
+async function push(){if(!dirty)return;dirty=false;try{const r=await fetch(WK+"/plan?lid="+LID,{cache:"no-store"});const cur=r.ok?await r.json():{};const m=Object.assign({},cur&&typeof cur==="object"&&!Array.isArray(cur)?cur:{});
+ Object.entries(LOOK).forEach(([k,v])=>{if(!m[k]||(v.t||0)>=(m[k].t||0))m[k]=v});await fetch(WK+"/plan?lid="+LID,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(m)});LOOK=m;localStorage.setItem("fp_looks",JSON.stringify(LOOK));status("Saved ✓")}catch(e){dirty=true;status("Offline · saved on this device")}}
+async function pull(){try{const r=await fetch(WK+"/plan?lid="+LID,{cache:"no-store"});if(!r.ok)return;const m=await r.json();if(!m||typeof m!=="object"||Array.isArray(m))return;let ch=false;Object.entries(m).forEach(([k,v])=>{if(v&&typeof v==="object"&&(!LOOK[k]||(v.t||0)>(LOOK[k].t||0))){LOOK[k]=v;ch=true}});if(ch){localStorage.setItem("fp_looks",JSON.stringify(LOOK));render();if(CUR)openEd(CUR,true)}status("Synced ✓")}catch(e){status("Offline")}}
+/* ---------- data ---------- */
+async function load(){P=NAMES.map((n,i)=>({n,rk:i+1}));render();
+ try{const tj=await (await fetch(SITE+"/teams")).json();const teams=tj.sports[0].leagues[0].teams.map(x=>x.team);const idx={};
+  await Promise.all(teams.map(async t=>{TEAM[t.abbreviation]={c1:"#"+(t.color||"333333"),c2:"#"+(t.alternateColor||"ffffff"),name:t.displayName};try{const r=await (await fetch(SITE+"/teams/"+t.id+"/roster")).json();(r.athletes||[]).forEach(a=>{idx[norm(a.displayName||a.fullName)]={id:a.id,tm:t.abbreviation,num:a.jersey||"",ht:a.displayHeight||"",pos:(a.position||{}).abbreviation||""}})}catch(e){}}));
+  P.forEach(p=>{const m=idx[norm(p.n)];if(m)Object.assign(p,m)});
+  // migrate name-keyed looks to id-keyed
+  P.forEach(p=>{const nk="n"+norm(p.n);if(p.id&&LOOK[nk]&&!LOOK["e"+p.id]){LOOK["e"+p.id]=LOOK[nk]}});
+  const tf=document.getElementById("tf");Object.keys(TEAM).sort().forEach(a=>tf.insertAdjacentHTML("beforeend",`<option>${a}</option>`));
+ }catch(e){status("ESPN unavailable – names only")}
+ render();pull()}
+const photo=p=>p.id?`<img src="https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${p.id}.png&w=260&h=190" alt="" loading="lazy" onerror="this.remove()">`:"";
+const team=p=>Object.assign({c1:"#2a2c33",c2:"#ffffff"},TEAM[p.tm]||{},{num:p.num});
+function render(){const q=norm(document.getElementById("q").value),tf=document.getElementById("tf").value,sf=document.getElementById("sf").value;
+ const done=P.filter(p=>(LOOK[key(p)]||{}).done).length;document.getElementById("cnt").textContent=`${done}/${P.length} done`;document.getElementById("prog").style.width=(100*done/Math.max(1,P.length))+"%";
+ document.getElementById("list").innerHTML=P.filter(p=>(!q||norm(p.n).includes(q))&&(!tf||p.tm===tf)&&(!sf||(sf==="done")===!!(LOOK[key(p)]||{}).done)).map(p=>{const o=get(p),d=(LOOK[key(p)]||{}).done;
+  return `<div class="row" data-i="${p.rk-1}"><span class="rk">${p.rk}</span><span class="ph">${photo(p)}</span><span class="nm"><b>${p.n}</b><small>${[p.tm,p.pos,p.ht,p.num&&"#"+p.num].filter(Boolean).join(" · ")}${LOOK[key(p)]?` · ${HAIR.find(h=>h[0]===o.hair)[1]}, ${BEARD.find(h=>h[0]===o.beard)[1].toLowerCase()}`:""}</small></span><span class="mini">${headIcon(o)}</span><span class="ck${d?" on":""}">${d?"✓":""}</span></div>`}).join("")}
+["q","tf","sf"].forEach(id=>document.getElementById(id).addEventListener("input",render));
+document.getElementById("list").addEventListener("click",e=>{const r=e.target.closest(".row");if(r)openEd(P[+r.dataset.i])});
+/* ---------- editor ---------- */
+function opts(title,field,list,o,iconFn){return `<div class="sec"><h3>${title} <em>${(list.find(x=>x[0]===o[field])||[])[1]||""}</em></h3><div class="grid">${list.map(([k,l])=>`<div class="op${o[field]===k?" on":""}" data-f="${field}" data-v="${k}">${iconFn(k)}<span>${l}</span></div>`).join("")}</div></div>`}
+function seg(title,field,list,o){return `<div class="sec"><h3>${title}</h3><div class="seg">${list.map(([k,l])=>`<button class="${String(o[field])===String(k)?"on":""}" data-f="${field}" data-v="${k}">${l}</button>`).join("")}</div></div>`}
+function colors(title,field,list,o){return `<div class="sec"><h3>${title}</h3><div class="sw">${list.map(([l,c])=>`<button title="${l}" class="${o[field]===c?"on":""}" data-f="${field}" data-v="${c}" style="background:${c==="team"?(CUR.c1):c==="team2"?(CUR.c2):c}"></button>`).join("")}${field==="hairc"?`<label>Custom <input type="color" data-f="hairc" value="${o.hairc&&o.hairc.startsWith("#")?o.hairc:"#111111"}"></label>`:""}</div></div>`}
+function openEd(p,keepScroll){CUR=Object.assign(p,team(p));const o=get(p);const eb=document.getElementById("edb"),sc=eb.scrollTop;
+ document.getElementById("en").textContent=p.n;document.getElementById("es").textContent=[p.tm&&TEAM[p.tm]&&TEAM[p.tm].name,p.ht,p.num&&"#"+p.num].filter(Boolean).join(" · ")||"#"+p.rk;
+ eb.innerHTML=`<div class="hero"><div class="ref"><span class="lbl">REAL</span>${photo(p)}</div><div class="pv"><span class="lbl">YOUR PICK</span>${body(o,CUR)}</div></div>
+ <div class="sec"><h3>Skin tone</h3><div class="sw">${SKIN.map((c,i)=>`<button class="${o.skin===i?"on":""}" data-f="skin" data-v="${i}" style="background:${c}"></button>`).join("")}</div></div>
+ ${opts("Hair","hair",HAIR,o,k=>headIcon(o,k,"none"))}
+ ${colors("Hair colour","hairc",HAIRC,o)}
+ ${opts("Beard","beard",BEARD,o,k=>headIcon(Object.assign({},o,{hair:"buzz"}),"buzz",k))}
+ ${seg("Headband","band",[["none","None"],["on","Headband"]],o)}${o.band!=="none"?colors("Headband colour","bandc",GEARC,o):""}
+ ${seg("Goggles","goggles",[[0,"No"],[1,"Yes"]],o)}
+ <div class="sec"><h3>Arms</h3><div class="grid" style="grid-template-columns:repeat(3,1fr)">${[["sleeve","Shooting sleeve"],["wrist","Wristband"],["elbow","Elbow band"]].map(([k,l])=>`<div class="op" style="cursor:default">${gearIcon("arm",k)}<span>${l}</span></div>`).join("")}</div></div>
+ ${seg("Shooting sleeve","sleeve",SIDE,o)}${o.sleeve!=="none"?colors("Sleeve colour","sleevec",GEARC,o):""}
+ ${seg("Wristband","wrist",SIDE,o)}${seg("Elbow band","elbow",SIDE,o)}${o.wrist!=="none"||o.elbow!=="none"?colors("Band colour","wristc",GEARC,o):""}
+ <div class="sec"><h3>Legs</h3><div class="grid">${[["tights","Full tights"],["t34","3/4 tights"],["legs","Leg sleeve"],["knee","Knee pad"]].map(([k,l])=>`<div class="op" style="cursor:default">${gearIcon("leg",k)}<span>${l}</span></div>`).join("")}</div></div>
+ ${seg("Tights","tights",[["none","None"],["full","Full"],["34","3/4"]],o)}${o.tights!=="none"?colors("Tights colour","tightsc",GEARC,o):""}
+ ${seg("Leg sleeve","legs",SIDE,o)}${o.legs!=="none"?colors("Leg sleeve colour","legsc",GEARC,o):""}
+ ${seg("Knee pad","knee",SIDE,o)}
+ ${seg("Build","build",[["slim","Slim"],["regular","Regular"],["strong","Strong"]],o)}<div style="height:20px"></div>`;
+ document.getElementById("ed").classList.add("open");if(keepScroll)eb.scrollTop=sc;else eb.scrollTop=0;
+ document.getElementById("dn").textContent=(LOOK[key(p)]||{}).done?"Done ✓ · Next":"Mark done · Next"}
+document.getElementById("edb").addEventListener("click",e=>{const t=e.target.closest("[data-f]");if(!t||t.type==="color")return;const o=get(CUR);let v=t.dataset.v;const f=t.dataset.f;if(f==="skin"||f==="goggles")v=+v;o[f]=v;save(CUR,o);openEd(CUR,true);render()});
+document.getElementById("edb").addEventListener("input",e=>{const t=e.target;if(t.type!=="color")return;const o=get(CUR);o.hairc=t.value;save(CUR,o);document.querySelector(".pv").innerHTML=`<span class="lbl">YOUR PICK</span>${body(o,CUR)}`});
+document.getElementById("edb").addEventListener("change",e=>{if(e.target.type==="color"){openEd(CUR,true);render()}});
+const vis=()=>[...document.querySelectorAll("#list .row")].map(r=>+r.dataset.i);
+const step=d=>{const v=vis(),i=v.indexOf(CUR.rk-1);const n=v[i+d];if(n!=null)openEd(P[n])};
+document.getElementById("bk").onclick=()=>{document.getElementById("ed").classList.remove("open");CUR=null;render()};
+document.getElementById("pr").onclick=()=>step(-1);document.getElementById("nx").onclick=()=>step(1);
+document.getElementById("dn").onclick=()=>{const o=get(CUR);o.done=1;save(CUR,o);render();const v=vis(),i=v.indexOf(CUR.rk-1);if(v[i+1]!=null)openEd(P[v[i+1]]);else{document.getElementById("ed").classList.remove("open");CUR=null}};
+const pk=document.getElementById("pick");
+document.getElementById("cpb").onclick=()=>{pk.classList.add("open");document.getElementById("pq").value="";listPick()};
+function listPick(){const q=norm(document.getElementById("pq").value);document.getElementById("pl").innerHTML=P.filter(p=>p!==CUR&&LOOK[key(p)]&&(!q||norm(p.n).includes(q))).slice(0,40).map(p=>`<div class="row" data-c="${p.rk-1}"><span class="ph">${photo(p)}</span><span class="nm"><b>${p.n}</b></span><span class="mini">${headIcon(get(p))}</span></div>`).join("")||`<p class="note">No saved looks yet.</p>`}
+document.getElementById("pq").addEventListener("input",listPick);
+pk.addEventListener("click",e=>{const r=e.target.closest("[data-c]");if(r){const src=get(P[+r.dataset.c]);const o=Object.assign({},src);delete o.done;delete o.t;save(CUR,o);pk.classList.remove("open");openEd(CUR);render()}else if(e.target===pk)pk.classList.remove("open")});
+setInterval(pull,20000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)pull()});
+load();
+</script></body></html>
