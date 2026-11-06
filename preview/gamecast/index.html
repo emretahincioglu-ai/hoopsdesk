@@ -26,10 +26,10 @@
 .tick div.m:after{background:var(--me)}.tick div.o:after{background:var(--op)}
 .tick div.ch{animation:chg 1.4s}@keyframes chg{0%,35%{background:rgba(245,184,46,.16)}}
 /* ---------- arena ---------- */
-.arena{position:relative;height:430px;margin-top:10px;overflow:hidden;background:radial-gradient(120% 70% at 50% 18%,#1b1d27 0%,#0b0c11 55%,#050506 100%);isolation:isolate}
+.arena{position:relative;height:380px;margin-top:10px;overflow:hidden;background:radial-gradient(120% 70% at 50% 18%,#1b1d27 0%,#0b0c11 55%,#050506 100%);isolation:isolate}
 #crowd,#flash{position:absolute;inset:0;width:100%;height:100%}
 #crowd{filter:blur(.9px) saturate(.85)}
-.ribbon{position:absolute;left:-10%;right:-10%;top:150px;height:9px;background:#0a0a0c;overflow:hidden;box-shadow:0 0 18px rgba(245,184,46,.25);border-top:1px solid #222;border-bottom:1px solid #222;transform:perspective(500px) rotateX(8deg)}
+.ribbon{position:absolute;left:-10%;right:-10%;top:104px;height:9px;background:#0a0a0c;overflow:hidden;box-shadow:0 0 18px rgba(245,184,46,.25);border-top:1px solid #222;border-bottom:1px solid #222;transform:perspective(500px) rotateX(8deg)}
 .ribbon span{display:inline-block;white-space:nowrap;font:700 8px/9px "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.3em;color:var(--me);animation:mq 30s linear infinite;text-shadow:0 0 6px rgba(245,184,46,.7)}
 @keyframes mq{to{transform:translateX(-50%)}}
 .beam{position:absolute;top:-20px;width:120px;height:470px;background:linear-gradient(rgba(255,244,220,.22),rgba(255,244,220,.04) 70%,transparent);clip-path:polygon(46% 0,54% 0,100% 100%,0 100%);filter:blur(7px);mix-blend-mode:screen;transform-origin:50% 0;animation:sway 9s ease-in-out infinite alternate;z-index:2;pointer-events:none}
@@ -41,8 +41,8 @@
 .jumbo .l1{font:800 17px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.06em;font-variant-numeric:tabular-nums}
 .jumbo .l2{font:600 9px/1.2 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.18em;color:#9aa0ad;margin-top:3px;text-transform:uppercase;white-space:nowrap}
 .jumbo .rim2{height:7px;margin:0 8px;background:linear-gradient(#18191e,#0c0d10);border-radius:0 0 4px 4px}
-.haze{position:absolute;left:0;right:0;top:150px;height:260px;background:radial-gradient(60% 50% at 50% 55%,rgba(255,236,200,.13),transparent 70%);z-index:4;pointer-events:none;mix-blend-mode:screen}
-.stage{position:absolute;left:0;right:0;top:170px;height:250px;perspective:760px;perspective-origin:50% -20%;z-index:3}
+.haze{position:absolute;left:0;right:0;top:100px;height:260px;background:radial-gradient(60% 50% at 50% 55%,rgba(255,236,200,.13),transparent 70%);z-index:4;pointer-events:none;mix-blend-mode:screen}
+.stage{position:absolute;left:0;right:0;top:122px;height:250px;perspective:760px;perspective-origin:50% -20%;z-index:3}
 .cam{position:absolute;inset:0;transform-style:preserve-3d;transition:transform 1.1s cubic-bezier(.22,.8,.2,1)}
 .plane{position:absolute;left:50%;top:6px;transform-style:preserve-3d;transform:translateX(-50%) rotateX(57deg);transform-origin:50% 0;border-radius:2px;
  box-shadow:0 0 0 7px #23180f,0 0 0 8px #3a2a1a,0 40px 80px rgba(0,0,0,.75)}
@@ -80,13 +80,29 @@
 @keyframes slup{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
 @keyframes fadeo{to{opacity:0;transform:translateY(6px)}}
 /* impact chip */
-.imp{position:absolute;right:10px;top:84px;z-index:6;padding:7px 11px 7px 10px;border-radius:7px;background:rgba(12,13,17,.88);backdrop-filter:blur(8px);box-shadow:0 8px 24px rgba(0,0,0,.5);overflow:hidden;pointer-events:none;opacity:0;max-width:62%}
+.imp{position:absolute;right:10px;top:16px;z-index:6;padding:7px 11px 7px 10px;border-radius:7px;background:rgba(12,13,17,.88);backdrop-filter:blur(8px);box-shadow:0 8px 24px rgba(0,0,0,.5);overflow:hidden;pointer-events:none;opacity:0;max-width:62%}
 .imp .k{font:700 10px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.2em;color:#8a8e98;text-transform:uppercase}
 .imp .v{font:700 15px/1.15 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.04em;margin-top:3px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .imp.lc{box-shadow:0 0 0 1px rgba(245,184,46,.6),0 8px 24px rgba(0,0,0,.5)}
 .imp.lc:after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-50%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);animation:shine 1.1s .25s}
 @keyframes shine{to{left:120%}}
-.imp.in{animation:impin 3.1s cubic-bezier(.2,.9,.2,1) forwards}@keyframes impin{0%{opacity:0;transform:translateX(16px)}10%{opacity:1;transform:none}88%{opacity:1}100%{opacity:0}}
+.imp.in{animation:impin 5s cubic-bezier(.2,.9,.2,1) forwards}@keyframes impin{0%{opacity:0;transform:translateX(16px)}7%{opacity:1;transform:none}92%{opacity:1}100%{opacity:0}}
+
+.big{position:absolute;left:0;right:0;top:160px;z-index:5;pointer-events:none;display:flex;flex-direction:column;align-items:center}
+.big .ln{height:2px;width:0;margin-bottom:6px}
+.big .h{font:800 italic 44px/0.9 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.02em;text-transform:uppercase;color:#fff;text-shadow:0 4px 24px rgba(0,0,0,.7);position:relative;overflow:hidden;padding:0 8px}
+.big .h:after{content:"";position:absolute;top:0;bottom:0;width:30%;left:-40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);mix-blend-mode:overlay}
+.big .nm{margin-top:6px;display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border-radius:999px;background:rgba(10,11,14,.85);backdrop-filter:blur(8px);box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.big .nm .av{width:28px;height:28px;border-radius:50%;overflow:hidden;background:#1d1f26;position:relative;display:grid;place-items:center;font:700 11px "Barlow Condensed","Arial Narrow",sans-serif;color:#9aa0ad}
+.big .nm .av img{position:absolute;left:50%;top:0;width:40px;transform:translateX(-50%)}
+.big .nm b{font:700 16px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.big .nm small{font:600 12px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.12em;color:#a8abb3}
+.big.in .ln{animation:lnx .5s cubic-bezier(.7,0,.2,1) forwards}
+.big.in .h{animation:hin .6s .12s cubic-bezier(.2,.9,.2,1) both}.big.in .h:after{animation:shine 1s .6s}
+.big.in .nm{animation:slup .5s .45s cubic-bezier(.2,.9,.2,1) both}
+.big.out{animation:fadeo .5s forwards}
+@keyframes lnx{to{width:180px}}
+@keyframes hin{from{transform:translateY(24px) skewX(-8deg);opacity:0;letter-spacing:.3em}to{transform:none;opacity:1}}
 /* ---------- below ---------- */
 .flt{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:12px 10px 8px}.flt::-webkit-scrollbar{display:none}
 .chip{flex:none;border:1px solid #24252c;background:#0f1014;color:#c9ccd3;border-radius:6px;padding:7px 11px;font:700 12px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.1em;text-transform:uppercase;display:flex;gap:6px;align-items:center}
@@ -112,9 +128,9 @@
  <canvas id="crowd"></canvas><canvas id="flash"></canvas>
  <div class="ribbon"><span id="rb"></span></div>
  <div class="beam" style="left:4%;--a:14deg"></div><div class="beam" style="left:30%;--a:6deg;animation-duration:11s"></div><div class="beam" style="right:30%;--a:-7deg;animation-duration:10s"></div><div class="beam" style="right:4%;--a:-14deg"></div>
- <div class="jumbo"><div class="scr"><div class="l1 cond" id="j1">ACL 5 · 4 EYT</div><div class="l2" id="j2">Week 3 · Live</div></div><div class="rim2"></div></div>
  <div class="stage"><div class="cam" id="cam"><div class="plane" id="pl"><div class="wood"></div><svg id="cv" viewBox="0 0 94 50" preserveAspectRatio="none"></svg></div></div></div>
  <div class="haze"></div>
+ <div class="big" id="big"></div>
  <div class="imp" id="imp"></div>
  <div class="l3" id="l3"></div>
 </div>
@@ -180,7 +196,7 @@ function apply(pl){const s2=S[pl.p.side],b=Object.fromEntries(CATS.map(c=>[c,lea
 const COL=sd=>sd==="me"?"var(--me)":"var(--op)",HEX=sd=>sd==="me"?"#f5b82e":"#9d7bff";
 function tick(ch){const t=document.getElementById("tick");t.innerHTML=CATS.map(c=>{const l=lead(c);return `<div class="${l>0?"m":l<0?"o":""}${ch&&ch.includes(c)?" ch":""}"><small>${c}</small><b style="color:var(--me)">${fv("me",c)}</b><b style="color:var(--op)">${fv("op",c)}</b></div>`}).join("");
  const m=CATS.filter(c=>lead(c)>0).length,o=CATS.filter(c=>lead(c)<0).length;document.getElementById("sm").textContent=m;document.getElementById("so").textContent=o;
- document.getElementById("wp").textContent="WIN "+Math.max(4,Math.min(96,50+(m-o)*6))+"%";document.getElementById("j1").textContent=`ACL ${m} · ${o} EYT`}
+ document.getElementById("wp").textContent="WIN "+Math.max(4,Math.min(96,50+(m-o)*6))+"%"}
 let F="all";const show=pl=>F==="all"||F===pl.p.side||F===pl.p.id;
 const dotSvg=pl=>{const c=HEX(pl.p.side);return pl.mk?`<circle data-i="${pl.id}" cx="${pl.x}" cy="${pl.y}" r=".9" fill="${c}" stroke="rgba(0,0,0,.45)" stroke-width=".18"/>`:`<circle data-i="${pl.id}" cx="${pl.x}" cy="${pl.y}" r=".8" fill="none" stroke="${c}" stroke-width=".35" opacity=".9"/>`};
 const effect=pl=>pl.shot||pl.fts?(pl.pts?`+${pl.pts}`:"—"):pl.k;
@@ -199,19 +215,25 @@ function ballFlight(pl){const bx=pl.p.side==="me"?5.25:88.75,b=document.createEl
   setTimeout(()=>{b.remove();sh.remove()},700)},dur);
  return dur}
 
-function camTo(pl){if(!pl.shot){cam.style.transform="";return}const side=pl.p.side==="me"?1:-1;cam.style.transform=`translateX(${side*14}px) translateY(6px) scale(1.06)`;clearTimeout(cam._t);cam._t=setTimeout(()=>cam.style.transform="",2600)}
+function camTo(pl){if(!pl.shot){cam.style.transform="";return}const side=pl.p.side==="me"?1:-1;cam.style.transform=`translateX(${side*14}px) translateY(6px) scale(1.06)`;clearTimeout(cam._t);cam._t=setTimeout(()=>cam.style.transform="",4200)}
 function lower(pl){const l3=document.getElementById("l3"),g=G[gk(pl.p)],c=HEX(pl.p.side);const ini=pl.p.n.split(" ").map(x=>x[0]).join("");
  l3.className="l3";l3.innerHTML=`<div class="bar"><span class="acc" style="background:${c}"></span><div class="tx"><div class="n cond">${pl.p.n}</div><div class="d cond" style="color:${c}">${pl.tag}</div></div><div class="g cond">${pl.p.tm} ${g[pl.p.tm]} · ${pl.p.op} ${g[pl.p.op]} · Q${pl.q} ${pl.t}</div><div class="pts cond" style="color:${pl.pts?"#fff":"#6b6e77"}">${pl.shot||pl.fts?(pl.pts?"+"+pl.pts:"0"):"+1 "+pl.k}</div></div><div class="ph"><span class="ini">${ini}</span><img src="https://a.espncdn.com/i/headshots/nba/players/full/${pl.p.hs}.png" alt="" onerror="this.remove()"></div>`;
- void l3.offsetWidth;l3.className="l3 in";clearTimeout(l3._t);l3._t=setTimeout(()=>l3.className="l3 out",2500)}
+ void l3.offsetWidth;l3.className="l3 in";clearTimeout(l3._t);l3._t=setTimeout(()=>l3.className="l3 out",5200)}
 function impact(pl,flips){const im=document.getElementById("imp");const c=flips[0]||cats(pl)[0];const l=lead(c),me=fv("me",c),op=fv("op",c);
  let k,v;if(flips.length){k=`Lead change · ${c}`;v=`<span style="color:${HEX(l>0?"me":"op")}">${l>0?"ACL":"EYT"}</span> ${l>0?me:op} – ${l>0?op:me}`}
  else{const diff=c.includes("%")?Math.abs(val("me",c)-val("op",c)).toFixed(3).replace(/^0/,""):Math.abs(val("me",c)-val("op",c));k=`${c} · ${l===0?"Tied":(l>0?"ACL":"EYT")+" by "+diff}`;v=`<span style="color:var(--me)">ACL ${me}</span> <span style="color:#5d6069">–</span> <span style="color:var(--op)">${op} EYT</span>`}
  im.className="imp"+(flips.length?" lc":"");im.innerHTML=`<div class="k">${k}</div><div class="v">${v}</div>`;void im.offsetWidth;im.className+=" in"}
+
+function bigPlay(pl,flips){let h=null;if(pl.shot&&pl.mk&&pl.three)h=pl.tag.includes("FT")&&pl.txt.includes("corner")?"Corner three":"Three pointer";else if(pl.shot&&pl.mk&&pl.txt.includes("dunk"))h="Slam dunk";else if(pl.k==="BLK")h="Blocked";else if(pl.k==="STL")h="Steal";else if(flips.length)h="Lead change";
+ if(!h)return 0;const bg=document.getElementById("big"),c=HEX(pl.p.side),ini=pl.p.n.split(" ").map(x=>x[0]).join("");
+ const sub=flips.length&&h==="Lead change"?flips.join(", ")+" · "+(lead(flips[0])>0?"ACL":"EYT"):pl.shot?pl.ft+" ft":pl.p.tm+" vs "+pl.p.op;
+ bg.className="big";bg.innerHTML=`<span class="ln" style="background:${c}"></span><div class="h">${h}</div><div class="nm"><span class="av">${ini}<img src="https://a.espncdn.com/i/headshots/nba/players/full/${pl.p.hs}.png" alt="" onerror="this.remove()"></span><b style="color:${c}">${pl.p.n}</b><small>${sub}</small></div>`;
+ void bg.offsetWidth;bg.className="big in";clearTimeout(bg._t);bg._t=setTimeout(()=>bg.className="big out",3600);return 1}
 function step(){const pl=gen();const flips=apply(pl);if(flips.length)pl.lc=flips.join(", ");PLAYS.push(pl);
- tick(cats(pl));lower(pl);setTimeout(()=>impact(pl,flips),350);
+ tick(cats(pl));const dl=pl.shot&&show(pl)?750+pl.ft*18:0;setTimeout(()=>{const b=bigPlay(pl,flips);setTimeout(()=>lower(pl),b?900:0);setTimeout(()=>impact(pl,flips),b?1500:600)},dl);
  if(show(pl)){if(pl.shot){camTo(pl);const d=ballFlight(pl);setTimeout(()=>{cv.querySelector("#dots").insertAdjacentHTML("beforeend",dotSvg(pl))},d)}
   const fd=document.getElementById("feed");fd.insertAdjacentHTML("afterbegin",row(pl,1,pl.lc));while(fd.children.length>20)fd.lastChild.remove();document.getElementById("pbn").textContent=PLAYS.filter(show).length+" PLAYS"}
- document.getElementById("j2").textContent=pl.lc?"Lead change · "+pl.lc:`${last(pl.p.n)} · ${pl.tag.split(" · ")[0]}`}
+}
 crowd();flashes();floor();chips();for(let i=0;i<22;i++){const p=gen();const f=apply(p);if(f.length)p.lc=f.join(", ");PLAYS.push(p)}tick();renderAll();
-setTimeout(step,700);setInterval(step,3600);
+setTimeout(step,900);setInterval(step,8000);
 </script></body></html>
