@@ -264,7 +264,7 @@ function hairGroup(K){const g=new THREE.Group(),hm=new THREE.MeshStandardMateria
  return g}
 new GLTFLoader().load("player.glb",g=>{Object.entries(POOL).forEach(([k,F])=>{const K=KIT[k];const r=SU.clone(g.scene);r.scale.set(K.h*K.w,K.h,K.h*K.w);S.add(r);r.visible=false;
   const b={};r.traverse(o=>{if(o.isBone){const n=o.name.replace(/^mixamorig:?/,"");b[n]=o}if(o.isMesh){o.castShadow=true;o.frustumCulled=false;o.material=kitMat(o.material,k)}});
-  r.updateMatrixWorld(true);BN.forEach(n=>{const o=b[n];if(!o)return;o.userData.rq=o.quaternion.clone();const ch=o.children.find(x=>x.isBone);o.userData.L=ch?ch.position.clone().normalize():new THREE.Vector3(0,1,0)});
+  r.updateMatrixWorld(true);BN.forEach(n=>{const o=b[n];if(!o)return;o.userData.rq=o.quaternion.clone();o.userData.F=new THREE.Vector3(0,0,1).applyQuaternion(o.getWorldQuaternion(new THREE.Quaternion()).invert());const ch=o.children.find(x=>x.isBone);o.userData.L=ch?ch.position.clone().normalize():new THREE.Vector3(0,1,0)});
   b.Hips.userData.rw=b.Hips.getWorldQuaternion(new THREE.Quaternion());
   ["Left","Right"].forEach(S2=>{b[S2+"ForeArm"].position.multiplyScalar(1.13);b[S2+"Hand"].position.multiplyScalar(1.1)});
   let sm;r.traverse(o=>{if(o.isSkinnedMesh&&!sm)sm=o});r.updateMatrixWorld(true);const hg=hairGroup(K);hg.matrixAutoUpdate=false;const hi=sm.skeleton.bones.indexOf(b.Head);hg.matrix.copy(sm.skeleton.boneInverses[hi].clone().multiply(sm.bindMatrix));b.Head.add(hg);
@@ -273,12 +273,17 @@ const _q=new THREE.Quaternion(),_q2=new THREE.Quaternion(),_v=new THREE.Vector3(
 function aimB(bone,a,b){const pq=bone.parent.getWorldQuaternion(_q);const wq=_q2.copy(pq).multiply(bone.userData.rq);const cur=_v.copy(bone.userData.L).applyQuaternion(wq);const d=_a.copy(b).sub(a).normalize();
  const dq=new THREE.Quaternion().setFromUnitVectors(cur,d);const nw=dq.multiply(wq);bone.quaternion.copy(pq.invert().multiply(nw));bone.updateMatrixWorld(true)}
 const W=(o,x=0,y=0,z=0)=>o.localToWorld(new THREE.Vector3(x,y,z));
+const _m1=new THREE.Matrix4(),_m2=new THREE.Matrix4();
+function basis(p,f,m){const x=p.clone().normalize();const z=f.clone().sub(x.clone().multiplyScalar(f.dot(x)));if(z.lengthSq()<1e-8)return null;z.normalize();const y=new THREE.Vector3().crossVectors(z,x);return m.makeBasis(x,y,z)}
+function aim2(bone,a,b,fw){const L=bone.userData.L,F=bone.userData.F;const d=b.clone().sub(a);const Bl=basis(L,F,_m1),Bt=basis(d,fw,_m2);if(!Bl||!Bt){aimB(bone,a,b);return}
+ const Wm=Bt.clone().multiply(Bl.clone().transpose());const wq=new THREE.Quaternion().setFromRotationMatrix(Wm);const pq=bone.parent.getWorldQuaternion(new THREE.Quaternion());bone.quaternion.copy(pq.invert().multiply(wq));bone.updateMatrixWorld(true)}
+const fwdOf=o=>new THREE.Vector3(0,0,1).applyQuaternion(o.getWorldQuaternion(new THREE.Quaternion()));
 function retarget(F,X){const b=X.b;X.r.visible=F.root.visible;if(!F.root.visible)return;
  const hp=W(F.hips);const hq=F.hips.getWorldQuaternion(new THREE.Quaternion()).multiply(b.Hips.userData.rw);
  b.Hips.position.copy(b.Hips.parent.worldToLocal(hp.clone()));const pq=b.Hips.parent.getWorldQuaternion(new THREE.Quaternion());b.Hips.quaternion.copy(pq.invert().multiply(hq));b.Hips.updateMatrixWorld(true);
- const sa=W(F.sp),na=W(F.nk);aimB(b.Spine,sa,na);aimB(b.Spine1,sa,na);aimB(b.Spine2,sa,na);aimB(b.Neck,na,W(F.nk,0,.25,0));
- for(const s of ["L","R"]){const S2=s==="L"?"Left":"Right";aimB(b[S2+"Arm"],W(F["a"+s]),W(F["f"+s]));aimB(b[S2+"ForeArm"],W(F["f"+s]),W(F["w"+s]));aimB(b[S2+"Hand"],W(F["w"+s]),W(F["w"+s],0,-.1,0));
-  aimB(b[S2+"UpLeg"],W(F["t"+s]),W(F["s"+s]));aimB(b[S2+"Leg"],W(F["s"+s]),W(F["k"+s]));aimB(b[S2+"Foot"],W(F["k"+s]),W(F["k"+s],0,-.07,.2))}
+ const sa=W(F.sp),na=W(F.nk),sf=fwdOf(F.sp);aim2(b.Spine,sa,na,sf);aim2(b.Spine1,sa,na,sf);aim2(b.Spine2,sa,na,sf);aim2(b.Neck,na,W(F.nk,0,.25,0),fwdOf(F.nk));
+ for(const s of ["L","R"]){const S2=s==="L"?"Left":"Right";aim2(b[S2+"Arm"],W(F["a"+s]),W(F["f"+s]),fwdOf(F["a"+s]));aim2(b[S2+"ForeArm"],W(F["f"+s]),W(F["w"+s]),fwdOf(F["f"+s]));aim2(b[S2+"Hand"],W(F["w"+s]),W(F["w"+s],0,-.1,0),fwdOf(F["w"+s]));
+  aim2(b[S2+"UpLeg"],W(F["t"+s]),W(F["s"+s]),fwdOf(F["t"+s]));aim2(b[S2+"Leg"],W(F["s"+s]),W(F["k"+s]),fwdOf(F["s"+s]));aimB(b[S2+"Foot"],W(F["k"+s]),W(F["k"+s],0,-.07,.2))}
  const fy=Math.min(W(b.LeftToeBase).y,W(b.RightToeBase).y),py=Math.min(W(F.kL,0,-.07,.15).y,W(F.kR,0,-.07,.15).y);const dy=py-fy;
  if(Math.abs(dy)>1e-4){const w=W(b.Hips);w.y+=dy;b.Hips.position.copy(b.Hips.parent.worldToLocal(w));b.Hips.updateMatrixWorld(true)}}
 function retargetAll(){if(!REAL)return;Object.entries(POOL).forEach(([k,F])=>retarget(F,MX[k]))}
