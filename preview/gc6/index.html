@@ -7,7 +7,7 @@
 *{box-sizing:border-box}html,body{margin:0;background:#050506;color:#eef0f3;font:14px Inter,-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 .w{max-width:520px;margin:0 auto}
 .hdr{padding:14px 14px 10px}.hdr h1{margin:0;font:800 24px/1 var(--C);letter-spacing:.04em;text-transform:uppercase}.hdr p{margin:6px 0 0;color:#878a93;font-size:12.5px;line-height:1.4}
-.stage{position:relative;height:460px;overflow:hidden;background:#07080b}
+.stage{position:relative;height:290px;overflow:hidden;background:#07080b}
 canvas#gl{display:block;width:100%;height:100%}
 .big{position:absolute;left:0;right:0;top:34%;display:flex;flex-direction:column;align-items:center;pointer-events:none;opacity:0}
 .big .ln{height:2px;width:0;margin-bottom:6px}
@@ -73,7 +73,7 @@ import * as THREE from "three";import {GLTFLoader} from "../moves/GLTFLoader.js"
 const cvs=document.getElementById("gl"),st=document.getElementById("st");
 const R=new THREE.WebGLRenderer({canvas:cvs,antialias:true});R.setPixelRatio(Math.min(2.5,devicePixelRatio));R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.05;R.outputColorSpace=THREE.SRGBColorSpace;
 const S=new THREE.Scene();S.background=new THREE.Color(0x06070a);S.fog=new THREE.Fog(0x06070a,14,42);
-const cam=new THREE.PerspectiveCamera(36,1,.1,300);const ACT=new THREE.Group();S.add(ACT);
+const cam=new THREE.PerspectiveCamera(30,1,.1,400);const ACT=new THREE.Group();S.add(ACT);
 function size(){const w=st.clientWidth,h=st.clientHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}size();addEventListener("resize",size);
 /* ---------- lights ---------- */
 S.add(new THREE.HemisphereLight(0xbcc6ff,0x2a1a10,.55));
@@ -82,7 +82,7 @@ const k2=new THREE.SpotLight(0xdfe6ff,260,60,.7,.6,1.6);k2.position.set(14,16,-8
 const k3=new THREE.DirectionalLight(0xffffff,.35);k3.position.set(-5,8,10);S.add(k3);
 /* ---------- themes ---------- */
 const THEMES=[
- {id:"original",name:"Original",kind:"classic",floor:"wood",wood:["#c8945e","#d6a56d","#b9844e"],paint:"#f5b82e",paint2:"#9d7bff",pa:.48,line:"#ffffff",apron:"#1d140c",center:"rgba(0,0,0,0)",logo:"rgba(50,25,8,.4)",seats:"#22232a",crowd:[[.11,.7,.3],[.72,.45,.32]],led:["#ffffff","#f5b82e"],bg:"#06070a",pad:"#2a2160",exp:1.08},
+ {id:"original",name:"Original",kind:"classic",floor:"wood",wood:["#a8743f","#b5804a","#986636"],paint:"#f5b82e",paint2:"#9d7bff",pa:.5,line:"#ffffff",apron:"#1d140c",center:"rgba(0,0,0,0)",logo:"rgba(50,25,8,.4)",seats:"#22232a",crowd:[[.11,.7,.3],[.72,.45,.32]],led:["#ffffff","#f5b82e"],bg:"#040406",pad:"#2a2160",exp:.9},
  {id:"classic",name:"Classic Maple",kind:"classic",floor:"wood",wood:["#d9a86c","#e6b97f","#c8945a"],paint:"#b3262e",pa:1,line:"#ffffff",apron:"#b3262e",center:"#b3262e",logo:"#ffffff",seats:"#7b1d23",crowd:[[0,.55,.45],[0,0,.92]],led:["#ffffff","#e8333c"],bg:"#16110e",pad:"#b3262e",exp:1.15},
  {id:"garden",name:"Garden Navy",kind:"classic",floor:"wood",wood:["#c99561","#d8a874","#b78250"],paint:"#1d428a",pa:1,line:"#ffffff",apron:"#1d428a",center:"#f58426",logo:"#ffffff",seats:"#1a2c55",crowd:[[.6,.65,.45],[.08,.85,.55]],led:["#ffffff","#f58426"],bg:"#0d1018",pad:"#1d428a",exp:1.12},
  {id:"parquet",name:"Parquet",kind:"classic",floor:"parquet",wood:["#c8925a","#a8743f","#d9a56b"],paint:"#0f6b3a",pa:1,line:"#ffffff",apron:"#0f6b3a",center:"#0f6b3a",logo:"#ffffff",seats:"#0d4a2a",crowd:[[.38,.65,.4],[0,0,.92]],led:["#ffffff","#2fb36b"],bg:"#0c140f",pad:"#0f6b3a",exp:1.12},
@@ -125,7 +125,7 @@ function apronTex(T){const c=document.createElement("canvas");c.width=1024;c.hei
  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=4;return t}
 const courtMat=new THREE.MeshStandardMaterial({roughness:.28,metalness:0});
 const court=new THREE.Mesh(new THREE.PlaneGeometry(28.65,15.24),courtMat);court.rotation.x=-Math.PI/2;court.receiveShadow=true;S.add(court);
-const apronMat=new THREE.MeshStandardMaterial({roughness:.5});const apron=new THREE.Mesh(new THREE.PlaneGeometry(36,22),apronMat);apron.rotation.x=-Math.PI/2;apron.position.y=-.01;apron.receiveShadow=true;S.add(apron);
+const apronMat=new THREE.MeshStandardMaterial({roughness:.95});const apron=new THREE.Mesh(new THREE.PlaneGeometry(36,22),apronMat);apron.rotation.x=-Math.PI/2;apron.position.y=-.01;apron.receiveShadow=true;S.add(apron);
 /* hoops at both ends */
 const RIM=new THREE.Vector3(12.75,3.05,0);
 const padMat=new THREE.MeshStandardMaterial({color:0x2a2160,roughness:.6});
@@ -182,13 +182,13 @@ function applyTheme(T){CTH=T;if(courtMat.map)courtMat.map.dispose();courtMat.map
   if(r<.12){FANS.setMatrixAt(i,z)}else{m.makeTranslation(sx+(Math.random()-.5)*.06,y+.25,sz);FANS.setMatrixAt(i,m)}
   const h=Math.random();if(h<.22){const [hh,ss,ll]=T.crowd[0];c.setHSL(hh,ss,ll*(.8+Math.random()*.3))}else if(h<.34){const [hh,ss,ll]=T.crowd[1];c.setHSL(hh,ss,ll*(.8+Math.random()*.3))}else c.setHSL(Math.random(),.05+Math.random()*.15,.12+Math.random()*.3);FANS.setColorAt(i,c)}
  FANS.instanceMatrix.needsUpdate=true;FANS.instanceColor.needsUpdate=true;
- S.background=new THREE.Color(T.bg);S.fog=new THREE.Fog(T.bg,26,60);R.toneMappingExposure=T.exp;
- document.querySelectorAll(".th button").forEach(b=>b.classList.toggle("on",b.dataset.id===T.id));try{localStorage.setItem("gc6_theme",T.id)}catch(e){}}
+ S.background=new THREE.Color(T.bg);S.fog=new THREE.Fog(T.bg,60,140);R.toneMappingExposure=T.exp;
+ document.querySelectorAll(".th button").forEach(b=>b.classList.toggle("on",b.dataset.id===T.id));try{localStorage.setItem("gc6_theme2",T.id)}catch(e){}}
 window.__theme=id=>applyTheme(THEMES.find(t=>t.id===id)||THEMES[0]);
 
 {const th=document.getElementById("th");th.innerHTML=["classic","creative"].map(k=>`<div class="thk">${k==="classic"?"Classic":"Creative"}</div><div class="thr">`+THEMES.filter(t=>t.kind===k).map((t,i)=>`<button data-id="${t.id}"><span class="sw2" style="background:linear-gradient(135deg,${t.wood[0]} 0 50%,${t.pa?t.paint:t.line} 50% 100%)"></span>${THEMES.indexOf(t)+1}. ${t.name}</button>`).join("")+`</div>`).join("");
  th.onclick=e=>{const b=e.target.closest("button");if(b)window.__theme(b.dataset.id)};
- let init=(location.hash.match(/t=(\w+)/)||[])[1];if(!init)try{init=localStorage.getItem("gc6_theme")}catch(e){}window.__theme(init||"classic")}
+ let init=(location.hash.match(/t=(\w+)/)||[])[1];if(!init)try{init=localStorage.getItem("gc6_theme2")}catch(e){}window.__theme(init||"original")}
 /* ---------- figure ---------- */
 const skin=new THREE.MeshStandardMaterial({color:0x2c2f37,roughness:.38,metalness:.15});
 const shoe=new THREE.MeshStandardMaterial({color:0xf2f2f2,roughness:.5});
@@ -495,8 +495,8 @@ let netT=99,rimT=99;
 function fx(t,prevT){M[cur].fx.forEach(([ft,k])=>{if(prevT<ft&&t>=ft){if(k==="swish")netT=0;if(k==="rim")rimT=0}})}
 
 const CAMB={p:new THREE.Vector3(0,10.5,17.5),l:new THREE.Vector3(0,0,-1.8)},CAMC={p:CAMB.p.clone(),l:CAMB.l.clone()};let CAMF=null;
-function camAt(t){const side=ACT.rotation.y?-1:1;let tp=CAMB.p,tl=CAMB.l;if(cur&&T<M[cur].dur+.4){tp=new THREE.Vector3(side*6.8,6.4,9.6);tl=new THREE.Vector3(side*10.6,1.2,0)}
- CAMC.p.lerp(tp,.02);CAMC.l.lerp(tl,.025);cam.position.copy(CAMC.p);cam.lookAt(CAMC.l)}
+function camAt(t){/* fixed wide broadcast shot: whole court, no zoom */const hv=Math.atan(Math.tan(cam.fov*Math.PI/360)*cam.aspect);const d=Math.max(22,(window.__HW||16.4)/Math.tan(hv));const el=(window.__EL||30)*Math.PI/180;
+ cam.position.set(0,d*Math.sin(el),.6+d*Math.cos(el));cam.lookAt(0,0,(window.__LZ!=null?__LZ:-6.5))}
 function camAt_old(t){const CZ=M[cur].zoom||.62;const c=lerpKeys(M[cur].cam,t);const sk=rimT>=0&&rimT<.35?(.35-rimT)*.12:0;c[0]+=Math.sin(rimT*90)*sk;c[1]+=Math.cos(rimT*77)*sk;cam.position.set(c[3]+(c[0]-c[3])*CZ,c[4]+(c[1]-c[4])*CZ+.3,c[5]+(c[2]-c[5])*CZ);cam.lookAt(c[3],c[4],c[5])}
 function showBig(){window.__onBig&&__onBig();const [h,who,sub]=M[cur].graphic,[n,sd]=NAMES[CAST[who]],col=sd==="me"?"#f5b82e":"#9d7bff";const b=document.getElementById("big");
  b.className="big";b.innerHTML=`<span class="ln" style="background:${col}"></span><div class="h">${h}</div><div class="nm"><b style="color:${col}">${n}</b><small>${sub}</small></div>`;void b.offsetWidth;b.className="big in";setTimeout(()=>b.className="big out",2600)}
