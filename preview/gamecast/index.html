@@ -41,13 +41,31 @@
 .pl .x{flex:1;min-width:0}.pl .x b{font:800 12.5px system-ui}.pl .x div{font:600 11.5px system-ui;color:#b8b9bf;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pl .tg{flex:none;font:800 10.5px ui-monospace,monospace;color:var(--sub);text-align:right}.pl .tg em{display:block;font-style:normal;font:900 11px system-ui;color:#fff}
 .pl.hi{background:#2b2512}
+
+.bb{position:relative;margin:-14px auto 10px;width:62%;height:34px;border-radius:6px;background:#06070a;border:2px solid #2c2d33;box-shadow:0 0 0 3px #111,0 6px 18px rgba(0,0,0,.6);perspective:400px;overflow:hidden;z-index:2}
+.bb:before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1.2px);background-size:3px 3px}
+.bb .tx{position:absolute;inset:0;display:grid;place-items:center;font:900 16px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;color:#ffc62b;text-shadow:0 0 8px currentColor,0 0 2px #fff;white-space:nowrap}
+.bb .tx.in{animation:flipin .45s cubic-bezier(.3,1.4,.5,1)}@keyframes flipin{from{transform:rotateX(-90deg);opacity:0}to{transform:none;opacity:1}}
+.bb .tx.idle{color:#55575c;text-shadow:none;font-size:11px}
+.pop{position:absolute;bottom:14px;display:flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:999px;background:rgba(10,10,12,.86);backdrop-filter:blur(8px);border:1.5px solid;z-index:3;animation:popin 2.6s cubic-bezier(.3,1.4,.5,1) forwards;pointer-events:none}
+.pop.me{left:12px;border-color:var(--me)}.pop.op{right:12px;border-color:var(--op);flex-direction:row-reverse;padding:6px 6px 6px 12px;text-align:right}
+.pop .av{width:46px;height:46px;border:2px solid;box-shadow:0 0 14px currentColor}.pop.me .av{border-color:var(--me);color:var(--me)}.pop.op .av{border-color:var(--op);color:var(--op)}
+.pop b{display:block;font:900 14px system-ui}.pop small{display:block;font:900 11.5px system-ui;letter-spacing:.04em}
+.pop.me small{color:var(--me)}.pop.op small{color:var(--op)}
+@keyframes popin{0%{opacity:0;transform:translateY(20px) scale(.6)}12%{opacity:1;transform:none}85%{opacity:1;transform:none}100%{opacity:0;transform:translateY(8px) scale(.9)}}
+.bdg{position:absolute;z-index:4;pointer-events:none;width:64px;height:64px;transform:translate(-50%,-50%);animation:bdg 1.9s forwards}
+.bdg .hx{position:absolute;inset:0;clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);display:grid;place-items:center;font:900 15px/1 system-ui;color:#111;text-align:center}
+.bdg .hx small{display:block;font-size:7.5px;letter-spacing:.08em;margin-top:2px}
+.bdg i{position:absolute;left:50%;top:50%;width:5px;height:5px;border-radius:50%;animation:spark .9s ease-out forwards}
+@keyframes bdg{0%{transform:translate(-50%,-50%) scale(0) rotate(-120deg)}25%{transform:translate(-50%,-50%) scale(1.25) rotate(8deg)}40%{transform:translate(-50%,-50%) scale(1) rotate(0)}80%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-90%) scale(.7)}}
+@keyframes spark{to{transform:translate(var(--dx),var(--dy));opacity:0}}
 .note{margin:16px 4px 0;color:var(--sub);font-size:12.5px;line-height:1.5}.note b{color:#fff}
 </style></head><body><div class="w">
 <div class="ttl">Matchup Gamecast</div>
 <p class="ld">Your matchup played like an ESPN Gamecast. Every play by your players and theirs, from every NBA game tonight, lands on one court and in one feed. Mock data, plays every ~3s.</p>
 <div class="sb"><div><div class="t">ACL Enayileri</div><div class="n" id="sm">5</div></div><div class="m"><i></i>LIVE<small id="wp">49%</small></div><div class="t r"><div>Eytosiko FC</div><div class="n" id="so">4</div></div></div>
 <div class="cats" id="cats"></div>
-<div class="arena" id="ar"><svg class="court" id="cv" viewBox="0 0 94 50"></svg><div class="evt" id="evt"></div></div>
+<div class="arena" id="ar"><div class="bb"><div class="tx idle" id="bbt">SWISH KEBABS · LIVE</div></div><svg class="court" id="cv" viewBox="0 0 94 50"></svg><div class="evt" id="evt"></div></div>
 <div class="leg"><span><i style="background:var(--me)"></i>Your players</span><span><i style="background:var(--op)"></i>Their players</span><span>● make · ✕ miss</span></div>
 <div class="last" id="last"></div>
 <div class="chips" id="chips"></div>
@@ -109,8 +127,17 @@ function tick(){const pl=gen();PLAYS.push(pl);const flips=apply(pl);drawCats(tou
  if(pl.shot&&show(pl)){dots.insertAdjacentHTML("beforeend",dotSvg(pl));const d=dots.lastElementChild;d.animate([{opacity:0,transform:"translateY(-4px)"},{opacity:1,transform:"none"}],{duration:400});
   fx.insertAdjacentHTML("beforeend",`<circle cx="${pl.x}" cy="${pl.y}" r="1" fill="none" stroke="${pl.p.side==="me"?"#ffc62b":"#b18cff"}" stroke-width=".5"><animate attributeName="r" from="1" to="7" dur="1s" fill="freeze"/><animate attributeName="opacity" from="1" to="0" dur="1s" fill="freeze"/></circle>`);setTimeout(()=>fx.firstChild&&fx.firstChild.remove(),1100);
   const sv=cv.getBoundingClientRect(),arr=ar.getBoundingClientRect();const lx=sv.left-arr.left+pl.x/94*sv.width,ly=sv.top-arr.top+pl.y/50*sv.height;
-  if(pl.mk){const f=document.createElement("div");f.className="flt";f.style.cssText=`left:${lx}px;top:${ly}px;background:${pl.p.side==="me"?"#ffc62b":"#b18cff"};color:#000`;f.textContent=`+${pl.pts} ${pl.p.n.split(" ").pop()}`;ar.appendChild(f);setTimeout(()=>f.remove(),2300)}}
- else if(!pl.shot&&show(pl)){const ev=document.getElementById("evt");ev.innerHTML=`<span style="color:${COL(pl.p.side)}">${LBL(pl)}</span> · ${pl.p.n}`;ev.classList.add("on");clearTimeout(ev._t);ev._t=setTimeout(()=>ev.classList.remove("on"),2000)}
+  if(0){const f=document.createElement("div");f.className="flt";f.style.cssText=`left:${lx}px;top:${ly}px;background:${pl.p.side==="me"?"#ffc62b":"#b18cff"};color:#000`;f.textContent=`+${pl.pts} ${pl.p.n.split(" ").pop()}`;ar.appendChild(f);setTimeout(()=>f.remove(),2300)}}
+ else if(0){const ev=document.getElementById("evt");ev.innerHTML=`<span style="color:${COL(pl.p.side)}">${LBL(pl)}</span> · ${pl.p.n}`;ev.classList.add("on");clearTimeout(ev._t);ev._t=setTimeout(()=>ev.classList.remove("on"),2000)}
+
+ const BB=pl.shot?(pl.mk?({layup:"LAYUP",dunk:"SLAM DUNK!",floater:"FLOATER",jumper:"JUMPER","pull-up":"PULL-UP","three-pointer":"THREE-POINTER!","corner three":"CORNER THREE!"})[pl.txt.replace("makes ","")]:"MISSED SHOT"):pl.ft?(pl.mk?"FREE THROW":"MISSED FT"):({REB:"REBOUND",AST:"ASSIST",STL:"STEAL!",BLK:"BLOCKED!",TO:"TURNOVER"})[pl.k];
+ const bt=document.getElementById("bbt");bt.className="tx";void bt.offsetWidth;bt.className="tx in";bt.textContent=BB;bt.style.color=pl.p.side==="me"?"#ffc62b":"#b18cff";clearTimeout(bt._t);bt._t=setTimeout(()=>{bt.className="tx idle";bt.style.color="";bt.textContent="SWISH KEBABS · LIVE"},2600);
+ ar.querySelectorAll(".pop").forEach(x=>x.remove());const pp=document.createElement("div");pp.className="pop "+pl.p.side;pp.innerHTML=`${av(pl.p)}<div><b>${pl.p.n}</b><small>${LBL(pl)}</small></div>`;ar.appendChild(pp);setTimeout(()=>pp.remove(),2700);
+ const BD=flips.length?["FLIP",flips[0]+" FLIPPED","#4ade80"]:pl.shot&&pl.mk&&pl.three?["3",pl.txt.includes("corner")?"CORNER":"SPLASH","#ffc62b"]:pl.shot&&pl.mk&&pl.txt.includes("dunk")?["💥","POSTER","#ff7a1a"]:pl.k==="BLK"?["🚫","SWAT","#60a5fa"]:pl.k==="STL"?["🖐","PICKED","#4ade80"]:null;
+ if(BD){const sv=cv.getBoundingClientRect(),arr=ar.getBoundingClientRect();let bx2=arr.width/2,by2=arr.height/2;if(pl.shot){bx2=sv.left-arr.left+pl.x/94*sv.width;by2=sv.top-arr.top+pl.y/50*sv.height-30}
+  const b=document.createElement("div");b.className="bdg";b.style.left=Math.max(36,Math.min(arr.width-36,bx2))+"px";b.style.top=Math.max(40,by2)+"px";
+  b.innerHTML=`<div class="hx" style="background:linear-gradient(135deg,#fff,${BD[2]} 55%,${BD[2]})">${BD[0]}<small>${BD[1]}</small></div>`+Array.from({length:10},(_,k)=>{const a=k/10*Math.PI*2;return `<i style="background:${BD[2]};--dx:${Math.cos(a)*48}px;--dy:${Math.sin(a)*48}px"></i>`}).join("");
+  ar.appendChild(b);setTimeout(()=>b.remove(),2000)}
  const fl=flips.length?`<b style="color:${lead(flips[0])>0?"var(--me)":"var(--op)"}">${flips[0]} flipped!</b><small>${lead(flips[0])>0?"now yours":"now theirs"}</small>`:`<b>${touches(pl)[0]}</b><small>${fmt("me",touches(pl)[0])} – ${fmt("op",touches(pl)[0])}</small>`;
  document.getElementById("last").style.borderLeftColor=pl.p.side==="me"?"var(--me)":"var(--op)";
  document.getElementById("last").innerHTML=`${av(pl.p)}<div style="min-width:0"><div class="h">${LBL(pl)}</div><div class="s">${pl.p.n} ${pl.txt}</div><div class="g">${pl.t} · ${pl.p.tm} vs ${pl.p.op}</div></div><div class="ef">${fl}</div>`;
