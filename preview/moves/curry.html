@@ -29,9 +29,9 @@ canvas#gl{display:block;width:100%;height:100%}
 </style>
 <script type="importmap">{"imports":{"three":"./three.module.min.js"}}</script>
 </head><body><div class="w">
-<div class="hdr"><h1>3D Moves · Preview</h1><p>Curry and Anthony Davis models (your uploads) in all eight plays. AD makes the steal and the block. The fantasy player making the play wears his NBA team colours; everyone else is in gray.</p></div>
+<div class="hdr"><h1>3D Moves · Preview</h1><p>Pick a player, then a play. Curry, AD, Ausar Thompson and Luka (your models) can each do all eight. Each loads when you first pick him. The fantasy player making the play wears his NBA team colours; everyone else is in gray.</p></div>
 <div class="stage" id="st"><canvas id="gl"></canvas><div class="tag" id="tag"><i></i>Mid-range</div><div class="big" id="big"></div></div>
-<div class="menu" id="menu"></div>
+<div class="menu" id="stars" style="grid-template-columns:repeat(4,1fr);padding-bottom:0"></div><div class="menu" id="menu"></div>
 <div class="row2"><button id="auto" class="on">Auto-play all</button><button id="slow">Slow-mo</button><button id="rep">Replay</button></div>
 <p class="note"><b>How it would work in the Gamecast</b><br>• A real play comes in (say “Maxey makes 26-foot three”) → this scene plays the matching move from his real spot on the floor, then the big graphic and the lower third.<br>• The figures are faceless on purpose: no player likenesses. The real photo stays in the graphics.<br>• Only the big plays get the 3D moment; smaller ones (rebounds, free throws) stay as quick graphics so it never drags.</p>
 </div>
@@ -179,9 +179,11 @@ const POOL={MX:figure({col:0x006bb6,trim:0xed174c,num:"0",name:"MAXEY",numCol:"#
  CC:figure({col:0xc8102e,trim:0x1d42ba,num:"2",name:"CUNNINGHAM",numCol:"#fff",numStroke:"#1d42ba",skin:0x8a5a3c,hair:"puff",shoe:0xffffff,beard:1}),
  G1:figure({...GRAY,num:"8",skin:0x5e3b26,hair:"buzz"}),
  G2:figure({...GRAY,num:"24",skin:0xb07a52,hair:"puff",beard:1})};
+POOL.AT=figure({...GRAY,num:"9",skin:0x5e3b26,hair:"buzz"});KIT.AT=Object.assign({},KIT.CC);POOL.LD=figure({...GRAY,num:"77",skin:0xc8956b,hair:"buzz"});KIT.LD=Object.assign({},KIT.CC);
+const STARS=[["MX","Stephen Curry",0x1d428a,0xffc72c],["CC","Anthony Davis",0x552583,0xfdb927],["AT","Ausar Thompson",0xc8102e,0x1d42ba],["LD","Luka Doncic",0x552583,0xfdb927]];let STAR="MX",CAST={};
 let FIG={};
 if(document.fonts)document.fonts.ready.then(()=>TEX.forEach(d=>d()));
-const NAMES={MX:["Stephen Curry","me"],CC:["Anthony Davis","op"],PT:["Teammate","me"]};
+const NAMES={MX:["Stephen Curry","me"],CC:["Anthony Davis","me"],AT:["Ausar Thompson","me"],LD:["Luka Doncic","me"],PT:["Teammate","me"]};
 /* ---------- ball ---------- */
 function ballTex(){const c=document.createElement("canvas");c.width=256;c.height=128;const x=c.getContext("2d");x.fillStyle="#d4621f";x.fillRect(0,0,256,128);for(let i=0;i<2500;i++){x.fillStyle=`rgba(0,0,0,${Math.random()*.12})`;x.fillRect(Math.random()*256,Math.random()*128,1.5,1.5)}x.strokeStyle="#2a1206";x.lineWidth=3;[64,128,192].forEach(v=>{x.beginPath();x.moveTo(v,0);x.lineTo(v,128);x.stroke()});x.beginPath();x.moveTo(0,64);x.lineTo(256,64);x.stroke();const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t}
 const ball=new THREE.Mesh(new THREE.SphereGeometry(.12,24,18),new THREE.MeshStandardMaterial({map:ballTex(),roughness:.7}));ball.castShadow=true;S.add(ball);
@@ -233,7 +235,7 @@ function numCanvas(k){const c=document.createElement("canvas");c.width=256;c.hei
  const draw=()=>{const x=c.getContext("2d");x.clearRect(0,0,256,200);x.textAlign="center";x.textBaseline="middle";const n=KIT[k].num;let sz=170;x.font=`800 ${sz}px "Barlow Condensed","Arial Narrow",sans-serif`;const w=x.measureText(n).width;if(w>210){sz*=210/w;x.font=`800 ${sz}px "Barlow Condensed","Arial Narrow",sans-serif`}
   x.lineJoin="round";x.lineWidth=16;x.strokeStyle=KIT[k].ns;x.strokeText(n,128,108);x.fillStyle=KIT[k].nf;x.fillText(n,128,108);t.needsUpdate=true};draw();TEX.push(draw);return t}
 function kitMat(base,k){const m=new THREE.MeshStandardMaterial({map:base.map,roughness:.8,metalness:0});const K=KIT[k];
- m.onBeforeCompile=sh=>{sh.uniforms.uPri={value:new THREE.Color(K.pri)};sh.uniforms.uTrim={value:new THREE.Color(K.trim)};sh.uniforms.uSkin={value:new THREE.Vector3(...K.skin)};sh.uniforms.uNum={value:numCanvas(k)};sh.uniforms.uBeard={value:K.beard?1:0};sh.uniforms.uShave={value:K.hair==="twists"?0:1};sh.uniforms.uScalp={value:new THREE.Color(0x7a4c33).multiply(new THREE.Color(...K.skin))};
+ m.onBeforeCompile=sh=>{m.userData.sh=sh;sh.uniforms.uPri={value:new THREE.Color(m.userData.pri??K.pri)};sh.uniforms.uTrim={value:new THREE.Color(m.userData.trim??K.trim)};sh.uniforms.uSkin={value:new THREE.Vector3(...K.skin)};sh.uniforms.uNum={value:numCanvas(k)};sh.uniforms.uBeard={value:K.beard?1:0};sh.uniforms.uShave={value:K.hair==="twists"?0:1};sh.uniforms.uScalp={value:new THREE.Color(0x7a4c33).multiply(new THREE.Color(...K.skin))};
   sh.vertexShader=sh.vertexShader.replace("#include <common>","#include <common>\nvarying vec3 vB;").replace("#include <begin_vertex>","#include <begin_vertex>\nvB=position;"+(K.hair!=="twists"?"{vec3 C=vec3(0.,.946,-.004);vec3 d=transformed-C;if(transformed.y>.957||(transformed.y>.932&&d.z<.022)){vec3 R=vec3(.042,.043,.05);vec3 e=d/R;float l=length(e);if(l>1.)transformed=C+d/l;}}":""));
   sh.fragmentShader=sh.fragmentShader.replace("#include <common>","#include <common>\nvarying vec3 vB;uniform vec3 uPri;uniform vec3 uTrim;uniform vec3 uSkin;uniform sampler2D uNum;uniform float uShave;uniform float uBeard;uniform vec3 uScalp;").replace("#include <map_fragment>",`
  vec4 sampledDiffuseColor=texture2D(map,vMapUv);vec3 c=sampledDiffuseColor.rgb;vec3 g=pow(max(c,vec3(0.)),vec3(1./2.2));
@@ -263,15 +265,18 @@ function hairGroup(K){const g=new THREE.Group(),hm=new THREE.MeshStandardMateria
  if(K.band){const b=new THREE.Mesh(new THREE.TorusGeometry(.0465,.0055,8,28),new THREE.MeshStandardMaterial({color:K.band,roughness:.7}));add(b,[0,.957,-.004],[.9,1,1.06],Math.PI/2-.28)}
  return g}
 const LD=new GLTFLoader();LD.setMeshoptDecoder(MeshoptDecoder);
-LD.load("curry.glb",cg=>{LD.load("ad.glb",ag=>{LD.load("player.glb",g=>{const SP={MX:[cg,1.88],CC:[ag,2.08]};Object.entries(POOL).forEach(([k,F])=>{const K=KIT[k];const SPECIAL=!!SP[k];const r=SU.clone(SPECIAL?SP[k][0].scene:g.scene);
-  if(SPECIAL){r.updateMatrixWorld(true);let top=-1e9,bot=1e9;r.traverse(o=>{if(o.isBone){const p=o.getWorldPosition(new THREE.Vector3());top=Math.max(top,p.y);bot=Math.min(bot,p.y)}});const sc=SP[k][1]/(top-bot);r.scale.multiplyScalar(sc);r.updateMatrixWorld(true);let mb=1e9;r.traverse(o=>{if(o.isBone)mb=Math.min(mb,o.getWorldPosition(new THREE.Vector3()).y)});r.position.y=-mb+.03;window.__cs=[top,bot,sc]}
+const SPF={MX:["curry.glb",1.88],CC:["ad.glb",2.08],AT:["ausar.glb",1.98],LD:["luka.glb",1.98]};
+function build(k,scene,SPECIAL){const F=POOL[k],K=KIT[k];const r=SU.clone(scene);
+  if(SPECIAL){r.updateMatrixWorld(true);let top=-1e9,bot=1e9;r.traverse(o=>{if(o.isBone){const p=o.getWorldPosition(new THREE.Vector3());top=Math.max(top,p.y);bot=Math.min(bot,p.y)}});const sc=SPF[k][1]/(top-bot);r.scale.multiplyScalar(sc);r.updateMatrixWorld(true);let mb=1e9;r.traverse(o=>{if(o.isBone)mb=Math.min(mb,o.getWorldPosition(new THREE.Vector3()).y)});r.position.y=-mb+.03;window.__cs=[top,bot,sc]}
   else r.scale.set(K.h*K.w,K.h,K.h*K.w);S.add(r);r.visible=false;
   const b={};r.traverse(o=>{if(o.isBone){const n=o.name.replace(/^(mixamorig|rig):?/,"");b[n]=o}if(o.isMesh){o.castShadow=true;o.frustumCulled=false;if(!SPECIAL)o.material=kitMat(o.material,k);else{const fix=m=>{m=m.clone();m.normalMap=null;if(m.alphaTest===0&&!m.transparent)m.side=THREE.FrontSide;m.needsUpdate=true;return m};o.material=Array.isArray(o.material)?o.material.map(fix):fix(o.material)}}});
   r.updateMatrixWorld(true);BN.forEach(n=>{const o=b[n];if(!o)return;o.userData.rq=o.quaternion.clone();o.userData.F=new THREE.Vector3(0,0,1).applyQuaternion(o.getWorldQuaternion(new THREE.Quaternion()).invert());const ch=o.children.find(x=>x.isBone);o.userData.L=ch?ch.position.clone().normalize():new THREE.Vector3(0,1,0)});
   b.Hips.userData.rw=b.Hips.getWorldQuaternion(new THREE.Quaternion());
   if(!SPECIAL)["Left","Right"].forEach(S2=>{b[S2+"ForeArm"].position.multiplyScalar(1.13);b[S2+"Hand"].position.multiplyScalar(1.1)});
   let sm;r.traverse(o=>{if(o.isSkinnedMesh&&!sm)sm=o});r.updateMatrixWorld(true);const hg=SPECIAL?new THREE.Group():hairGroup(K);hg.matrixAutoUpdate=false;const hi=sm.skeleton.bones.indexOf(b.Head);hg.matrix.copy(sm.skeleton.boneInverses[hi].clone().multiply(sm.bindMatrix));b.Head.add(hg);
-  MX[k]={r,b,hg,sm};F.root.traverse(o=>{if(o.isMesh)o.visible=false})});REAL=true;window.__real=1})})});
+  MX[k]={r,b,hg,sm};F.root.traverse(o=>{if(o.isMesh)o.visible=false})}
+LD.load("player.glb",g=>{Object.keys(POOL).filter(k=>!SPF[k]).forEach(k=>build(k,g.scene,false));REAL=true;window.__real=1;loadStar(STAR)});
+const LOADING={};function loadStar(k){if(MX[k]||LOADING[k]||!SPF[k])return;LOADING[k]=1;document.getElementById("tag").innerHTML="<i></i>Loading player…";LD.load(SPF[k][0],g=>{build(k,g.scene,true);window.__star=k;start(cur)})}
 const _q=new THREE.Quaternion(),_q2=new THREE.Quaternion(),_v=new THREE.Vector3(),_a=new THREE.Vector3(),_b=new THREE.Vector3();
 function aimB(bone,a,b){const pq=bone.parent.getWorldQuaternion(_q);const wq=_q2.copy(pq).multiply(bone.userData.rq);const cur=_v.copy(bone.userData.L).applyQuaternion(wq);const d=_a.copy(b).sub(a).normalize();
  const dq=new THREE.Quaternion().setFromUnitVectors(cur,d);const nw=dq.multiply(wq);bone.quaternion.copy(pq.invert().multiply(nw));bone.updateMatrixWorld(true)}
@@ -289,7 +294,7 @@ function retarget(F,X){const b=X.b;X.r.visible=F.root.visible;if(!F.root.visible
   aim2(b[S2+"UpLeg"],W(F["t"+s]),W(F["s"+s]),fwdOf(F["t"+s]));aim2(b[S2+"Leg"],W(F["s"+s]),W(F["k"+s]),fwdOf(F["s"+s]));aimB(b[S2+"Foot"],W(F["k"+s]),W(F["k"+s],0,-.07,.2))}
  const fy=Math.min(W(b.LeftToeBase).y,W(b.RightToeBase).y),py=Math.min(W(F.kL,0,-.07,.15).y,W(F.kR,0,-.07,.15).y);const dy=py-fy;
  if(Math.abs(dy)>1e-4){const w=W(b.Hips);w.y+=dy;b.Hips.position.copy(b.Hips.parent.worldToLocal(w));b.Hips.updateMatrixWorld(true)}}
-function retargetAll(){if(!REAL)return;Object.entries(POOL).forEach(([k,F])=>retarget(F,MX[k]))}
+function retargetAll(){if(!REAL)return;Object.entries(POOL).forEach(([k,F])=>{if(MX[k])retarget(F,MX[k])})}
 /* ---------- runtime ---------- */
 let cur=null,T=0,speed=1,auto=true,ballP=new THREE.Vector3(),segP={},gShown=false;
 const NAMESK=Object.keys(M);
@@ -316,11 +321,14 @@ function setBall(t){const m=M[cur];let seg=null;for(const s of m.ball)if(t>=s[0]
 let netT=99,rimT=99;
 function fx(t,prevT){M[cur].fx.forEach(([ft,k])=>{if(prevT<ft&&t>=ft){if(k==="swish")netT=0;if(k==="rim")rimT=0}})}
 function camAt(t){const CZ=M[cur].zoom||.62;const c=lerpKeys(M[cur].cam,t);const sk=rimT>=0&&rimT<.35?(.35-rimT)*.12:0;c[0]+=Math.sin(rimT*90)*sk;c[1]+=Math.cos(rimT*77)*sk;cam.position.set(c[3]+(c[0]-c[3])*CZ,c[4]+(c[1]-c[4])*CZ+.3,c[5]+(c[2]-c[5])*CZ);cam.lookAt(c[3],c[4],c[5])}
-function showBig(){const [h,who,sub]=M[cur].graphic,[n,sd]=NAMES[M[cur].cast[who]],col=sd==="me"?"#f5b82e":"#9d7bff";const b=document.getElementById("big");
+function showBig(){const [h,who,sub]=M[cur].graphic,[n,sd]=NAMES[CAST[who]],col=sd==="me"?"#f5b82e":"#9d7bff";const b=document.getElementById("big");
  b.className="big";b.innerHTML=`<span class="ln" style="background:${col}"></span><div class="h">${h}</div><div class="nm"><b style="color:${col}">${n}</b><small>${sub}</small></div>`;void b.offsetWidth;b.className="big in";setTimeout(()=>b.className="big out",2600)}
 const GT={"Mid-range":3.05,"Layup":2.65,"Dunk":2.3,"3PT":2.8,"Steal":1.75,"Block":1.75,"Assist":2.25,"Turnover":1.95};
-function start(k){cur=k;Object.values(POOL).forEach(f=>f.root.visible=false);FIG={};Object.entries(M[k].cast).forEach(([r,id])=>FIG[r]=POOL[id]);T=0;segP={};gShown=false;document.getElementById("tag").innerHTML=`<i></i>${k}`;document.getElementById("big").className="big";
+function start(k){if(!M[k])k=NAMESK[0];cur=k;Object.values(POOL).forEach(f=>f.root.visible=false);Object.values(MX).forEach(x=>x.r.visible=false);FIG={};CAST={};Object.entries(M[k].cast).forEach(([r,id])=>{const j=(id==="MX"||id==="CC")?STAR:id;CAST[r]=j;FIG[r]=POOL[j]});tintPT();T=0;segP={};gShown=false;document.getElementById("tag").innerHTML=`<i></i>${k}`;document.getElementById("big").className="big";
  document.querySelectorAll(".menu button").forEach(b=>b.classList.toggle("on",b.dataset.k===k));setFigs(0,-1);setBall(0)}
+function tintPT(){const st=STARS.find(x=>x[0]===STAR);if(!MX.PT)return;MX.PT.r.traverse(o=>{if(o.isMesh){o.material.userData.pri=st[2];o.material.userData.trim=st[3];if(o.material.userData.sh){const u=o.material.userData.sh.uniforms;u.uPri.value.set(st[2]);u.uTrim.value.set(st[3])}}})}
+const drawStars=()=>{document.getElementById("stars").innerHTML=STARS.map(([id,n])=>`<button data-s="${id}" class="${STAR===id?"on":""}">${n.split(" ").pop()}</button>`).join("")};drawStars();
+document.getElementById("stars").onclick=e=>{const b=e.target.closest("button");if(!b)return;STAR=b.dataset.s;drawStars();loadStar(STAR);start(cur)};
 document.getElementById("menu").innerHTML=NAMESK.map(k=>`<button data-k="${k}">${k}</button>`).join("");
 document.getElementById("menu").onclick=e=>{const b=e.target.closest("button");if(b){auto=false;document.getElementById("auto").classList.remove("on");start(b.dataset.k)}};
 document.getElementById("auto").onclick=e=>{auto=!auto;e.target.classList.toggle("on",auto)};
