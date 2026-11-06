@@ -29,7 +29,7 @@ canvas#gl{display:block;width:100%;height:100%}
 </style>
 <script type="importmap">{"imports":{"three":"./three.module.min.js"}}</script>
 </head><body><div class="w">
-<div class="hdr"><h1>3D Moves · Preview</h1><p>Eight plays on our court. The fantasy player making the play wears his NBA team colours; everyone else is in gray.</p></div>
+<div class="hdr"><h1>3D Moves · Preview</h1><p>Real player model in team kits. Eight plays on our court. The fantasy player making the play wears his NBA team colours; everyone else is in gray.</p></div>
 <div class="stage" id="st"><canvas id="gl"></canvas><div class="tag" id="tag"><i></i>Mid-range</div><div class="big" id="big"></div></div>
 <div class="menu" id="menu"></div>
 <div class="row2"><button id="auto" class="on">Auto-play all</button><button id="slow">Slow-mo</button><button id="rep">Replay</button></div>
@@ -168,7 +168,11 @@ function apply(F,o,run,ph,jump){F.hips.position.y=1.0+o.y;F.sp.rotation.set(o.sp
  F.sL.rotation.set(o.sL[0]+run*Math.max(0,-sw2)*1.1+run*.25,0,0);F.sR.rotation.set(o.sR[0]+run*Math.max(0,sw2)*1.1+run*.25,0,0);
  F.kL.rotation.set(o.kL[0],0,0);F.kR.rotation.set(o.kR[0],0,0);
  F.hips.position.y+=run*Math.abs(Math.sin(ph))*.06+jump}
-const KIT={MX:{pri:0x006bb6,trim:0xed174c,num:"0",nf:"#ffffff",ns:"#ed174c",skin:[.8,.72,.68]},PT:{pri:0x006bb6,trim:0xed174c,num:"9",nf:"#ffffff",ns:"#ed174c",skin:[1.1,1.0,.95]},CC:{pri:0xc8102e,trim:0x1d42ba,num:"2",nf:"#ffffff",ns:"#1d42ba",skin:[.95,.88,.82]},G1:{pri:0x8f9299,trim:0x55585e,num:"8",nf:"#d9dbe0",ns:"#55585e",skin:[.7,.62,.58]},G2:{pri:0x8f9299,trim:0x55585e,num:"24",nf:"#d9dbe0",ns:"#55585e",skin:[1.25,1.12,1.0]}};
+const KIT={MX:{pri:0x006bb6,trim:0xed174c,num:"0",nf:"#ffffff",ns:"#ed174c",skin:[.82,.74,.7],h:1.88,w:.96,hair:"buzz",beard:0,band:0xffffff},
+ PT:{pri:0x006bb6,trim:0xed174c,num:"9",nf:"#ffffff",ns:"#ed174c",skin:[1.1,1.0,.95],h:2.0,w:1.05,hair:"locs",beard:1},
+ CC:{pri:0xc8102e,trim:0x1d42ba,num:"2",nf:"#ffffff",ns:"#1d42ba",skin:[.95,.88,.82],h:1.98,w:1.0,hair:"buzz",beard:1},
+ G1:{pri:0x8f9299,trim:0x55585e,num:"8",nf:"#d9dbe0",ns:"#55585e",skin:[.7,.62,.58],h:2.06,w:1.07,hair:"bald",beard:1},
+ G2:{pri:0x8f9299,trim:0x55585e,num:"24",nf:"#d9dbe0",ns:"#55585e",skin:[1.25,1.12,1.0],h:1.95,w:1.0,hair:"puff",beard:0}};
 const GRAY={col:0x8b8e95,trim:0x5d6066,numCol:"#e4e6ea",numStroke:"#5d6066",shoe:0x6b6e75,name:""};
 const POOL={MX:figure({col:0x006bb6,trim:0xed174c,num:"0",name:"MAXEY",numCol:"#fff",numStroke:"#ed174c",skin:0x7a4a2e,hair:"buzz",band:0xffffff,shoe:0xffffff,sleeve:"R"}),
  PT:figure({col:0x006bb6,trim:0xed174c,num:"9",name:"",numCol:"#fff",numStroke:"#ed174c",skin:0x9a6644,hair:"locs",shoe:0x006bb6,beard:1}),
@@ -229,30 +233,42 @@ function numCanvas(k){const c=document.createElement("canvas");c.width=256;c.hei
  const draw=()=>{const x=c.getContext("2d");x.clearRect(0,0,256,200);x.textAlign="center";x.textBaseline="middle";const n=KIT[k].num;let sz=170;x.font=`800 ${sz}px "Barlow Condensed","Arial Narrow",sans-serif`;const w=x.measureText(n).width;if(w>210){sz*=210/w;x.font=`800 ${sz}px "Barlow Condensed","Arial Narrow",sans-serif`}
   x.lineJoin="round";x.lineWidth=16;x.strokeStyle=KIT[k].ns;x.strokeText(n,128,108);x.fillStyle=KIT[k].nf;x.fillText(n,128,108);t.needsUpdate=true};draw();TEX.push(draw);return t}
 function kitMat(base,k){const m=new THREE.MeshStandardMaterial({map:base.map,roughness:.8,metalness:0});const K=KIT[k];
- m.onBeforeCompile=sh=>{sh.uniforms.uPri={value:new THREE.Color(K.pri)};sh.uniforms.uTrim={value:new THREE.Color(K.trim)};sh.uniforms.uSkin={value:new THREE.Vector3(...K.skin)};sh.uniforms.uNum={value:numCanvas(k)};
-  sh.vertexShader=sh.vertexShader.replace("#include <common>","#include <common>\nvarying vec3 vB;").replace("#include <begin_vertex>","#include <begin_vertex>\nvB=position;");
-  sh.fragmentShader=sh.fragmentShader.replace("#include <common>","#include <common>\nvarying vec3 vB;uniform vec3 uPri;uniform vec3 uTrim;uniform vec3 uSkin;uniform sampler2D uNum;").replace("#include <map_fragment>",`
+ m.onBeforeCompile=sh=>{sh.uniforms.uPri={value:new THREE.Color(K.pri)};sh.uniforms.uTrim={value:new THREE.Color(K.trim)};sh.uniforms.uSkin={value:new THREE.Vector3(...K.skin)};sh.uniforms.uNum={value:numCanvas(k)};sh.uniforms.uBeard={value:K.beard?1:0};sh.uniforms.uShave={value:K.hair==="twists"?0:1};sh.uniforms.uScalp={value:new THREE.Color(0x7a4c33).multiply(new THREE.Color(...K.skin))};
+  sh.vertexShader=sh.vertexShader.replace("#include <common>","#include <common>\nvarying vec3 vB;").replace("#include <begin_vertex>","#include <begin_vertex>\nvB=position;"+(K.hair!=="twists"?"{vec3 C=vec3(0.,.946,-.004);vec3 d=transformed-C;if(transformed.y>.957||(transformed.y>.932&&d.z<.022)){vec3 R=vec3(.042,.043,.05);vec3 e=d/R;float l=length(e);if(l>1.)transformed=C+d/l;}}":""));
+  sh.fragmentShader=sh.fragmentShader.replace("#include <common>","#include <common>\nvarying vec3 vB;uniform vec3 uPri;uniform vec3 uTrim;uniform vec3 uSkin;uniform sampler2D uNum;uniform float uShave;uniform float uBeard;uniform vec3 uScalp;").replace("#include <map_fragment>",`
  vec4 sampledDiffuseColor=texture2D(map,vMapUv);vec3 c=sampledDiffuseColor.rgb;vec3 g=pow(max(c,vec3(0.)),vec3(1./2.2));
  float mx=max(g.r,max(g.g,g.b)),mn=min(g.r,min(g.g,g.b)),sat=(mx-mn)/max(mx,1e-4);
  bool green=g.g>g.r+.06&&g.g>g.b+.01&&mx<.65;
- bool fr=vB.z>0.012&&abs(vB.x)<0.052&&vB.y>0.698&&vB.y<0.782;bool bk=vB.z<-0.055&&abs(vB.x)<0.062&&vB.y>0.698&&vB.y<0.802;
+ bool fr=vB.z>0.012&&abs(vB.x)<0.062&&vB.y>0.688&&vB.y<0.79;bool bk=vB.z<-0.055&&abs(vB.x)<0.072&&vB.y>0.69&&vB.y<0.805;
  bool kit=vB.y>0.365&&vB.y<0.86&&abs(vB.x)<0.24;
  if((fr||bk)&&green){g=vec3(.92);mx=.92;sat=0.;green=false;}
  bool white=sat<.17&&mx>.42;bool skn=!green&&!white&&g.r>g.g+.04&&sat>.18&&mx>.1;
  vec3 o=c;
- if(green){o=uTrim*clamp(mx/.3,.3,1.5);}
+ bool scalp=uShave>.5&&vB.y>0.925&&mx<.24&&!green;
+if(scalp){o=uScalp*(.75+.4*mx);}
+ else if(green){o=uTrim*clamp(mx/.3,.3,1.5);}
  else if(white&&kit){o=uPri*clamp(mx/.92,.2,1.15);}
  else if(white&&(fr||bk)){o=uPri;}
- else if(skn){o=c*uSkin;}
- if(fr||bk){vec2 nu=fr?vec2((vB.x+0.052)/0.104,(vB.y-0.698)/0.084):vec2((0.062-vB.x)/0.124,(vB.y-0.698)/0.104);vec4 n=texture2D(uNum,nu);o=mix(o,n.rgb,n.a);}
+ else if(skn){o=c*uSkin;if(uBeard>.5&&vB.y<.904&&vB.y>.872&&vB.z>-.012){float t=smoothstep(.904,.896,vB.y)*smoothstep(-.012,.004,vB.z);float n=fract(sin(dot(vB.xz*900.,vec2(12.9898,78.233)))*43758.5453);o=mix(o,vec3(.012,.01,.009)*(.7+.6*n),t*.8);}}
+ if(fr||bk){vec2 nu=fr?vec2((vB.x+0.062)/0.124,(vB.y-0.688)/0.102):vec2((0.072-vB.x)/0.144,(vB.y-0.69)/0.115);vec4 n=texture2D(uNum,nu);o=mix(o,n.rgb,n.a);}
  diffuseColor*=vec4(o,1.);`)};
  m.customProgramCacheKey=()=>"kit"+k;return m}
 const BN=["Hips","Spine","Spine1","Spine2","Neck","Head","LeftArm","LeftForeArm","LeftHand","RightArm","RightForeArm","RightHand","LeftUpLeg","LeftLeg","LeftFoot","LeftToeBase","RightUpLeg","RightLeg","RightFoot","RightToeBase","LeftHandMiddle1","RightHandMiddle1"];
-new GLTFLoader().load("player.glb",g=>{Object.entries(POOL).forEach(([k,F])=>{const r=SU.clone(g.scene);r.scale.setScalar(1.97);S.add(r);r.visible=false;
+function hairGroup(K){const g=new THREE.Group(),hm=new THREE.MeshStandardMaterial({color:0x0c0b0a,roughness:.95}),C=[0,.946,-.003];
+ const add=(m,p,sc,rx)=>{m.position.set(...p);if(sc)m.scale.set(...sc);if(rx)m.rotation.x=rx;m.castShadow=true;g.add(m)};
+ if(K.hair==="buzz")add(new THREE.Mesh(new THREE.SphereGeometry(1,28,18,0,Math.PI*2,0,Math.PI*.5),hm),[0,.951,-.006],[.0438,.0405,.0512],-.42);
+ if(K.hair==="puff"){add(new THREE.Mesh(new THREE.SphereGeometry(1,28,20),hm),[0,.968,-.012],[.064,.058,.068]);}
+ if(K.hair==="locs"){add(new THREE.Mesh(new THREE.SphereGeometry(1,28,18,0,Math.PI*2,0,Math.PI*.55),hm),[0,.951,-.006],[.0448,.0415,.0522],-.42);
+  for(let i=0;i<11;i++){const a=Math.PI*.62+i/10*Math.PI*.76,l=new THREE.Mesh(new THREE.CapsuleGeometry(.0065,.05,3,6),hm);add(l,[Math.sin(a)*.044,.93,Math.cos(a)*.048-.006],null,0);l.rotation.z=-Math.sin(a)*.2;l.rotation.x=Math.cos(a)*.2}}
+ if(K.band){const b=new THREE.Mesh(new THREE.TorusGeometry(.0465,.0055,8,28),new THREE.MeshStandardMaterial({color:K.band,roughness:.7}));add(b,[0,.957,-.004],[.9,1,1.06],Math.PI/2-.28)}
+ return g}
+new GLTFLoader().load("player.glb",g=>{Object.entries(POOL).forEach(([k,F])=>{const K=KIT[k];const r=SU.clone(g.scene);r.scale.set(K.h*K.w,K.h,K.h*K.w);S.add(r);r.visible=false;
   const b={};r.traverse(o=>{if(o.isBone){const n=o.name.replace(/^mixamorig:?/,"");b[n]=o}if(o.isMesh){o.castShadow=true;o.frustumCulled=false;o.material=kitMat(o.material,k)}});
   r.updateMatrixWorld(true);BN.forEach(n=>{const o=b[n];if(!o)return;o.userData.rq=o.quaternion.clone();const ch=o.children.find(x=>x.isBone);o.userData.L=ch?ch.position.clone().normalize():new THREE.Vector3(0,1,0)});
   b.Hips.userData.rw=b.Hips.getWorldQuaternion(new THREE.Quaternion());
-  MX[k]={r,b};F.root.traverse(o=>{if(o.isMesh)o.visible=false})});REAL=true;window.__real=1});
+  ["Left","Right"].forEach(S2=>{b[S2+"ForeArm"].position.multiplyScalar(1.13);b[S2+"Hand"].position.multiplyScalar(1.1)});
+  let sm;r.traverse(o=>{if(o.isSkinnedMesh&&!sm)sm=o});r.updateMatrixWorld(true);const hg=hairGroup(K);hg.matrixAutoUpdate=false;const hi=sm.skeleton.bones.indexOf(b.Head);hg.matrix.copy(sm.skeleton.boneInverses[hi].clone().multiply(sm.bindMatrix));b.Head.add(hg);
+  MX[k]={r,b,hg,sm};F.root.traverse(o=>{if(o.isMesh)o.visible=false})});REAL=true;window.__real=1});
 const _q=new THREE.Quaternion(),_q2=new THREE.Quaternion(),_v=new THREE.Vector3(),_a=new THREE.Vector3(),_b=new THREE.Vector3();
 function aimB(bone,a,b){const pq=bone.parent.getWorldQuaternion(_q);const wq=_q2.copy(pq).multiply(bone.userData.rq);const cur=_v.copy(bone.userData.L).applyQuaternion(wq);const d=_a.copy(b).sub(a).normalize();
  const dq=new THREE.Quaternion().setFromUnitVectors(cur,d);const nw=dq.multiply(wq);bone.quaternion.copy(pq.invert().multiply(nw));bone.updateMatrixWorld(true)}
@@ -313,5 +329,8 @@ function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
 start(location.hash?decodeURIComponent(location.hash.slice(1)):"Mid-range");if(location.hash){auto=false;document.getElementById("auto").classList.remove("on")}
 window.__seek=(k,t)=>{auto=false;start(k);for(let x=0;x<=t+1e-6;x+=.02){setFigs(x,.02);retargetAll();setBall(x)}T=t+5;cur=null;setFigs; window.__k=k;cur=k;camAt(t);cur=null;R.render(S,cam)};
 window.__close=(f,dx,dy,dz)=>{const r=FIG[f].root.position;cam.position.set(r.x+dx,1.4+dy,r.z+dz);cam.lookAt(r.x,1.3,r.z);R.render(S,cam)};
+window.__dbg=()=>{const X=MX.MX;X.r.updateMatrixWorld(true);const p=new THREE.Vector3(0,.948,0).applyMatrix4(X.hg.matrixWorld);const h=X.b.Head.getWorldPosition(new THREE.Vector3());const sc=new THREE.Vector3();X.hg.matrixWorld.decompose(new THREE.Vector3(),new THREE.Quaternion(),sc);return JSON.stringify({p:p.toArray(),h:h.toArray(),sc:sc.toArray(),bm:X.sm.bindMode,kids:X.hg.children.length,vis:X.hg.visible,par:X.hg.parent&&X.hg.parent.name})};
+window.__lineup=(close)=>{cur=null;const ks=Object.keys(POOL);ks.forEach((k,i)=>{const F=POOL[k];F.root.visible=true;F.root.position.set(6+i*1.1,0,0);F.root.rotation.y=0;apply(F,POSE.stand,0,0,0);F.root.updateMatrixWorld(true);retarget(F,MX[k])});ball.visible=false;
+ if(close){const F=POOL[ks[close-1]];const p=F.root.position;cam.position.set(p.x,1.9,p.z+1.2);cam.lookAt(p.x,1.75,p.z)}else{cam.position.set(8.2,1.6,6.5);cam.lookAt(8.2,1.1,0)}R.render(S,cam)};
 requestAnimationFrame(loop);
 </script></body></html>
