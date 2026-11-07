@@ -61,12 +61,23 @@ canvas#gl{display:block;width:100%;height:100%}
 .thr{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.thr::-webkit-scrollbar{display:none}
 .thr button{flex:none;display:flex;align-items:center;gap:7px;border:1px solid #24252c;background:#0f1014;color:#c9ccd3;border-radius:999px;padding:7px 12px 7px 7px;font:700 13px/1 var(--C);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
 .thr button.on{background:#eef0f3;color:#0a0b0e;border-color:#eef0f3}.sw2{width:18px;height:18px;border-radius:50%;box-shadow:0 0 0 1px rgba(255,255,255,.25) inset}
+.hdr{padding:14px 14px 4px}.hdr h1{margin:0;font:800 24px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.04em;text-transform:uppercase}.hdr p{margin:6px 0 0;color:#8b8e97;font-size:12.5px;line-height:1.4}
+.flt{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:12px 10px 8px}.flt::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid #24252c;background:#0f1014;color:#c9ccd3;border-radius:6px;padding:7px 11px;font:700 12px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.1em;text-transform:uppercase;display:flex;gap:6px;align-items:center}
+.chip.on{background:#eef0f3;color:#0a0b0e;border-color:#eef0f3}.chip .dt{width:3px;height:12px;border-radius:2px}
+.row{display:grid;grid-template-columns:52px 3px 1fr auto;gap:10px;align-items:center;padding:9px 12px;border-bottom:1px solid #1f2026}
+.row .t{font:600 11px/1.2 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.06em;color:#8a8e98;font-variant-numeric:tabular-nums}.row .t small{display:block;color:#5d6069}
+.row .c{align-self:stretch;border-radius:2px}.row .x{font:500 13px/1.3 Inter,system-ui,sans-serif;color:#d5d8de;min-width:0}.row .x b{font-weight:700;color:#fff}
+.row .x .lc{display:block;font:700 10.5px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.16em;color:#f5b82e;margin-top:4px}
+.row .r{font:700 15px/1 "Barlow Condensed","Arial Narrow",sans-serif;font-variant-numeric:tabular-nums;text-align:right;min-width:30px}
+.row.nw{animation:rin .6s cubic-bezier(.2,.9,.2,1)}.row.now{background:rgba(255,255,255,.04)}
 </style>
 <script type="importmap">{"imports":{"three":"../moves/three.module.min.js"}}</script>
 </head><body><div class="w">
+<div class="hdr"><h1>Matchup Gamecast</h1><p>Preview with simulated plays. Every possession that matters to your matchup, from every game tonight, on one floor.</p></div>
 <div class="bug"><div class="tm"><span class="sw" style="background:#f5b82e"></span><span class="nm" id="mn">You</span><span class="sc" id="sm" style="margin-left:auto">5</span></div><div class="mid"><span class="lv"><i></i>LIVE</span><span class="wp" id="wp">WIN 50%</span></div><div class="tm r"><span class="sw" style="background:#9d7bff"></span><span class="nm" id="on">Them</span><span class="sc" id="so" style="margin-right:auto">4</span></div></div><div class="tick" id="tick"></div>
 <div class="stage" id="st"><canvas id="gl"></canvas><div class="tag" id="tag"><i></i>Mid-range</div><div class="big" id="big"></div><div class="imp" id="imp"></div><div class="l3" id="l3"></div></div>
-<div class="th" id="th" hidden></div><p class="demo">Demo · simulated plays from your real matchup rosters</p><div class="pbp"><div class="pbh"><span>PLAY-BY-PLAY</span><span id="pbn"></span></div><div id="feed"></div></div><div id="pq" hidden></div><div id="pl" hidden></div><div id="cur" hidden></div><button id="auto" hidden></button><button id="slow" hidden></button><button id="rep" hidden></button><div id="menu" hidden></div>
+<div class="th" id="th" hidden></div><div class="flt" id="flt"></div><div class="pbp"><div class="pbh"><span>PLAY-BY-PLAY</span><span id="pbn"></span></div><div id="feed"></div></div><div id="pq" hidden></div><div id="pl" hidden></div><div id="cur" hidden></div><button id="auto" hidden></button><button id="slow" hidden></button><button id="rep" hidden></button><div id="menu" hidden></div>
 </div>
 <script type="module">
 import * as THREE from "three";import {GLTFLoader} from "../moves/GLTFLoader.js";import * as SU from "../moves/SkeletonUtils.js";import {MeshoptDecoder} from "../moves/meshopt_decoder.module.js";
@@ -515,6 +526,7 @@ function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
  netT+=dt*speed;net.scale.set(1,netT<.5?1+Math.sin(netT*20)*.12*(1-netT*2)+.1*(1-netT*2):1,1);
  rimT+=dt*speed;rimM.position.y=RIM.y-(rimT<.5?Math.sin(rimT*30)*.035*(1-rimT*2):0);
  if(ledMat.map)ledMat.map.offset.x=(ledMat.map.offset.x+dt*.03)%1;
+ if(!CURP){Object.values(MX).forEach(x=>x.r.visible=false);Object.values(POOL).forEach(f=>f.root.visible=false);ball.visible=false}
  if(!window.__stop)R.render(S,cam);requestAnimationFrame(loop)}
 
 window.__seek=(k,t)=>{auto=false;start(k);for(let x=0;x<=t+1e-6;x+=.02){setFigs(x,.02);retargetAll();setBall(x)}T=t+5;cur=null;setFigs; window.__k=k;cur=k;camAt(t);cur=null;R.render(S,cam)};
@@ -526,7 +538,7 @@ window.__lineup=(close)=>{cur=null;const ks=Object.keys(POOL);ks.forEach((k,i)=>
 
 const MARKS=new THREE.Group();S.add(MARKS);
 function dropMark(){if(!CURP||!/Mid-range|3PT|Layup|Dunk/.test(CURP.pl[0]))return;const F=FIG.A;if(!F)return;const sp=CURP.spot;if(!sp)return;
- const col=CURP.r.side==="me"?0xf5b82e:0x9d7bff;const m=new THREE.Mesh(new THREE.CircleGeometry(.22,24),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.9}));m.rotation.x=-Math.PI/2;m.position.set(sp.x,.03,sp.z);MARKS.add(m);
+ const col=CURP.r.side==="me"?0xf5b82e:0x9d7bff;const m=new THREE.Mesh(new THREE.CircleGeometry(.22,24),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.9}));m.rotation.x=-Math.PI/2;m.position.set(sp.x,.03,sp.z);m.userData={side:CURP.r.side,pid:rid(CURP.r)};m.visible=showR(CURP.r);MARKS.add(m);
  const ring=new THREE.Mesh(new THREE.RingGeometry(.25,.32,32),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.9}));ring.rotation.x=-Math.PI/2;ring.position.copy(m.position);MARKS.add(ring);let k=0;const iv=setInterval(()=>{k++;ring.scale.setScalar(1+k*.08);ring.material.opacity=Math.max(0,.9-k*.05);if(k>18){clearInterval(iv);MARKS.remove(ring)}},30)}
 /* ===== Gamecast director ===== */
 let busy=1;
@@ -541,14 +553,30 @@ function tick(ch){document.getElementById("tick").innerHTML=CATS.map(c=>{const l
 tick();
 const PLAYS=[["Mid-range",4,"Made FG",d=>`hits a ${d}-foot pull-up jumper`,{PTS:2,FGM:1,FGA:1}],["Layup",3,"Made FG","scores on a driving layup",{PTS:2,FGM:1,FGA:1}],["Dunk",2,"Slam dunk","throws down a two-hand dunk",{PTS:2,FGM:1,FGA:1}],["3PT",4,"Made 3PT",d=>`drains a ${d}-foot three`,{PTS:3,"3PM":1,FGM:1,FGA:1}],["Steal",2,"Steal","comes up with the steal",{STL:1}],["Block",2,"Block","swats the shot at the rim",{BLK:1}],["Assist",3,"Assist","finds the cutter for the assist",{AST:1}],["Turnover",1,"Turnover","throws it away, bad pass",{TO:1}]];
 const pick=a=>a[Math.floor(Math.random()*a.length)];let PN=0,CURP=null;const GAMES={};
-function director(){const r=pick(ROST);const tot=PLAYS.reduce((a,x)=>a+x[1],0);let q=Math.random()*tot,pl=PLAYS[0];for(const x of PLAYS){q-=x[1];if(q<=0){pl=x;break}}
+function director(){const pool=ROST.filter(r=>FLT==='all'||FLT===r.side||FLT===rid(r));const r=pick(pool.length?pool:ROST);const tot=PLAYS.reduce((a,x)=>a+x[1],0);let q=Math.random()*tot,pl=PLAYS[0];for(const x of PLAYS){q-=x[1];if(q<=0){pl=x;break}}
  const ft=pl[0]==="3PT"?24+Math.floor(Math.random()*4):12+Math.floor(Math.random()*8);const g=GAMES[r.p.n]=GAMES[r.p.n]||{q:2+Math.floor(Math.random()*2),c:300+Math.floor(Math.random()*300),a:70+Math.floor(Math.random()*20),b:70+Math.floor(Math.random()*20)};g.c=Math.max(5,g.c-30-Math.floor(Math.random()*60));if(pl[4].PTS)g.a+=pl[4].PTS;
  CURP={r,pl,ft,g};auto=false;cur=pl[0];ACT.rotation.y=r.side==="me"?Math.PI:0;ACT.updateMatrixWorld(true);const st=STARF[nrm(r.p.n)];setFeatured(r.p);NAMES.SA=[r.p.n,r.side];if(!st||SCN[st[0]])start(pl[0]);else busy=1}
 function lower(){const {r,pl,ft,g}=CURP;const c=r.side==="me"?"#f5b82e":"#9d7bff";const l3=document.getElementById("l3");const tag=pl[0]==="Mid-range"||pl[0]==="3PT"?`${pl[2]} · ${ft} FT`:pl[2];const pts=pl[4].PTS?"+"+pl[4].PTS:"+1 "+Object.keys(pl[4])[0];
  l3.className="l3";l3.innerHTML=`<div class="bar"><span class="acc" style="background:${c}"></span><div class="tx"><div class="n">${r.p.n}</div><div class="d" style="color:${c}">${tag}</div></div><div class="g">${r.p.tm||""} ${g.a} · Q${g.q} ${Math.floor(g.c/60)}:${String(g.c%60).padStart(2,"0")} · ${r.side==="me"?ME:OP}</div><div class="pts">${pts}</div></div><div class="ph">${r.p.id?`<img src="https://a.espncdn.com/i/headshots/nba/players/full/${r.p.id}.png" onerror="this.remove()">`:""}</div>`;void l3.offsetWidth;l3.className="l3 in";clearTimeout(l3._t);l3._t=setTimeout(()=>l3.className="l3 out",5200)}
 window.__onBig=()=>{if(!CURP)return;try{const r0=FIG.A&&FIG.A.root;if(r0)CURP.spot=r0.getWorldPosition(new THREE.Vector3())}catch(e){}const {r,pl,ft}=CURP;const before=Object.fromEntries(CATS.map(c=>[c,lead(c)]));Object.entries(pl[4]).forEach(([k,v])=>SV[r.side][k]+=v);const flips=CATS.filter(c=>lead(c)!==before[c]&&lead(c)!==0);const touched=Object.keys(pl[4]).map(k=>k==="FGM"||k==="FGA"?"FG%":k).filter(k=>CATS.includes(k));
  tick(touched);setTimeout(lower,900);setTimeout(()=>{const im=document.getElementById("imp");const c=flips[0]||touched[0]||"PTS";const l=lead(c);im.className="imp"+(flips.length?" lc":"");im.innerHTML=flips.length?`<div class="k">Lead change · ${c}</div><div class="v" style="color:${l>0?"#f5b82e":"#9d7bff"}">${l>0?ME:OP} ${fv(l>0?"me":"op",c)} – ${fv(l>0?"op":"me",c)}</div>`:`<div class="k">${c} · ${l===0?"Tied":(l>0?ME:OP)}</div><div class="v"><span style="color:#f5b82e">${fv("me",c)}</span> <span style="color:#5d6069">–</span> <span style="color:#9d7bff">${fv("op",c)}</span></div>`;void im.offsetWidth;im.className+=" in"},1500);
- const fd=document.getElementById("feed");PN++;const desc=typeof pl[3]==="function"?pl[3](ft):pl[3];fd.insertAdjacentHTML("afterbegin",`<div class="prow nw"><span class="c" style="background:${r.side==="me"?"#f5b82e":"#9d7bff"}"></span><span class="x"><b>${r.p.n}</b> ${desc}<small>${r.p.tm||""} · Q${CURP.g.q} ${Math.floor(CURP.g.c/60)}:${String(CURP.g.c%60).padStart(2,"0")}${flips.length?" · <span style='color:#f5b82e'>LEAD CHANGE · "+flips.join(", ")+"</span>":""}</small></span><span class="r">${pl[4].PTS?"+"+pl[4].PTS:Object.keys(pl[4])[0]}</span></div>`);while(fd.children.length>25)fd.lastChild.remove();document.getElementById("pbn").textContent=PN+" PLAYS"};
+ const desc=typeof pl[3]==="function"?pl[3](ft):pl[3];FEED.push({r,q:CURP.g.q,t:clk(CURP.g.c),desc,eff:pl[4].PTS?"+"+pl[4].PTS:Object.keys(pl[4])[0],hot:!!(pl[4].PTS||!pl[4].TO),lc:flips.join(", "),nw:1});renderFeed()};
+/* ===== feed + filters (GC4 style) ===== */
+var FLT="all";const FEED=[];const rid=r=>nrm(r.p.n);const showR=r=>FLT==="all"||FLT===r.side||FLT===rid(r);
+const clk=c=>Math.floor(c/60)+":"+String(c%60).padStart(2,"0");const lastN=n=>n.split(" ").slice(1).join(" ")||n;
+const short=n=>(n.trim().split(/\s+/)[0]||n).replace(/[^A-Za-z0-9]/g,"").slice(0,3).toUpperCase();
+function rowH(f){const c=f.r.side==="me"?"#f5b82e":"#9d7bff";return `<div class="row${f.nw?" nw now":""}"><span class="t">Q${f.q} ${f.t}<small>${f.r.p.tm||""}</small></span><span class="c" style="background:${c}"></span><span class="x"><b>${f.r.p.n}</b> ${f.desc}${f.lc?`<span class="lc">LEAD CHANGE · ${f.lc}</span>`:""}</span><span class="r" style="color:${f.hot?"#fff":"#5d6069"}">${f.eff}</span></div>`}
+function renderFeed(){const L=FEED.filter(f=>showR(f.r));document.getElementById("feed").innerHTML=L.slice(-25).reverse().map(rowH).join("");FEED.forEach(f=>f.nw=0);document.getElementById("pbn").textContent=L.length+" PLAYS";MARKS.children.forEach(m=>{if(m.userData.side)m.visible=FLT==="all"||FLT===m.userData.side||FLT===m.userData.pid})}
+function chips(){const L=[["all","All"],["me",short(ME)],["op",short(OP)],...ROST.map(r=>[rid(r),lastN(r.p.n),r.side])];document.getElementById("flt").innerHTML=L.map(([k,l,sd])=>`<button class="chip${FLT===k?" on":""}" data-f="${k}">${sd?`<span class="dt" style="background:${sd==="me"?"#f5b82e":"#9d7bff"}"></span>`:""}${l}</button>`).join("")}
+document.getElementById("flt").addEventListener("click",e=>{const c=e.target.closest("[data-f]");if(!c)return;FLT=c.dataset.f;chips();renderFeed()});
+/* seed earlier plays so the feed and floor aren't empty */
+(function seed(){const W=[["hits a {d}-foot pull-up jumper","+2",1,0],["drains a {d}-foot three","+3",1,1],["scores on a driving layup","+2",1,0],["misses a {d}-foot jumper","—",1,0],["grabs the defensive rebound","REB",0,0],["finds the cutter for the assist","AST",0,0],["comes up with the steal","STL",0,0],["swats the shot at the rim","BLK",0,0],["makes free throw 1 of 2","+1",0,0],["throws it away, bad pass","TO",0,0]];
+ for(let i=0;i<14;i++){const r=pick(ROST);const w=pick(W);const three=w[3];const d=three?24+Math.floor(Math.random()*4):8+Math.floor(Math.random()*12);
+  const g=GAMES[r.p.n]=GAMES[r.p.n]||{q:2+Math.floor(Math.random()*2),c:300+Math.floor(Math.random()*300),a:70+Math.floor(Math.random()*20),b:70+Math.floor(Math.random()*20)};g.c=Math.max(5,g.c-20-Math.floor(Math.random()*50));
+  FEED.push({r,q:g.q,t:clk(g.c),desc:w[0].replace("{d}",d),eff:w[1],hot:w[1]!=="—"&&w[1]!=="TO",lc:""});
+  if(w[2]){const bx=r.side==="me"?-12.75:12.75,ang=(Math.random()-.5)*Math.PI*.9,dm=d*.3048,col=r.side==="me"?0xf5b82e:0x9d7bff,mk=w[1]!=="—";
+   const geo=mk?new THREE.CircleGeometry(.22,24):new THREE.RingGeometry(.15,.22,24);const m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.85}));m.rotation.x=-Math.PI/2;m.position.set(bx-Math.sign(bx)*Math.cos(ang)*dm,.03,Math.sin(ang)*dm);m.userData={side:r.side,pid:rid(r)};MARKS.add(m)}}
+ chips();renderFeed()})();
 const _gr=window.__real;const wt=setInterval(()=>{if(window.__real&&MX.SA){clearInterval(wt);busy=0;director();(async()=>{for(const r of ROST){const st=STARF[nrm(r.p.n)];if(st&&!SCN[st[0]])await new Promise(res=>LD.load("../moves/"+st[0],g=>{SCN[st[0]]=g;res()},undefined,()=>res()))}})()}},300);
 requestAnimationFrame(loop);
 </script></body></html>
