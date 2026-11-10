@@ -527,7 +527,7 @@ document.getElementById("menu").onclick=e=>{const b=e.target.closest("button");i
 document.getElementById("auto").onclick=e=>{auto=!auto;e.target.classList.toggle("on",auto)};
 document.getElementById("slow").onclick=e=>{speed=speed===1?.4:1;e.target.classList.toggle("on",speed!==1)};
 document.getElementById("rep").onclick=()=>start(cur);
-document.getElementById("vw").onclick=()=>__view(VIEW==="half"?"full":"half");__view(VIEW);window.__M=M;let last=performance.now(),hold=0;
+document.getElementById("vw").onclick=()=>__view(VIEW==="half"?"full":"half");__view(VIEW);window.__M=M;window.__dbg2=()=>({ROST,setFeatured,POOL,MX,apply,POSE,retarget});let last=performance.now(),hold=0;
 function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
  if(cur){const d=M[cur].dur;if(T>d+.2&&!window.__vanished){window.__vanished=1;Object.values(MX).forEach(x=>x.r.visible=false);ball.visible=false;TR.forEach(m=>m.material.opacity=0);dropMark()}if(T<d+1.2){const pT=T;T+=dt*speed;fx(T,pT);if(!gShown&&T>=GT[cur]){gShown=true;showBig()}}else if(!busy){busy=1;setTimeout(()=>{busy=0;director()},1800)}
   const t=Math.min(T,d);if(!window.__vanished){setFigs(t,dt*speed);retargetAll();setBall(t)}}camAt(0);
