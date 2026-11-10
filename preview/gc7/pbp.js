@@ -19,7 +19,7 @@ export function shotAnim(p){const t=ty(p),s=spot(p),d=s?s.ft:null;
   if(/Putback|Tip/i.test(t))return"Putback";
   if(/Dunk/i.test(t))return"Dunk";
   if(/Float/i.test(t))return"Floater";
-  if(/Fade/i.test(t))return(/Turnaround/i.test(t)||(d!=null&&d<=RULES.postFadeFt))?"Post fadeaway":"Fadeaway";
+  if(/Fade/i.test(t)&&(/Turnaround/i.test(t)||(d!=null&&d<=RULES.postFadeFt)))return"Post fadeaway";
   if(/Turnaround/i.test(t)&&d!=null&&d<=RULES.turnaroundPostFt)return"Post fadeaway";
   if(/Hook/i.test(t))return"Floater";
   if(/Layup|Finger Roll/i.test(t))return"Layup";
@@ -28,11 +28,16 @@ export function shotAnim(p){const t=ty(p),s=spot(p),d=s?s.ft:null;
 
 export function classify(plays){const ev=[];const live=plays.filter(p=>!SKIP.test(ty(p)));
   const mk=(p,anim,athlete,stats,extra)=>{const e=Object.assign({seq:+p.sequenceNumber||0,id:p.id,period:per(p),clock:(p.clock&&p.clock.displayValue)||"",wall:p.wallclock||null,anim,athlete,team:tm(p),stats,text:p.text||"",type:ty(p),spot:spot(p),src:[p.id]},extra||{});ev.push(e);return e};
-  let steal=null,oreb=null;
+  let steal=null,oreb=null,trip=null,and1e=null;
   for(let i=0;i<live.length;i++){const p=live[i],t=ty(p),made=!!p.scoringPlay;
     const near=(a,sec)=>a&&a.period===per(p)&&a.clock-clk(p)>=0&&a.clock-clk(p)<=sec;
     /* free throws */
-    if(/Free Throw/i.test(t)){mk(p,made?"Free throw":null,pid(p,0),made?{PTS:1,FTM:1,FTA:1}:{FTA:1});steal=null;oreb=null;continue}
+    if(/Free Throw/i.test(t)){const a=pid(p,0);const add=e=>{e.stats.FTA=(e.stats.FTA||0)+1;if(made){e.stats.FTM=(e.stats.FTM||0)+1;e.stats.PTS=(e.stats.PTS||0)+1}e.src.push(p.id)};
+      /* the and-one free throw rides with the basket; every other trip is one event */
+      if(/1 of 1/i.test(t)&&and1e&&and1e.athlete===a&&and1e.period===per(p)&&and1e.clock===clk(p)){add(and1e.e);and1e.e.ft=made?"made":"missed";and1e.e.text+=made?" + free throw":" (missed the free throw)";and1e=null}
+      else if(trip&&trip.athlete===a&&trip.period===per(p)&&trip.clock===clk(p)){add(trip.e);trip.e.ftm=trip.e.stats.FTM||0;trip.e.fta=trip.e.stats.FTA;trip.e.anim=trip.e.ftm?"Free throw":null;trip.e.text=`Makes ${trip.e.ftm} of ${trip.e.fta} free throws`}
+      else{const e=mk(p,made?"Free throw":null,a,made?{PTS:1,FTM:1,FTA:1}:{FTA:1});e.src=[p.id];e.ftm=made?1:0;e.fta=1;e.text=`Makes ${e.ftm} of 1 free throws`;trip={e,athlete:a,period:per(p),clock:clk(p)}}
+      steal=null;oreb=null;continue}
     /* rebounds */
     if(/Rebound/i.test(t)){const a=pid(p,0);if(a){const e=mk(p,"Rebound",a,{REB:1},{off:/Offensive/i.test(t)});oreb=e.off?{e,athlete:a,period:per(p),clock:clk(p)}:null}steal=null;continue}
     /* turnovers and steals */
@@ -53,9 +58,10 @@ export function classify(plays){const ev=[];const live=plays.filter(p=>!SKIP.tes
       if(oreb&&oreb.athlete===shooter&&near(oreb,RULES.putbackSec)&&/Layup|Dunk|Putback|And-one|Floater/.test(anim)){const e=oreb.e;e.anim="Putback";e.combo="Rebound + score";Object.assign(e.stats,stats);e.spot=spot(p)||e.spot;e.src.push(p.id);e.text+=" → "+txt;e.and1=and1;merged=true}
       /* steal + score / steal + assist */
       if(!merged&&steal&&near(steal,RULES.stealScoreSec)&&tm(p)!==steal.lostBy){const e=steal.e;
-        if(steal.athlete===shooter&&/Layup|Dunk|And-one/.test(anim)){e.anim="Steal + layup";e.combo="Steal + score";e.finish=/Dunk/.test(shotAnim(p))?"dunk":"layup";Object.assign(e.stats,stats);e.src.push(p.id);e.text+=" → "+txt;e.and1=and1;merged=true}
+        if(steal.athlete===shooter&&anim==="3PT"){e.anim="Steal + three";e.combo="Steal + three";Object.assign(e.stats,stats);e.src.push(p.id);e.text+=" → "+txt;merged=true}
+        else if(steal.athlete===shooter&&/Layup|Dunk|And-one/.test(anim)){e.anim="Steal + layup";e.combo="Steal + score";e.finish=/Dunk/.test(shotAnim(p))?"dunk":"layup";Object.assign(e.stats,stats);e.src.push(p.id);e.text+=" → "+txt;e.and1=and1;merged=true}
         else if(steal.athlete===ast){e.anim="Steal + assist";e.combo="Steal + assist";e.stats.AST=1;e.to=shooter;e.src.push(p.id);e.text+=" → "+txt}}
-      if(!merged)mk(p,anim,shooter,stats,{and1,assist:ast});
+      {const made1=merged?(oreb&&oreb.e.src.includes(p.id)?oreb.e:steal&&steal.e):mk(p,anim,shooter,stats,{and1,assist:ast});if(and1&&made1)and1e={e:made1,athlete:shooter,period:per(p),clock:clk(p)}}
       if(ast&&!(steal&&steal.e.anim==="Steal + assist"&&steal.athlete===ast))mk(p,/Alley Oop/i.test(t)?"Alley-oop":"Assist",ast,{AST:1},{role:"passer",to:shooter});
       steal=null;oreb=null;continue}
     /* fouls and anything else end the windows */

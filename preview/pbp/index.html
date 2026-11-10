@@ -28,8 +28,8 @@ h1{margin:0;padding:16px 0 4px;font:800 26px/1 var(--C);letter-spacing:.04em;tex
 <div id="out"><div class="msg">Loading games…</div></div>
 </div>
 <script type="module">
-import {classify,tally,RULES} from "../gc7/pbp.js?v=2";
-const NEW=["Interception","Steal + layup","And-one","Free throw","Floater","Fadeaway","Post fadeaway","Alley-oop","Rebound","Putback","Steal + assist"];
+import {classify,tally,RULES} from "../gc7/pbp.js?v=3";
+const NEW=["Interception","Steal + layup","Steal + three","Steal + assist","And-one","Free throw","Floater","Post fadeaway","Alley-oop","Rebound","Putback"];
 const API="https://site.api.espn.com/apis/site/v2/sports/basketball/nba/";
 const $=id=>document.getElementById(id);
 const et=new Date(new Date().toLocaleString("en-US",{timeZone:"America/New_York"}));if(et.getHours()<12)et.setDate(et.getDate()-1);
@@ -47,7 +47,7 @@ async function load(id){GID=id;document.querySelectorAll("#gm button").forEach(b
 function draw(n){const T=tally(EV);const keys=Object.keys(T).sort((a,b)=>(NEW.includes(b)-NEW.includes(a))||T[b]-T[a]);
  $("ch").innerHTML=`<button data-k="all" class="${FLT==="all"?"on":""}">All<b>${EV.length}</b></button>`+keys.map(k=>`<button data-k="${k}" class="${FLT===k?"on":""} ${NEW.includes(k)?"new":""}">${k}<b>${T[k]}</b></button>`).join("");
  const L=EV.filter(e=>FLT==="all"||e.anim===FLT);
- $("out").innerHTML=(n!=null?`<div class="cap" style="margin:8px 0">${n} log lines → ${EV.length} animated plays</div>`:"")+L.slice().reverse().slice(0,400).map(e=>{const q=new URLSearchParams({play:e.anim});if(e.spot){q.set("ft",e.spot.ft);q.set("ang",Math.round(e.spot.ang*180/Math.PI))}
+ $("out").innerHTML=(n!=null?`<div class="cap" style="margin:8px 0">${n} log lines → ${EV.length} animated plays</div>`:"")+L.slice().reverse().slice(0,400).map(e=>{const q=new URLSearchParams({play:e.anim});if(e.anim==="Free throw"&&e.fta){q.set("ftm",e.ftm);q.set("fta",e.fta)}if(e.spot){q.set("ft",e.spot.ft);q.set("ang",Math.round(e.spot.ang*180/Math.PI))}
   return `<div class="row"><span class="t">Q${e.period}<br>${e.clock}</span><span class="x"><span class="tag">${e.anim}</span><b>${NAMES[e.athlete]||"Player "+e.athlete}</b> <span style="color:#8a8d96;font-size:11.5px">${TEAMS[e.athlete]||""}${e.spot?" · "+e.spot.ft+" ft":""}</span><small>${e.text}</small></span><a href="../gc7/?${q}">▶</a></div>`}).join("")||'<div class="msg">No plays of this kind in this game.</div>'}
 $("ch").onclick=e=>{const b=e.target.closest("button");if(b){FLT=b.dataset.k;draw()}};
 $("gm").onclick=e=>{const b=e.target.closest("button");if(b)load(b.dataset.id)};
