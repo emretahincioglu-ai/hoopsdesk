@@ -1,0 +1,56 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Game Log Reader</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--C:"Barlow Condensed","Arial Narrow",sans-serif;--b:#23252c;--m:#8a8d96;--g:#f5b82e}
+*{box-sizing:border-box}html,body{margin:0;background:#050506;color:#eef0f3;font:14px Inter,-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.w{max-width:520px;margin:0 auto;padding:0 14px 60px}
+h1{margin:0;padding:16px 0 4px;font:800 26px/1 var(--C);letter-spacing:.04em;text-transform:uppercase}
+.sub{color:var(--m);font-size:12.5px;line-height:1.45;margin-bottom:12px}
+.cap{font:700 11px/1 var(--C);letter-spacing:.14em;text-transform:uppercase;color:var(--m)}
+.dn{display:flex;align-items:center;gap:8px;margin:10px 0}.dn button{border:1px solid var(--b);background:#111216;color:#eee;font:700 16px/1 var(--C);padding:9px 14px;border-radius:10px}.dn b{flex:1;text-align:center;font:800 18px/1 var(--C);letter-spacing:.06em}
+.gm{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}.gm::-webkit-scrollbar{display:none}
+.gm button{flex:none;border:1px solid var(--b);background:#111216;color:#eee;border-radius:12px;padding:9px 12px;text-align:left;font:700 14px/1.25 var(--C);letter-spacing:.05em}.gm button small{display:block;color:var(--m);font:600 11px/1.3 Inter}.gm button.on{border-color:#fff;background:#1c1d23}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 6px}.chips button{border:1px solid var(--b);background:#111216;color:#c9cbd1;font:700 12.5px/1 var(--C);letter-spacing:.08em;text-transform:uppercase;padding:7px 10px;border-radius:99px}.chips button b{color:#fff;margin-left:5px}.chips button.on{background:#fff;color:#0a0a0c;border-color:#fff}.chips button.on b{color:#0a0a0c}.chips button.new{color:var(--g)}
+.row{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--b)}
+.row .t{width:46px;flex:none;font:700 11.5px/1.3 var(--C);color:var(--m);letter-spacing:.06em}
+.row .x{flex:1;min-width:0}.row .x b{font-size:13px}.row .x small{display:block;color:var(--m);font-size:11.5px;line-height:1.35;margin-top:2px}
+.tag{display:inline-block;font:800 11px/1 var(--C);letter-spacing:.1em;text-transform:uppercase;padding:4px 6px;border-radius:5px;background:#1d1a10;color:var(--g);margin-right:6px}
+.row a{flex:none;text-decoration:none;border:1px solid var(--b);color:#fff;border-radius:99px;font:800 12px/1 var(--C);letter-spacing:.1em;padding:8px 10px;background:#111216}
+.msg{color:var(--m);padding:18px 0;font-size:13px}
+</style></head><body><div class="w">
+<h1>Game log reader</h1>
+<div class="sub">Pick a real game. Every play in the official log is turned into the animation the gamecast would run, with the spot on the floor. Tap ▶ to watch that play in the gamecast.</div>
+<div class="dn"><button id="pv">‹</button><b id="dt"></b><button id="nx">›</button></div>
+<div class="gm" id="gm"></div>
+<div class="chips" id="ch"></div>
+<div id="out"><div class="msg">Loading games…</div></div>
+</div>
+<script type="module">
+import {classify,tally,RULES} from "../gc7/pbp.js";
+const NEW=["Interception","Steal + layup","And-one","Free throw","Floater","Fadeaway","Post fadeaway","Alley-oop","Rebound","Putback","Steal + assist"];
+const API="https://site.api.espn.com/apis/site/v2/sports/basketball/nba/";
+const $=id=>document.getElementById(id);
+const et=new Date(new Date().toLocaleString("en-US",{timeZone:"America/New_York"}));if(et.getHours()<12)et.setDate(et.getDate()-1);
+let day=et,EV=[],NAMES={},TEAMS={},FLT="all",GID=null;
+const ymd=d=>`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+async function games(){$("dt").textContent=day.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});$("gm").innerHTML="";$("ch").innerHTML="";$("out").innerHTML='<div class="msg">Loading games…</div>';
+ try{const j=await (await fetch(API+"scoreboard?dates="+ymd(day))).json();const ev=(j.events||[]).filter(e=>e.status&&e.status.type&&e.status.type.state!=="pre");
+  if(!ev.length){$("out").innerHTML='<div class="msg">No started games on this date. Use the arrows to pick another day.</div>';return}
+  $("gm").innerHTML=ev.map(e=>{const c=e.competitions[0].competitors,a=c.find(x=>x.homeAway==="away"),h=c.find(x=>x.homeAway==="home");return `<button data-id="${e.id}">${a.team.abbreviation} ${a.score} · ${h.team.abbreviation} ${h.score}<small>${e.status.type.shortDetail||""}</small></button>`}).join("");
+  load(ev[0].id)}catch(e){$("out").innerHTML=`<div class="msg">Couldn't reach the game data (${e.message}).</div>`}}
+async function load(id){GID=id;document.querySelectorAll("#gm button").forEach(b=>b.classList.toggle("on",b.dataset.id===id));$("out").innerHTML='<div class="msg">Reading the game log…</div>';
+ try{const j=await (await fetch(API+"summary?event="+id)).json();NAMES={};TEAMS={};
+  ((j.boxscore&&j.boxscore.players)||[]).forEach(t=>{(t.statistics||[]).forEach(s=>(s.athletes||[]).forEach(a=>{NAMES[a.athlete.id]=a.athlete.displayName;TEAMS[a.athlete.id]=t.team.abbreviation}))});
+  const plays=j.plays||[];EV=classify(plays).filter(e=>e.anim);window.__EV=EV;window.__RAW=plays;FLT="all";draw(plays.length)}catch(e){$("out").innerHTML=`<div class="msg">Couldn't read this game (${e.message}).</div>`}}
+function draw(n){const T=tally(EV);const keys=Object.keys(T).sort((a,b)=>(NEW.includes(b)-NEW.includes(a))||T[b]-T[a]);
+ $("ch").innerHTML=`<button data-k="all" class="${FLT==="all"?"on":""}">All<b>${EV.length}</b></button>`+keys.map(k=>`<button data-k="${k}" class="${FLT===k?"on":""} ${NEW.includes(k)?"new":""}">${k}<b>${T[k]}</b></button>`).join("");
+ const L=EV.filter(e=>FLT==="all"||e.anim===FLT);
+ $("out").innerHTML=(n!=null?`<div class="cap" style="margin:8px 0">${n} log lines → ${EV.length} animated plays</div>`:"")+L.slice().reverse().slice(0,400).map(e=>{const q=new URLSearchParams({play:e.anim});if(e.spot){q.set("ft",e.spot.ft);q.set("ang",Math.round(e.spot.ang*180/Math.PI))}
+  return `<div class="row"><span class="t">Q${e.period}<br>${e.clock}</span><span class="x"><span class="tag">${e.anim}</span><b>${NAMES[e.athlete]||"Player "+e.athlete}</b> <span style="color:#8a8d96;font-size:11.5px">${TEAMS[e.athlete]||""}${e.spot?" · "+e.spot.ft+" ft":""}</span><small>${e.text}</small></span><a href="../gc7/?${q}">▶</a></div>`}).join("")||'<div class="msg">No plays of this kind in this game.</div>'}
+$("ch").onclick=e=>{const b=e.target.closest("button");if(b){FLT=b.dataset.k;draw()}};
+$("gm").onclick=e=>{const b=e.target.closest("button");if(b)load(b.dataset.id)};
+$("pv").onclick=()=>{day=new Date(day.getTime()-864e5);games()};$("nx").onclick=()=>{day=new Date(day.getTime()+864e5);games()};
+games();
+</script></body></html>

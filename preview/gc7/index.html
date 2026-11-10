@@ -322,18 +322,18 @@ const fwd=f=>{const r=FIG[f].root;return new THREE.Vector3(Math.sin(r.rotation.y
 /* ---------- moves ---------- */
 const RT=[12.75,3.12,0],DROP=[12.75,2.05,0];
 const M={
- "Mid-range":{cast:{A:"MX",D:"G1"},dur:4.6,graphic:["Jumper","A","17 ft · Pull-up"],cam:[[0,4.6,4.4,10.5,9,1.6,-1.5],[4.6,6.5,4.0,9.5,10.5,1.8,-1]],
+ "Mid-range":{cast:{A:"MX",D:"G1"},dur:4.6,anchor:["A",2.12,"full",3.0,6.4],graphic:["Jumper","A","17 ft · Pull-up"],cam:[[0,4.6,4.4,10.5,9,1.6,-1.5],[4.6,6.5,4.0,9.5,10.5,1.8,-1]],
   figs:{A:{path:[[0,4.2,-3.6],[1.5,8.3,-2.2],[1.85,8.5,-2.1]],face:"rim",run:[[0,0],[.2,1],[1.3,1],[1.55,0]],jump:[[1.85,0],[2.17,.7],[2.55,0]],pose:[[0,"dribble"],[1.45,"dribble"],[1.7,"gather"],[1.9,"gather"],[2.12,"shootUp"],[2.4,"follow"],[2.62,"land"],[3.3,"stand"]],free:"L"},
    D:{path:[[0,10.6,-.8],[1.5,9.7,-1.5],[2.3,9.6,-1.6]],face:"A",run:[[0,0],[.3,.5],[1.4,.4],[1.6,0]],jump:[[2.0,0],[2.25,.35],[2.55,0]],pose:[[0,"ready"],[1.9,"ready"],[2.2,"block"],[2.6,"land"],[3.2,"stand"]]}},
   ball:[[0,1.45,"dribble","A"],[1.45,2.12,"hold","A","both"],[2.12,3.0,"arc",RT,1.45],[3.0,3.25,"arc",DROP,0],[3.25,4.4,"bounce",[11.6,.12,.9],2]],fx:[[3.02,"swish"]]},
- "Layup":{cast:{A:"MX",D:"G1"},dur:4.2,zoom:.8,graphic:["Layup","A","Off the glass"],cam:[[0,6.5,4.2,9.5,10.5,1.6,0],[4.2,8.2,3.6,8.5,11.5,2,0]],
+ "Layup":{cast:{A:"MX",D:"G1"},dur:4.2,anchor:["A",0,"mirror"],zoom:.8,graphic:["Layup","A","Off the glass"],cam:[[0,6.5,4.2,9.5,10.5,1.6,0],[4.2,8.2,3.6,8.5,11.5,2,0]],
   figs:{A:{path:[[0,5.2,3.6],[1.35,10.1,1.6],[1.75,11.4,.9],[2.25,12.1,.5],[2.6,12.4,.35]],face:"move",run:[[0,0],[.2,1],[1.6,1],[1.8,.3],[1.9,0]],jump:[[1.8,0],[2.12,.85],[2.55,0]],pose:[[0,"dribble"],[1.35,"dribble"],[1.65,"gather"],[1.9,"layupJump"],[2.35,"layupJump"],[2.62,"land"],[3.3,"stand"]],free:"L"},
    D:{path:[[0,7.0,-2.4],[1.7,10.2,-1.6],[2.4,11.1,-1.2]],face:"move",run:[[0,0],[.2,.8],[1.9,.8],[2.3,0]],pose:[[0,"sprint"],[2.0,"sprint"],[2.4,"stand"]]}},
   ball:[[0,1.4,"dribble","A"],[1.4,1.85,"hold","A","both"],[1.85,2.05,"hold","A","R"],[2.05,2.4,"arc",[13.02,3.5,.22],.18],[2.4,2.58,"arc",[12.75,3.1,0],.02],[2.58,2.82,"arc",DROP,0],[2.82,4.0,"bounce",[12.0,.12,-.6],2]],fx:[[2.6,"swish"]]},
- "Dunk":{cast:{A:"MX"},dur:4.4,zoom:.95,graphic:["Slam dunk","A","Two hands"],cam:[[0,7.0,3.2,7.0,11.8,2.0,0],[2.0,9.0,2.6,5.6,12.3,2.6,0],[4.4,9.3,2.4,5.2,12.4,2.3,0]],
+ "Dunk":{cast:{A:"MX"},dur:4.4,anchor:["A",0,"mirror"],zoom:.95,graphic:["Slam dunk","A","Two hands"],cam:[[0,7.0,3.2,7.0,11.8,2.0,0],[2.0,9.0,2.6,5.6,12.3,2.6,0],[4.4,9.3,2.4,5.2,12.4,2.3,0]],
   figs:{A:{path:[[0,6.2,.6],[1.3,10.2,.2],[1.55,10.8,.15],[2.12,12.05,.05],[2.75,12.25,.05],[3.0,12.1,.05]],face:"rim",run:[[0,0],[.15,1],[1.25,1],[1.5,0]],jump:[[1.55,0],[1.92,1.12],[2.12,1.02],[2.7,.92],[3.0,0]],pose:[[0,"dribble"],[1.3,"dribble"],[1.55,"gather"],[1.85,"dunkCock"],[2.08,"dunkCock"],[2.2,"dunkSlam"],[2.35,"hang"],[2.7,"hang"],[3.05,"land"],[3.7,"stand"]],free:"L"}},
   ball:[[0,1.3,"dribble","A"],[1.3,2.15,"hold","A","both"],[2.15,2.23,"arc",[12.75,2.95,0],0],[2.23,2.45,"arc",[12.75,1.6,0],0],[2.45,4.2,"bounce",[11.6,.12,1.0],2]],fx:[[2.2,"rim"],[2.24,"swish"]]},
- "3PT":{cast:{A:"MX",D:"G1"},dur:4.8,zoom:1,graphic:["Three pointer","A","26 ft · Step-back"],cam:[[0,1.2,4.6,2.6,6.2,1.6,-3.6],[1.6,1.6,4.6,2.0,6.8,1.8,-3.2],[4.8,4.0,5.0,6.5,9.5,1.9,-1.8]],
+ "3PT":{cast:{A:"MX",D:"G1"},dur:4.8,anchor:["A",1.5,"full",6.9,8.6],zoom:1,graphic:["Three pointer","A","26 ft · Step-back"],cam:[[0,1.2,4.6,2.6,6.2,1.6,-3.6],[1.6,1.6,4.6,2.0,6.8,1.8,-3.2],[4.8,4.0,5.0,6.5,9.5,1.9,-1.8]],
   figs:{A:{path:[[0,4.9,-4.6],[.7,5.4,-4.3],[.95,4.7,-4.75],[1.2,4.6,-4.8]],face:"rim",run:[[0,0],[.15,.6],[.6,.5],[.8,0]],jump:[[1.25,0],[1.55,.62],[1.95,0]],pose:[[0,"dribble"],[.8,"dribble"],[1.05,"gather"],[1.28,"gather"],[1.5,"shootUp"],[1.8,"follow"],[2.05,"land"],[2.8,"stand"]],free:"L"},
    D:{path:[[0,8.3,-1.9],[1.4,6.1,-3.8],[1.7,6.0,-3.9]],face:"A",run:[[0,0],[.3,.9],[1.3,.6],[1.5,0]],jump:[[1.5,0],[1.75,.45],[2.05,0]],pose:[[0,"ready"],[1.4,"ready"],[1.6,"block"],[2.05,"land"],[2.8,"stand"]]}},
   ball:[[0,.85,"dribble","A"],[.85,1.5,"hold","A","both"],[1.5,2.75,"arc",RT,2.7],[2.75,3.0,"arc",DROP,0],[3.0,4.6,"bounce",[11.2,.12,-1.2],2]],fx:[[2.77,"swish"]]},
@@ -341,7 +341,7 @@ const M={
   figs:{A:{path:[[0,6.6,.9],[1.25,6.25,-.3],[2.0,6.0,-.2],[3.4,4.4,.6],[4.6,3.0,.6]],face:[[0,"rim"],[1.8,"rim"],[2.4,"D"]],run:[[0,0],[.2,.25],[1.2,.25],[1.5,0],[2.4,0],[2.8,.8],[4.6,.8]],pose:[[0,"dribble"],[1.25,"dribble"],[1.5,"stand"],[2.4,"stand"],[2.8,"sprint"]],free:"L"},
    D:{path:[[0,7.7,.1],[1.15,7.5,-.2],[1.45,6.95,-.35],[1.9,5.4,-.6],[4.6,1.4,-1.1]],face:[[0,"A"],[1.5,"A"],[1.8,"move"]],run:[[0,0],[.2,.3],[1.0,.3],[1.2,0],[1.6,0],[1.9,1],[4.6,1]],pose:[[0,"ready"],[1.15,"ready"],[1.35,"lunge"],[1.6,"lunge"],[1.95,"dribble"]],free:"L"}},
   ball:[[0,1.32,"dribble","A"],[1.32,1.7,"arc",[5.3,.12,-.55],.35],[1.7,1.95,"bounce",[5.1,.5,-.6],1],[1.95,4.6,"dribble","D"]],fx:[]},
- "Block":{cast:{A:"G1",D:"CC"},dur:4.6,graphic:["Blocked","D","Pinned at the rim"],cam:[[0,7.6,3.8,10.5,10.6,1.9,0],[4.6,7.0,4.4,10.0,9.6,1.6,1.5]],
+ "Block":{cast:{A:"G1",D:"CC"},dur:4.6,anchor:["A",0,"mirror"],graphic:["Blocked","D","Pinned at the rim"],cam:[[0,7.6,3.8,10.5,10.6,1.9,0],[4.6,7.0,4.4,10.0,9.6,1.6,1.5]],
   figs:{A:{path:[[0,7.9,1.5],[1.0,10.5,.7],[1.2,10.65,.65]],face:"rim",run:[[0,0],[.15,1],[.9,1],[1.1,0]],jump:[[1.2,0],[1.5,.75],[1.9,0]],pose:[[0,"dribble"],[.95,"dribble"],[1.15,"gather"],[1.42,"shootUp"],[1.7,"shootUp"],[1.95,"land"],[2.6,"stand"]],free:"L"},
    D:{path:[[0,12.2,-1.8],[1.15,11.4,-.35],[1.3,11.3,-.25]],face:[[0,"A"]],run:[[0,0],[.15,.9],[1.05,.9],[1.2,0]],jump:[[1.25,0],[1.58,1.0],[2.05,0]],pose:[[0,"sprint"],[1.0,"sprint"],[1.25,"gather"],[1.5,"block"],[1.66,"swat"],[2.05,"land"],[2.7,"stand"]]}},
   ball:[[0,.95,"dribble","A"],[.95,1.47,"hold","A","both"],[1.47,1.63,"arc",()=>handPos("D","L"),.12],[1.63,2.35,"arc",[8.4,.12,5.6],.9],[2.35,3.6,"bounce",[6.8,.12,8.6],2]],fx:[[1.63,"thud"]]},
@@ -362,7 +362,7 @@ const M={
   figs:{A:{path:[[0,5.2,1.0],[1.2,4.6,.2],[1.6,4.5,.1],[2.3,4.3,.3],[6.3,-7.5,1.6]],face:[[0,"rim"],[1.8,"rim"],[2.3,"move"]],run:[[0,0],[.2,.25],[1.2,.25],[1.5,0],[2.3,0],[2.7,.9],[6.3,.9]],pose:[[0,"dribble"],[1.25,"dribble"],[1.5,"stand"],[2.3,"stand"],[2.7,"sprint"]],free:"L"},
    D:{path:[[0,6.1,.2],[1.1,5.75,0],[1.4,5.1,-.1],[1.8,3.6,-.3],[4.3,-9.6,-.9],[4.75,-11.3,-.6],[5.25,-12.1,-.4],[5.6,-12.4,-.3]],face:[[0,"A"],[1.5,"A"],[1.75,"move"]],run:[[0,0],[.2,.3],[1.0,.3],[1.2,0],[1.6,0],[1.9,1],[4.5,1],[4.7,.3],[4.8,0]],jump:[[4.7,0],[5.02,.85],[5.45,0]],pose:[[0,"ready"],[1.15,"ready"],[1.35,"lunge"],[1.6,"lunge"],[1.95,"dribble"],[4.3,"dribble"],[4.55,"gather"],[4.8,"layupJump"],[5.25,"layupJump"],[5.52,"land"],[6.1,"stand"]],free:"L"}},
   ball:[[0,1.32,"dribble","A"],[1.32,1.7,"arc",[4.2,.12,-.35],.35],[1.7,1.95,"bounce",[3.9,.5,-.35],1],[1.95,4.3,"dribble","D"],[4.3,4.75,"hold","D","both"],[4.75,4.95,"hold","D","R"],[4.95,5.3,"arc",[-13.02,3.5,-.22],.18],[5.3,5.48,"arc",[-12.75,3.1,0],.02],[5.48,5.72,"arc",[-12.75,2.05,0],0],[5.72,6.3,"bounce",[-12.0,.12,.6],2]],fx:[]},
- "And-one":{cast:{A:"MX",D:"G1"},dur:5.0,graphic:["And one","A","Scores through the foul"],cam:[[0,6,4,9,10,1,0]],
+ "And-one":{cast:{A:"MX",D:"G1"},dur:5.0,anchor:["A",0,"mirror"],graphic:["And one","A","Scores through the foul"],cam:[[0,6,4,9,10,1,0]],
   figs:{A:{path:[[0,5.2,3.6],[1.35,10.1,1.6],[1.75,11.4,.9],[2.25,12.1,.5],[2.6,12.4,.35],[3.5,11.5,1.6],[5.0,11.2,1.9]],face:[[0,"move"],[2.7,"move"],[3.4,"D"]],run:[[0,0],[.2,1],[1.6,1],[1.8,.3],[1.9,0],[2.7,0],[2.9,.3],[3.4,0]],jump:[[1.8,0],[2.12,.85],[2.55,0]],pose:[[0,"dribble"],[1.35,"dribble"],[1.65,"gather"],[1.9,"layupJump"],[2.35,"layupJump"],[2.62,"land"],[3.0,"stand"],[3.35,"flex"],[4.4,"flex"],[4.9,"stand"]],free:"L"},
    D:{path:[[0,11.5,-.7],[1.5,11.7,.1],[1.95,11.95,.5],[2.6,11.4,-.6],[5.0,11.1,-.9]],face:"A",run:[[0,0],[.3,.3],[1.4,.3],[1.6,0]],jump:[[1.82,0],[2.1,.6],[2.45,0]],pose:[[0,"ready"],[1.6,"ready"],[1.9,"block"],[2.2,"block"],[2.5,"land"],[3.0,"stand"],[3.3,"head"],[4.5,"head"],[4.9,"stand"]]}},
   ball:[[0,1.4,"dribble","A"],[1.4,1.85,"hold","A","both"],[1.85,2.05,"hold","A","R"],[2.05,2.4,"arc",[13.02,3.5,.22],.18],[2.4,2.58,"arc",[12.75,3.1,0],.02],[2.58,2.82,"arc",DROP,0],[2.82,4.4,"bounce",[12.6,.12,-1.6],2]],fx:[[2.02,"whistle"],[2.6,"swish"]]},
@@ -372,30 +372,30 @@ const M={
    D:{path:[[0,12.1,2.75],[4.6,12.1,2.75]],face:"rim",run:[[0,0]],pose:[[0,"stand"],[2.2,"stand"],[2.6,"ready"],[3.6,"ready"],[4.2,"stand"]]},
    E:{path:[[0,12.1,-2.75],[4.6,12.1,-2.75]],face:"rim",run:[[0,0]],pose:[[0,"stand"],[2.2,"stand"],[2.6,"ready"],[3.6,"ready"],[4.2,"stand"]]}},
   ball:[[0,.4,"hold","A","both"],[.4,1.25,"dribble","A"],[1.25,2.32,"hold","A","both"],[2.32,3.2,"arc",RT,1.3],[3.2,3.45,"arc",DROP,0],[3.45,4.6,"bounce",[11.9,.12,.4],2]],fx:[[3.22,"swish"]]},
- "Floater":{cast:{A:"MX",D:"G1",E:"G2"},dur:4.6,graphic:["Floater","A","Over the big man"],cam:[[0,6,4,9,10,1,0]],
+ "Floater":{cast:{A:"MX",D:"G1",E:"G2"},dur:4.6,anchor:["A",1.82,"full",1.8,4.3],graphic:["Floater","A","Over the big man"],cam:[[0,6,4,9,10,1,0]],
   figs:{A:{path:[[0,5.0,3.4],[1.25,9.0,1.4],[1.6,9.9,1.0],[2.3,10.5,.8]],face:"rim",run:[[0,0],[.2,1],[1.3,1],[1.5,.3],[1.6,0]],jump:[[1.55,0],[1.85,.55],[2.25,0]],pose:[[0,"dribble"],[1.2,"dribble"],[1.48,"gather"],[1.72,"floatUp"],[1.95,"floatRel"],[2.2,"floatRel"],[2.4,"land"],[3.1,"stand"]],free:"L"},
    D:{path:[[0,6.6,1.5],[1.6,9.2,2.1],[2.4,9.7,1.9]],face:"A",run:[[0,0],[.25,.9],[1.5,.9],[1.9,0]],pose:[[0,"sprint"],[1.6,"sprint"],[2.1,"stand"]]},
    E:{path:[[0,12.1,-.4],[1.4,11.7,.1],[2.4,11.5,.25]],face:"A",run:[[0,0],[.3,.3],[1.2,.3],[1.4,0]],jump:[[1.68,0],[1.98,.6],[2.38,0]],pose:[[0,"ready"],[1.5,"ready"],[1.8,"block"],[2.1,"block"],[2.4,"land"],[3.0,"stand"]]}},
   ball:[[0,1.25,"dribble","A"],[1.25,1.6,"hold","A","both"],[1.6,1.82,"hold","A","R"],[1.82,2.8,"arc",RT,2.35],[2.8,3.05,"arc",DROP,0],[3.05,4.4,"bounce",[11.8,.12,-.7],2]],fx:[[2.82,"swish"]]},
- "Fadeaway":{cast:{A:"MX",D:"G1"},dur:4.8,graphic:["Fadeaway","A","Falling away"],cam:[[0,6,4,9,10,1,0]],
+ "Fadeaway":{cast:{A:"MX",D:"G1"},dur:4.8,anchor:["A",2.08,"full",2.8,6.4],graphic:["Fadeaway","A","Falling away"],cam:[[0,6,4,9,10,1,0]],
   figs:{A:{path:[[0,7.3,-4.5],[1.1,8.9,-3.3],[1.5,9.05,-3.2],[1.82,9.05,-3.2],[2.5,8.3,-3.65],[3.2,8.15,-3.75]],face:"rim",run:[[0,0],[.2,.7],[1.0,.6],[1.2,0]],jump:[[1.82,0],[2.14,.6],[2.52,0]],pose:[[0,"dribble"],[1.1,"dribble"],[1.4,"gather"],[1.82,"gather"],[2.08,"fade"],[2.36,"fadeFollow"],[2.62,"land"],[3.4,"stand"]],free:"L"},
    D:{path:[[0,10.3,-2.0],[1.2,10.15,-2.55],[1.85,10.15,-2.6],[2.5,9.9,-2.75]],face:"A",run:[[0,0],[.3,.4],[1.1,.3],[1.3,0]],jump:[[1.92,0],[2.2,.5],[2.55,0]],pose:[[0,"ready"],[1.85,"ready"],[2.14,"block"],[2.6,"land"],[3.2,"stand"]]}},
   ball:[[0,1.15,"dribble","A"],[1.15,2.08,"hold","A","both"],[2.08,3.05,"arc",RT,1.8],[3.05,3.3,"arc",DROP,0],[3.3,4.6,"bounce",[11.6,.12,.9],2]],fx:[[3.07,"swish"]]},
- "Post fadeaway":{cast:{A:"MX",D:"G1"},dur:5.0,graphic:["Post fadeaway","A","Turnaround over the top"],cam:[[0,6,4,9,10,1,0]],
+ "Post fadeaway":{cast:{A:"MX",D:"G1"},dur:5.0,anchor:["A",2.3,"full",1.8,4.2],graphic:["Post fadeaway","A","Turnaround over the top"],cam:[[0,6,4,9,10,1,0]],
   figs:{A:{path:[[0,10.3,-3.0],[1.5,10.95,-2.55],[1.9,10.95,-2.55],[2.75,10.35,-3.2],[3.4,10.25,-3.3]],face:[[0,"back"],[1.55,"back"],[1.6,"rim"]],run:[[0,0]],jump:[[2.05,0],[2.36,.58],[2.75,0]],pose:[[0,"post"],[1.5,"post"],[1.85,"gather"],[2.05,"gather"],[2.3,"fade"],[2.58,"fadeFollow"],[2.85,"land"],[3.6,"stand"]],free:"L"},
    D:{path:[[0,11.05,-2.45],[1.5,11.65,-2.05],[1.9,11.65,-2.05],[2.7,11.3,-2.4]],face:"A",run:[[0,0]],jump:[[2.14,0],[2.42,.45],[2.78,0]],pose:[[0,"ready"],[2.05,"ready"],[2.36,"block"],[2.82,"land"],[3.4,"stand"]]}},
   ball:[[0,1.45,"dribble","A"],[1.45,2.3,"hold","A","both"],[2.3,3.12,"arc",RT,1.5],[3.12,3.37,"arc",DROP,0],[3.37,4.8,"bounce",[11.7,.12,1.0],2]],fx:[[3.14,"swish"]]},
- "Alley-oop":{cast:{A:"MX",B:"PT",D:"G1"},dur:4.6,graphic:["Alley-oop","A","Lob and the slam"],cam:[[0,6,4,9,10,1,0]],
+ "Alley-oop":{cast:{A:"MX",B:"PT",D:"G1"},dur:4.6,anchor:["A",0,"mirror"],graphic:["Alley-oop","A","Lob and the slam"],cam:[[0,6,4,9,10,1,0]],
   figs:{A:{path:[[0,9.4,-5.7],[1.1,11.3,-1.9],[1.42,11.75,-.8],[1.98,12.05,-.08],[2.6,12.25,0],[2.9,12.1,0]],face:[[0,"move"],[1.3,"rim"]],run:[[0,0],[.15,1],[1.2,1],[1.4,0]],jump:[[1.42,0],[1.78,1.12],[2.0,1.02],[2.55,.92],[2.88,0]],pose:[[0,"sprint"],[1.15,"sprint"],[1.4,"gather"],[1.66,"reach"],[1.82,"reach"],[1.94,"dunkCock"],[2.06,"dunkSlam"],[2.2,"hang"],[2.55,"hang"],[2.92,"land"],[3.6,"stand"]]},
    B:{path:[[0,6.2,2.9],[.85,6.7,2.6]],face:[[0,"rim"],[.6,"A"]],run:[[0,0],[.2,.3],[.7,.3],[.85,0]],pose:[[0,"dribble"],[.7,"dribble"],[.86,"passWind"],[1.02,"reach"],[1.5,"stand"]],free:"L"},
    D:{path:[[0,10.0,-4.4],[1.4,11.0,-2.1],[2.2,11.2,-1.7]],face:"A",run:[[0,0],[.2,.8],[1.3,.8],[1.6,0]],pose:[[0,"sprint"],[1.5,"sprint"],[1.9,"stand"],[2.4,"head"],[3.6,"head"],[4.2,"stand"]]}},
   ball:[[0,.8,"dribble","B"],[.8,1.0,"hold","B","both"],[1.0,1.8,"arc",()=>hands("A"),1.2],[1.8,2.0,"hold","A","both"],[2.0,2.08,"arc",[12.75,2.95,0],0],[2.08,2.3,"arc",[12.75,1.6,0],0],[2.3,4.4,"bounce",[11.6,.12,1.0],2]],fx:[[2.05,"rim"],[2.09,"swish"]]},
- "Rebound":{cast:{S:"G1",A:"MX",D:"G2"},dur:4.4,graphic:["Rebound","A","Clears the glass"],cam:[[0,6,4,9,10,1,0]],
+ "Rebound":{cast:{S:"G1",A:"MX",D:"G2"},dur:4.4,anchor:["A",0,"mirror"],graphic:["Rebound","A","Clears the glass"],cam:[[0,6,4,9,10,1,0]],
   figs:{S:{path:[[0,7.6,-3.9],[4.4,7.6,-3.9]],face:"rim",run:[[0,0]],jump:[[.25,0],[.52,.6],[.9,0]],pose:[[0,"gather"],[.28,"gather"],[.5,"shootUp"],[.8,"follow"],[1.1,"land"],[1.8,"stand"]]},
    A:{path:[[0,11.2,1.3],[1.2,11.5,.75],[1.6,11.6,.55],[2.6,11.5,.6],[4.4,10.7,1.1]],face:[[0,"rim"],[2.7,"rim"],[3.0,"S"]],run:[[0,0],[.3,.3],[1.1,.3],[1.3,0]],jump:[[1.58,0],[1.92,.75],[2.32,0]],pose:[[0,"ready"],[1.35,"ready"],[1.55,"gather"],[1.86,"reach"],[2.02,"reach"],[2.4,"chin"],[3.6,"chin"],[4.3,"catch"]]},
    D:{path:[[0,10.3,1.9],[1.3,10.75,1.25],[2.6,10.7,1.3]],face:"rim",run:[[0,0],[.3,.3],[1.1,.3],[1.3,0]],jump:[[1.66,0],[1.96,.42],[2.3,0]],pose:[[0,"ready"],[1.45,"ready"],[1.66,"gather"],[1.92,"reach"],[2.3,"land"],[3.0,"stand"]]}},
   ball:[[0,.5,"hold","S","both"],[.5,1.38,"arc",[12.5,3.14,-.12],1.7],[1.38,1.96,"arc",()=>hands("A"),.75],[1.96,4.4,"hold","A","both"]],fx:[[1.38,"rim"]]},
- "Putback":{cast:{S:"PT",A:"MX",D:"G1"},dur:5.2,graphic:["Putback","A","Offensive board and score"],cam:[[0,6,4,9,10,1,0]],
+ "Putback":{cast:{S:"PT",A:"MX",D:"G1"},dur:5.2,anchor:["A",0,"mirror"],graphic:["Putback","A","Offensive board and score"],cam:[[0,6,4,9,10,1,0]],
   figs:{S:{path:[[0,7.6,-3.9],[5.2,7.6,-3.9]],face:"rim",run:[[0,0]],jump:[[.25,0],[.52,.6],[.9,0]],pose:[[0,"gather"],[.28,"gather"],[.5,"shootUp"],[.8,"follow"],[1.1,"land"],[1.8,"stand"]]},
    A:{path:[[0,10.6,1.9],[1.2,11.4,1.0],[1.6,11.7,.7],[2.5,11.85,.55],[3.4,12.1,.4],[5.2,11.6,1.0]],face:"rim",run:[[0,0],[.25,.5],[1.1,.5],[1.3,0]],jump:[[1.58,0],[1.92,.75],[2.32,0],[2.62,0],[2.92,.8],[3.32,0]],pose:[[0,"ready"],[1.35,"ready"],[1.55,"gather"],[1.86,"reach"],[2.02,"reach"],[2.34,"chin"],[2.6,"gather"],[2.86,"layupJump"],[3.12,"layupJump"],[3.4,"land"],[4.1,"stand"]]},
    D:{path:[[0,11.9,-.3],[1.3,12.0,.0],[2.6,11.95,-.15]],face:[[0,"S"],[.9,"rim"],[2.2,"A"]],run:[[0,0]],jump:[[1.62,0],[1.92,.45],[2.28,0],[2.7,0],[2.98,.5],[3.3,0]],pose:[[0,"ready"],[1.45,"ready"],[1.64,"gather"],[1.9,"reach"],[2.28,"land"],[2.7,"ready"],[2.95,"block"],[3.35,"land"],[4.0,"stand"]]}},
@@ -554,13 +554,20 @@ function pathAt(keys,t){const n=keys.length;if(t<=keys[0][0])return keys[0].slic
  const tan=j=>{if(j<=0||j>=n-1)return[0,0];const p=keys[j-1],c=keys[j],q=keys[j+1];if(still(p,c)||still(c,q))return[0,0];const w=q[0]-p[0];return[(q[1]-p[1])/w,(q[2]-p[2])/w]};
  if(still(a,b))return a.slice(1);const m0=tan(i),m1=tan(i+1),u2=u*u,u3=u2*u,h00=2*u3-3*u2+1,h10=u3-2*u2+u,h01=-2*u3+3*u2,h11=u3-u2;
  return[1,2].map(k=>h00*a[k]+h10*h*m0[k-1]+h01*b[k]+h11*h*m1[k-1])}
+let XF=null;const clampN=(v,a,b)=>Math.min(b,Math.max(a,v));
+function setXF(k,sp){XF=null;const m=M[k];if(!sp||!m||!m.anchor)return;const [role,t,mode,rmin,rmax]=m.anchor;const a=pathAt(m.figs[role].path,t);
+ if(mode==="mirror"){if(Math.abs(sp.z)>.25&&Math.abs(a[1])>.05&&Math.sign(sp.z)!==Math.sign(a[1]))XF={mir:1};return}
+ const vx=a[0]-RIM.x,vz=a[1];const r0=Math.hypot(vx,vz),th0=Math.atan2(vz,-vx);const wx=sp.x-RIM.x,wz=sp.z;const r1=clampN(Math.hypot(wx,wz),rmin,rmax),th1=clampN(Math.atan2(wz,-wx),-1.42,1.42);
+ XF={d:th1-th0,dr:r1-r0}}
+function xfp(x,z){if(!XF)return[x,z];if(XF.mir)return[x,-z];const vx=x-RIM.x,r=Math.hypot(vx,z),th=Math.atan2(z,-vx)+XF.d,r2=Math.max(.5,r+XF.dr*Math.min(1,r/2.5));
+ return[clampN(RIM.x-r2*Math.cos(th),-14,14.05),clampN(r2*Math.sin(th),-7.35,7.35)]}
 function smoothPose(F,o,dt){if(dt<0||!F.sm){F.sm={};KEYS.forEach(k=>F.sm[k]=k==="y"?o.y:[o[k][0],o[k][1]]);return F.sm}const a=1-Math.exp(-dt*15),m=F.sm;KEYS.forEach(k=>{if(k==="y")m.y+=(o.y-m.y)*a;else{m[k][0]+=(o[k][0]-m[k][0])*a;m[k][1]+=(o[k][1]-m[k][1])*a}});return m}
 function setFigs(t,dt){const m=M[cur];Object.keys(FIG).forEach(k=>{const F=FIG[k],spec=m.figs[k];F.root.visible=!!spec;if(!spec)return;
- const p=pathAt(spec.path,t),pp=pathAt(spec.path,Math.max(0,t-.05));F.root.position.set(p[0],0,p[1]);
+ const p=xfp(...pathAt(spec.path,t)),pp=xfp(...pathAt(spec.path,Math.max(0,t-.05)));F.root.position.set(p[0],0,p[1]);
  const f=evalFace(F,spec.face,t,k,p,pp);if(f!=null)F.root.rotation.y=dt<0?f:angLerp(F.root.rotation.y,f,Math.min(1,dt*9));
  F.freeL=spec.free==="L"||!spec.free;F.freeR=!spec.free;
  const run0=spec.run?lerpKeys(spec.run,t)[0]:0;if(dt<0)F.rs=run0;F.rs=(F.rs==null?run0:F.rs+(run0-F.rs)*(dt>0?1-Math.exp(-dt*10):0));const run=F.rs;const spd=Math.hypot(p[0]-pp[0],p[1]-pp[1])/.05;F.ph=(F.ph||0)+(dt>0?dt:0)*(run>.02?Math.min(13,Math.max(run*5,spd*2.3)):0);apply(F,smoothPose(F,poseAt(spec.pose,t),dt),run,F.ph,jumpAt(spec.jump,t))})}
-function resolve(v){return typeof v==="function"?v():new THREE.Vector3(...v)}
+function resolve(v){if(typeof v==="function")return v();if(XF&&(XF.mir||Math.hypot(v[0]-RIM.x,v[2])>1.2)){const q=xfp(v[0],v[2]);return new THREE.Vector3(q[0],v[1],q[1])}return new THREE.Vector3(...v)}
 function setBall(t){const m=M[cur];let seg=null;for(const s of m.ball)if(t>=s[0]&&t<=s[1]){seg=s;break}if(!seg){seg=m.ball[m.ball.length-1];t=seg[1]}
  const [t0,t1,type,a,b]=seg,u=Math.min(1,Math.max(0,(t-t0)/(t1-t0)));const id=m.ball.indexOf(seg);
  if(type==="hold"){const p=b==="both"?hands(a):handPos(a,b);const fw=fwd(a).multiplyScalar(b==="both"?.12:.06);ballP.copy(p).add(fw);if(b!=="both")ballP.y+=.1}
@@ -589,16 +596,17 @@ function camAt_old(t){const CZ=M[cur].zoom||.62;const c=lerpKeys(M[cur].cam,t);c
 function showBig(){window.__onBig&&__onBig();const [h,who,sub]=M[cur].graphic,[n,sd]=NAMES[CAST[who]],col=sd==="me"?"#f5b82e":"#9d7bff";const b=document.getElementById("big");
  b.className="big";b.innerHTML=`<span class="ln" style="background:${col}"></span><div class="h">${h}</div><div class="nm"><b style="color:${col}">${n}</b><small>${sub}</small></div>`;void b.offsetWidth;b.className="big in";setTimeout(()=>b.className="big out",2600)}
 const GT={"Mid-range":3.05,"Layup":2.65,"Dunk":2.3,"3PT":2.8,"Steal":1.75,"Block":1.75,"Assist":2.25,"Turnover":1.95,"Interception":1.6,"Steal + layup":5.5,"And-one":2.65,"Free throw":3.25,"Floater":2.85,"Fadeaway":3.1,"Post fadeaway":3.17,"Alley-oop":2.12,"Rebound":2.05,"Putback":3.32,"Steal + assist":4.83};
-function start(k){if(!M[k])k=NAMESK[0];cur=k;window.__vanished=0;ball.visible=true;Object.values(POOL).forEach(f=>f.root.visible=false);Object.values(MX).forEach(x=>x.r.visible=false);FIG={};CAST={};Object.entries(M[k].cast).forEach(([r,id])=>{const j=(id==="MX"||id==="CC")?"SA":id;CAST[r]=j;FIG[r]=POOL[j]});T=0;segP={};gShown=false;document.getElementById("tag").innerHTML=`<i></i>${k}`;document.getElementById("big").className="big";
+function start(k){if(!M[k])k=NAMESK[0];cur=k;setXF(k,CURP&&CURP.pl[0]===k?CURP.sp:null);window.__vanished=0;ball.visible=true;Object.values(POOL).forEach(f=>f.root.visible=false);Object.values(MX).forEach(x=>x.r.visible=false);FIG={};CAST={};Object.entries(M[k].cast).forEach(([r,id])=>{const j=(id==="MX"||id==="CC")?"SA":id;CAST[r]=j;FIG[r]=POOL[j]});T=0;segP={};gShown=false;document.getElementById("tag").innerHTML=`<i></i>${k}`;document.getElementById("big").className="big";
  document.querySelectorAll(".menu button").forEach(b=>b.classList.toggle("on",b.dataset.k===k));setFigs(0,-1);setBall(0)}
 document.getElementById("menu").innerHTML=NAMESK.map(k=>`<button data-k="${k}">${k}</button>`).join("");
 document.getElementById("menu").onclick=e=>{const b=e.target.closest("button");if(b){auto=false;document.getElementById("auto").classList.remove("on");start(b.dataset.k)}};
 document.getElementById("auto").onclick=e=>{auto=!auto;e.target.classList.toggle("on",auto)};
 document.getElementById("slow").onclick=e=>{speed=speed===1?.4:1;e.target.classList.toggle("on",speed!==1)};
 document.getElementById("rep").onclick=()=>start(cur);
+{const q=new URLSearchParams(location.search);if(q.get("play")&&M[q.get("play")])window.__force=q.get("play");if(q.get("ft")){const r=+q.get("ft")*.3048,a=(+q.get("ang")||0)*Math.PI/180;window.__sp={x:RIM.x-r*Math.cos(a),z:r*Math.sin(a)}}}
 {const pk=document.getElementById("pk"),NEW=["Interception","Steal + layup","And-one","Free throw","Floater","Fadeaway","Post fadeaway","Alley-oop","Rebound","Putback","Steal + assist"];const ks=["AUTO",...NEW,...NAMESK.filter(k=>!NEW.includes(k))];
  const draw=()=>pk.innerHTML=ks.map(k=>{const on=(window.__force||"AUTO")===k;return `<button data-k="${k}" style="flex:none;border:1px solid ${on?"#fff":"#2a2c33"};background:${on?"#fff":"#111216"};color:${on?"#0a0a0c":NEW.includes(k)?"#f5b82e":"#a9acb4"};font:700 12px/1 var(--C);letter-spacing:.1em;text-transform:uppercase;padding:8px 11px;border-radius:999px">${k}</button>`}).join("");draw();
- pk.onclick=e=>{const b=e.target.closest("button");if(!b)return;window.__force=b.dataset.k==="AUTO"?null:b.dataset.k;draw();if(window.__force&&REAL)director()}}
+ pk.onclick=e=>{const b=e.target.closest("button");if(!b)return;window.__force=b.dataset.k==="AUTO"?null:b.dataset.k;window.__sp=null;draw();if(window.__force&&REAL)director()}}
 document.getElementById("vw").onclick=()=>__view(VIEW==="half"?"full":"half");__view(VIEW);window.__M=M;window.__dbg2=()=>({ROST,setFeatured,POOL,MX,apply,POSE,retarget});let last=performance.now(),hold=0;
 function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
  if(cur){const d=M[cur].dur;if(T>d+.2&&!window.__vanished){window.__vanished=1;Object.values(MX).forEach(x=>x.r.visible=false);ball.visible=false;TR.forEach(m=>m.material.opacity=0);dropMark()}if(T<d+1.2){const pT=T;T+=dt*speed;fx(T,pT);if(!gShown&&T>=GT[cur]){gShown=true;showBig()}}else if(!busy){busy=1;setTimeout(()=>{busy=0;director()},1800)}
@@ -638,7 +646,8 @@ const PLAYS=[["Mid-range",4,"Made FG",d=>`hits a ${d}-foot pull-up jumper`,{PTS:
 const pick=a=>a[Math.floor(Math.random()*a.length)];let PN=0,CURP=null;const GAMES={};
 function director(){const pool=ROST.filter(r=>FLT==='all'||FLT===r.side||FLT===rid(r));const r=pick(pool.length?pool:ROST);const tot=PLAYS.reduce((a,x)=>a+x[1],0);let q=Math.random()*tot,pl=PLAYS[0];for(const x of PLAYS){q-=x[1];if(q<=0){pl=x;break}}if(window.__force)pl=PLAYS.find(x=>x[0]===window.__force)||pl;
  const ft=pl[0]==="3PT"?24+Math.floor(Math.random()*4):12+Math.floor(Math.random()*8);const g=GAMES[r.p.n]=GAMES[r.p.n]||{q:2+Math.floor(Math.random()*2),c:300+Math.floor(Math.random()*300),a:70+Math.floor(Math.random()*20),b:70+Math.floor(Math.random()*20)};g.c=Math.max(5,g.c-30-Math.floor(Math.random()*60));if(pl[4].PTS)g.a+=pl[4].PTS;
- CURP={r,pl,ft,g};auto=false;cur=pl[0];ACT.rotation.y=r.side==="me"?Math.PI:0;ACT.updateMatrixWorld(true);const st=STARF[nrm(r.p.n)];setFeatured(r.p);NAMES.SA=[r.p.n,r.side];if(!st||SCN[st[0]])start(pl[0]);else busy=1}
+ const SPR={"Mid-range":[ft,ft],"3PT":[ft,ft],"Fadeaway":[ft,ft],"Post fadeaway":[7,12],"Floater":[7,12]}[pl[0]];const ang=(Math.random()*2-1)*1.2,rr=(SPR?SPR[0]+Math.random()*(SPR[1]-SPR[0]):3)*.3048;
+ const sp=window.__sp||{x:RIM.x-rr*Math.cos(ang),z:rr*Math.sin(ang)};CURP={r,pl,ft,g,sp};auto=false;cur=pl[0];ACT.rotation.y=r.side==="me"?Math.PI:0;ACT.updateMatrixWorld(true);const st=STARF[nrm(r.p.n)];setFeatured(r.p);NAMES.SA=[r.p.n,r.side];if(!st||SCN[st[0]])start(pl[0]);else busy=1}
 function lower(){const {r,pl,ft,g}=CURP;const c=r.side==="me"?"#f5b82e":"#9d7bff";const l3=document.getElementById("l3");const tag=pl[0]==="Mid-range"||pl[0]==="3PT"?`${pl[2]} · ${ft} FT`:pl[2];const pts=pl[4].PTS?"+"+pl[4].PTS:"+1 "+Object.keys(pl[4])[0];
  l3.className="l3";l3.innerHTML=`<div class="bar"><span class="acc" style="background:${c}"></span><div class="tx"><div class="n">${r.p.n}</div><div class="d" style="color:${c}">${tag}</div></div><div class="g">${r.p.tm||""} ${g.a} · Q${g.q} ${Math.floor(g.c/60)}:${String(g.c%60).padStart(2,"0")} · ${r.side==="me"?ME:OP}</div><div class="pts">${pts}</div></div><div class="ph">${r.p.id?`<img src="https://a.espncdn.com/i/headshots/nba/players/full/${r.p.id}.png" onerror="this.remove()">`:""}</div>`;void l3.offsetWidth;l3.className="l3 in";clearTimeout(l3._t);l3._t=setTimeout(()=>l3.className="l3 out",5200)}
 window.__onBig=()=>{if(!CURP)return;try{const r0=FIG.A&&FIG.A.root;if(r0)CURP.spot=r0.getWorldPosition(new THREE.Vector3())}catch(e){}const {r,pl,ft}=CURP;const before=Object.fromEntries(CATS.map(c=>[c,lead(c)]));Object.entries(pl[4]).forEach(([k,v])=>SV[r.side][k]+=v);const flips=CATS.filter(c=>lead(c)!==before[c]&&lead(c)!==0);const touched=Object.keys(pl[4]).map(k=>k==="FGM"||k==="FGA"?"FG%":k).filter(k=>CATS.includes(k));
