@@ -432,13 +432,13 @@ function buildRole(k,scene,info){if(MX[k]){const o=MX[k].r;if(o.parent)o.parent.
   const up=wp("Head").sub(wp("Hips")).normalize();r.quaternion.premultiply(new THREE.Quaternion().setFromUnitVectors(up,new THREE.Vector3(0,1,0)));r.updateMatrixWorld(true);
   const tb=wp("LeftToeBase")||wp("LeftFoot"),ft=wp("LeftFoot")||wp("LeftLeg");const fw=tb.sub(ft);fw.y=0;if(fw.lengthSq()>1e-10){fw.normalize();r.quaternion.premultiply(new THREE.Quaternion().setFromUnitVectors(fw,new THREE.Vector3(0,0,1)));r.updateMatrixWorld(true)}}
  let top=-1e9,bot=1e9;r.traverse(o=>{if(o.isBone){const p=o.getWorldPosition(new THREE.Vector3());top=Math.max(top,p.y);bot=Math.min(bot,p.y)}});r.scale.multiplyScalar(info.h/(top-bot));r.updateMatrixWorld(true);let mb=1e9;r.traverse(o=>{if(o.isBone)mb=Math.min(mb,o.getWorldPosition(new THREE.Vector3()).y)});r.position.y=-mb+.03;
- ACT.add(r);r.visible=false;if(info.generic)dress(r,info);
+ const _ry=ACT.rotation.y;ACT.rotation.y=0;ACT.updateMatrixWorld(true);ACT.add(r);r.visible=false;if(info.generic)dress(r,info);
  const b={};r.traverse(o=>{if(o.isBone){const n=o.name.replace(/^(mixamorig|rig):?/,"");b[n]=o}if(o.isMesh){o.castShadow=true;o.frustumCulled=false;if(!info.generic){const fix=m=>{m=m.clone();m.normalMap=null;if(m.alphaTest===0&&!m.transparent)m.side=THREE.FrontSide;m.needsUpdate=true;return m};o.material=Array.isArray(o.material)?o.material.map(fix):fix(o.material)}}});
  r.updateMatrixWorld(true);const NXT={Spine:"Spine1",Spine1:"Spine2",Spine2:"Neck",Neck:"Head",LeftArm:"LeftForeArm",LeftForeArm:"LeftHand",LeftHand:"LeftHandMiddle1",RightArm:"RightForeArm",RightForeArm:"RightHand",RightHand:"RightHandMiddle1",LeftUpLeg:"LeftLeg",LeftLeg:"LeftFoot",LeftFoot:"LeftToeBase",RightUpLeg:"RightLeg",RightLeg:"RightFoot",RightFoot:"RightToeBase"};
  BN.forEach(n=>{const o=b[n];if(!o)return;o.userData.rq=o.quaternion.clone();o.userData.F=new THREE.Vector3(0,0,1).applyQuaternion(o.getWorldQuaternion(new THREE.Quaternion()).invert());const nx=b[NXT[n]];
   if(nx){const v=o.worldToLocal(nx.getWorldPosition(new THREE.Vector3()));o.userData.L=v.lengthSq()>1e-12?v.normalize():new THREE.Vector3(0,1,0)}else{const ch=o.children.find(x=>x.isBone);o.userData.L=ch?ch.position.clone().normalize():new THREE.Vector3(0,1,0)}});
  b.Hips.userData.rw=b.Hips.getWorldQuaternion(new THREE.Quaternion());
- MX[k]={r,b};F.root.traverse(o=>{if(o.isMesh)o.visible=false})}
+ ACT.rotation.y=_ry;ACT.updateMatrixWorld(true);MX[k]={r,b};F.root.traverse(o=>{if(o.isMesh)o.visible=false})}
 const inch=v=>v*.0254;
 function lastName(n){const p=String(n).split(" ");return p.slice(1).join(" ")||n}
 function setFeatured(p){FEAT=p;NAMES.SA=[p.n,"me"];const st=STARF[nrm(p.n)];const team=tkey(p.tm||(st&&st[2])||"BKN");
@@ -512,10 +512,17 @@ let netT=99,rimT=99;
 function fx(t,prevT){M[cur].fx.forEach(([ft,k])=>{if(prevT<ft&&t>=ft){if(k==="swish")netT=0;if(k==="rim")rimT=0}})}
 
 const CAMB={p:new THREE.Vector3(0,10.5,17.5),l:new THREE.Vector3(0,0,-1.8)},CAMC={p:CAMB.p.clone(),l:CAMB.l.clone()};let CAMF=null;
-function camAt(t){/* fixed wide broadcast shot: whole court, no zoom */const hv=Math.atan(Math.tan(cam.fov*Math.PI/360)*cam.aspect);const half=VIEW==="half";const d=Math.max(half?10:22,(window.__HW||(half?8.7:16.4))/Math.tan(hv));const el=(window.__EL||(half?27:30))*Math.PI/180;
- const cx=half?(CURP&&CURP.r.side==="me"?-1:1)*(window.__CX||7.6):0;
- cam.position.set(cx,d*Math.sin(el),.6+d*Math.cos(el));cam.lookAt(cx,0,(window.__LZ!=null?__LZ:(half?-2.6:-6.5)))}
-let VIEW=new URLSearchParams(location.search).get("view")==="full"?"full":"half";window.__view=v=>{VIEW=v;const b=document.getElementById("vw");if(b)b.textContent=v==="half"?"FULL COURT":"CLOSE UP"};
+const ZC={f:new THREE.Vector3(),w:6,last:0,pF:new THREE.Vector3(),lF:new THREE.Vector3(),pC:new THREE.Vector3(),lC:new THREE.Vector3(),a:new THREE.Vector3(),b:new THREE.Vector3()};
+const sstep=u=>{u=Math.min(1,Math.max(0,u));return u*u*u*(u*(u*6-15)+10)};
+function camAt(t){/* wide shot -> push in on the play -> pull back out */const hv=Math.atan(Math.tan(cam.fov*Math.PI/360)*cam.aspect);const now=performance.now(),dt=Math.min(.05,(now-(ZC.last||now))/1000);ZC.last=now;
+ const dF=Math.max(22,(window.__HW||16.4)/Math.tan(hv)),eF=(window.__EL||30)*Math.PI/180;ZC.pF.set(0,dF*Math.sin(eF),.6+dF*Math.cos(eF));ZC.lF.set(0,0,(window.__LZ!=null?__LZ:-6.5));
+ let z=0;if(VIEW==="half"&&cur&&CURP&&M[cur]){const d=M[cur].dur;z=Math.min(sstep(T/1.1),1-sstep((T-(d-.25))/1.3));
+  const A=FIG.A||Object.values(FIG)[0];if(A){A.root.getWorldPosition(ZC.a);ball.getWorldPosition(ZC.b);const sep=Math.hypot(ZC.a.x-ZC.b.x,ZC.a.z-ZC.b.z);ZC.a.lerp(ZC.b,.4);ZC.a.y=0;const tw=Math.min(9,Math.max(window.__ZW||3.6,sep*.62+2.4));
+   if(T<.06||window.__zsnap){ZC.f.copy(ZC.a);ZC.w=tw}else{const k=1-Math.exp(-dt*3.2);ZC.f.lerp(ZC.a,k);ZC.w+=(tw-ZC.w)*(1-Math.exp(-dt*(tw>ZC.w?5:1.6)))}}}
+ if(z<=0){cam.position.copy(ZC.pF);cam.lookAt(ZC.lF);return}
+ const dC=ZC.w/Math.tan(hv),eC=(window.__ZE||21)*Math.PI/180;ZC.pC.set(ZC.f.x,dC*Math.sin(eC)+1,ZC.f.z+dC*Math.cos(eC));ZC.lC.set(ZC.f.x,1.25,ZC.f.z);
+ cam.position.lerpVectors(ZC.pF,ZC.pC,z);cam.lookAt(ZC.b.lerpVectors(ZC.lF,ZC.lC,z))}
+let VIEW=new URLSearchParams(location.search).get("view")==="full"?"full":"half";window.__view=v=>{VIEW=v;const b=document.getElementById("vw");if(b)b.textContent=v==="half"?"ZOOM ON":"ZOOM OFF"};
 function camAt_old(t){const CZ=M[cur].zoom||.62;const c=lerpKeys(M[cur].cam,t);const sk=rimT>=0&&rimT<.35?(.35-rimT)*.12:0;c[0]+=Math.sin(rimT*90)*sk;c[1]+=Math.cos(rimT*77)*sk;cam.position.set(c[3]+(c[0]-c[3])*CZ,c[4]+(c[1]-c[4])*CZ+.3,c[5]+(c[2]-c[5])*CZ);cam.lookAt(c[3],c[4],c[5])}
 function showBig(){window.__onBig&&__onBig();const [h,who,sub]=M[cur].graphic,[n,sd]=NAMES[CAST[who]],col=sd==="me"?"#f5b82e":"#9d7bff";const b=document.getElementById("big");
  b.className="big";b.innerHTML=`<span class="ln" style="background:${col}"></span><div class="h">${h}</div><div class="nm"><b style="color:${col}">${n}</b><small>${sub}</small></div>`;void b.offsetWidth;b.className="big in";setTimeout(()=>b.className="big out",2600)}
