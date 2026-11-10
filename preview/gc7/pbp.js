@@ -3,7 +3,7 @@
    Output: one event per fantasy-relevant action, with the animation to run, who did it, where on the court, and the stats it adds. */
 export const RULES={stealScoreSec:8,putbackSec:4,postFadeFt:12,turnaroundPostFt:14,floaterMaxFt:14};
 const FT=.3048;
-const SKIP=/Substitution|Timeout|Challenge|Review|End Period|End Game|End of|Delay|Ejection|Technical/i;
+const SKIP=/Jumpball|Substitution|Timeout|Challenge|Review|End Period|End Game|End of|Delay|Ejection|Technical/i;
 const clk=p=>{const s=String((p.clock&&p.clock.displayValue)||"0"),m=s.split(":");return m.length>1?+m[0]*60+ +m[1]:+s};
 const per=p=>(p.period&&p.period.number)||0;
 const pid=(p,i)=>(p.participants&&p.participants[i]&&p.participants[i].athlete&&String(p.participants[i].athlete.id))||null;
@@ -42,7 +42,7 @@ export function classify(plays){const ev=[];const live=plays.filter(p=>!SKIP.tes
     /* shots */
     if(p.shootingPlay){const shooter=pid(p,0),txt=p.text||"";
       if(!made){mk(p,null,shooter,{FGA:1,...(p.pointsAttempted===3||/three point/i.test(txt)?{"3PA":1}:{})});
-        if(/blocks?\)/i.test(txt)&&pid(p,1))mk(p,"Block",pid(p,1),{BLK:1},{victim:shooter});steal=null;oreb=null;continue}
+        if(/ blocks /i.test(txt)&&pid(p,1))mk(p,"Block",pid(p,1),{BLK:1},{victim:shooter});steal=null;oreb=null;continue}
       let anim=shotAnim(p);const pts=p.scoreValue||2,stats={PTS:pts,FGM:1,FGA:1,...(pts===3?{"3PM":1,"3PA":1}:{})};
       const ast=/assists?\)/i.test(txt)?pid(p,1):null;
       /* and-one: made basket, shooting foul and a 1-of-1 free throw on the same clock */
