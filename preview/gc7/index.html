@@ -92,12 +92,19 @@ canvas#gl{display:block;width:100%;height:100%}
 </style>
 <script type="importmap">{"imports":{"three":"../moves/three.module.min.js"}}</script>
 </head><body><div class="w">
-<div class="hdr"><h1>Matchup Gamecast</h1><p>Preview with simulated plays. Every possession that matters to your matchup, from every game tonight, on one floor.</p></div>
+<div class="hdr"><h1>Matchup Gamecast</h1><p id="hdp">Preview with simulated plays. Every possession that matters to your matchup, from every game tonight, on one floor.</p></div>
 <div class="sb17"><div class="wg l"><span class="nm" id="mn">You</span><span class="lv"><i></i>LIVE</span></div><div class="ct"><span id="sm">5</span><em>–</em><span id="so">4</span></div><div class="wg r"><span class="nm" id="on">Them</span><span class="wp" id="wp">WIN 50%</span></div></div><div class="tick" id="tick"></div>
 <div class="stage" id="st"><canvas id="gl"></canvas><button id="vw" style="position:absolute;right:10px;bottom:10px;z-index:5;border:1px solid rgba(255,255,255,.18);background:rgba(10,11,14,.72);color:#d9dbe0;font:700 11px/1 var(--C);letter-spacing:.14em;padding:7px 10px;border-radius:999px;backdrop-filter:blur(8px)">FULL COURT</button><div class="tag" id="tag"><i></i>Mid-range</div><div class="big" id="big"></div><div class="imp" id="imp"></div><div class="l3" id="l3"></div></div>
 <div id="pk" style="display:flex;gap:6px;overflow-x:auto;padding:10px 12px;scrollbar-width:none"></div><div class="th" id="th" hidden></div><div class="flt" id="flt"></div><div class="pbp"><div class="pbh"><span>PLAY-BY-PLAY</span><span id="pbn"></span></div><div id="feed"></div></div><div id="pq" hidden></div><div id="pl" hidden></div><div id="cur" hidden></div><button id="auto" hidden></button><button id="slow" hidden></button><button id="rep" hidden></button><div id="menu" hidden></div>
 </div>
 <script type="module">
+{const q=new URLSearchParams(location.search);if(q.get("live")&&!q.get("mr")){const W="https://fantasy-plus.emre-tahincioglu.workers.dev/?lid="+(q.get("lid")||"536040189"),tid=+(q.get("tid")||3);
+ const tag=document.getElementById("tag");if(tag)tag.innerHTML="<i></i>Loading your matchup…";
+ try{const [a,b]=await Promise.all([fetch(W).then(r=>r.json()),fetch(W+"&r=1").then(r=>r.json())]);const m=a.m.find(x=>x.h.id===tid||x.a.id===tid);const me=m.h.id===tid?m.h:m.a,op=m.h.id===tid?m.a:m.h;
+  const act=L=>(L||[]).filter(p=>p.slot!=="BE"&&p.slot!=="IR");const mr=act(b.R[me.id]),orr=act(b.R[op.id]);
+  q.set("me",a.teams[me.id]);q.set("op",a.teams[op.id]);q.set("mr",mr.map(p=>p.n).join(","));q.set("or",orr.map(p=>p.n).join(","));q.set("mi",mr.map(p=>p.id).join(","));q.set("oi",orr.map(p=>p.id).join(","));q.set("mt",mr.map(p=>p.tm||"").join(","));q.set("ot",orr.map(p=>p.tm||"").join(","));
+  try{sessionStorage.setItem("fpLiveSV",JSON.stringify({me:me.s,op:op.s,ts:a.ts}))}catch(e){}
+  location.replace(location.pathname+"?"+q.toString());await new Promise(()=>{})}catch(e){if(tag)tag.innerHTML="<i></i>Couldn't load matchup: "+e.message;await new Promise(()=>{})}}}
 import * as THREE from "three";import {GLTFLoader} from "../moves/GLTFLoader.js";import * as SU from "../moves/SkeletonUtils.js";import {MeshoptDecoder} from "../moves/meshopt_decoder.module.js";
 const cvs=document.getElementById("gl"),st=document.getElementById("st");
 const R=new THREE.WebGLRenderer({canvas:cvs,antialias:true});R.setPixelRatio(Math.min(3,devicePixelRatio));R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.05;R.outputColorSpace=THREE.SRGBColorSpace;
@@ -626,7 +633,7 @@ document.getElementById("auto").onclick=e=>{auto=!auto;e.target.classList.toggle
 document.getElementById("slow").onclick=e=>{speed=speed===1?.4:1;e.target.classList.toggle("on",speed!==1)};
 document.getElementById("rep").onclick=()=>start(cur);
 {const q=new URLSearchParams(location.search);if(q.get("play")&&M[q.get("play")])window.__force=q.get("play");if(q.get("ftm")&&q.get("fta"))window.__ft=[+q.get("ftm"),+q.get("fta")];if(q.get("ft")){const r=+q.get("ft")*.3048,a=(+q.get("ang")||0)*Math.PI/180;window.__sp={x:RIM.x-r*Math.cos(a),z:r*Math.sin(a)}}}
-{const pk=document.getElementById("pk"),NEW=["Interception","Steal + layup","Steal + three","Steal + assist","And-one","Free throw","Floater","Post fadeaway","Alley-oop","Rebound","Putback"];const ks=["AUTO",...NEW,...NAMESK.filter(k=>!NEW.includes(k))];
+{if(new URLSearchParams(location.search).get("live"))document.getElementById("pk").style.display="none";const pk=document.getElementById("pk"),NEW=["Interception","Steal + layup","Steal + three","Steal + assist","And-one","Free throw","Floater","Post fadeaway","Alley-oop","Rebound","Putback"];const ks=["AUTO",...NEW,...NAMESK.filter(k=>!NEW.includes(k))];
  const draw=()=>pk.innerHTML=ks.map(k=>{const on=(window.__force||"AUTO")===k;return `<button data-k="${k}" style="flex:none;border:1px solid ${on?"#fff":"#2a2c33"};background:${on?"#fff":"#111216"};color:${on?"#0a0a0c":NEW.includes(k)?"#f5b82e":"#a9acb4"};font:700 12px/1 var(--C);letter-spacing:.1em;text-transform:uppercase;padding:8px 11px;border-radius:999px">${k}</button>`}).join("");draw();
  pk.onclick=e=>{const b=e.target.closest("button");if(!b)return;window.__force=b.dataset.k==="AUTO"?null:b.dataset.k;window.__sp=null;window.__ft=null;draw();if(window.__force&&REAL)director()}}
 document.getElementById("vw").onclick=()=>__view(VIEW==="half"?"full":"half");__view(VIEW);window.__M=M;window.__dbg2=()=>({ROST,setFeatured,POOL,MX,apply,POSE,retarget});let last=performance.now(),hold=0;
@@ -654,9 +661,11 @@ function dropMark(){if(!CURP||!/Mid-range|3PT|Layup|Dunk|Floater|Fadeaway|And-on
 let busy=1;
 const QS=new URLSearchParams(location.search);const ME=QS.get("me")||"ACL Enayileri",OP=QS.get("op")||"Eytosiko FC";
 const MR=(QS.get("mr")||"Tyrese Maxey,Jayson Tatum,Austin Reaves,LaMelo Ball,Evan Mobley").split(",").filter(Boolean),OR=(QS.get("or")||"Stephen Curry,Victor Wembanyama,Devin Booker,Jalen Johnson,Alperen Sengun").split(",").filter(Boolean);
-document.getElementById("mn").textContent=ME;document.getElementById("on").textContent=OP;
-const ROST=[...MR.map(n=>({n,side:"me"})),...OR.map(n=>({n,side:"op"}))];
+document.getElementById("mn").textContent=ME;if(QS.get("live")){const h=document.getElementById("hdp");if(h)h.textContent="Live test · real plays from tonight's games, only the players in your matchup's starting lineups."}document.getElementById("on").textContent=OP;
+const LIVE=!!QS.get("live")&&!!QS.get("mr");const MI=(QS.get("mi")||"").split(","),OI=(QS.get("oi")||"").split(",");
+const MT=(QS.get("mt")||"").split(","),OT=(QS.get("ot")||"").split(",");const ROST=[...MR.map((n,i)=>({n,side:"me",id:MI[i]||null,tm:MT[i]||""})),...OR.map((n,i)=>({n,side:"op",id:OI[i]||null,tm:OT[i]||""}))];
 ROST.forEach(r=>{let p=PL.find(x=>nrm(x.n)===nrm(r.n));if(!p){const st=STARF[nrm(r.n)];p={n:r.n,rk:PL.length+1,tm:st?st[2]:"",num:st?st[3]:"",ht:st?st[1]:78};PL.push(p)}r.p=p});
+ROST.forEach(r=>{if(r.tm&&r.p&&!r.p.tm)r.p.tm=r.tm});
 const CATS=["PTS","REB","AST","STL","BLK","3PM","FG%","FT%","TO"];const SV={me:{PTS:412,REB:168,AST:101,STL:28,BLK:19,"3PM":44,FGM:150,FGA:318,FTM:68,FTA:84,TO:52},op:{PTS:405,REB:172,AST:96,STL:30,BLK:22,"3PM":42,FGM:148,FGA:322,FTM:61,FTA:80,TO:49}};
 const val=(s,c)=>c==="FG%"?SV[s].FGM/SV[s].FGA:c==="FT%"?SV[s].FTM/SV[s].FTA:SV[s][c];const lead=c=>{const a=val("me",c),b=val("op",c);if(Math.abs(a-b)<1e-9)return 0;return (c==="TO"?a<b:a>b)?1:-1};const fv=(s,c)=>c.includes("%")?val(s,c).toFixed(3).replace(/^0/,""):val(s,c);
 function tick(ch){document.getElementById("tick").innerHTML=CATS.map(c=>{const l=lead(c);return `<div class="${l>0?"m":l<0?"o":""}${ch&&ch.includes(c)?" ch":""}"><small>${c}</small><b style="color:#f5b82e">${fv("me",c)}</b><b style="color:#9d7bff">${fv("op",c)}</b></div>`}).join("");const m=CATS.filter(c=>lead(c)>0).length,o=CATS.filter(c=>lead(c)<0).length;document.getElementById("sm").textContent=m;document.getElementById("so").textContent=o;document.getElementById("wp").textContent="WIN "+Math.max(4,Math.min(96,50+(m-o)*6))+"%"}
@@ -666,7 +675,9 @@ const PLAYS=[["Mid-range",4,"Made FG",d=>`hits a ${d}-foot pull-up jumper`,{PTS:
  ["Floater",2,"Made FG",d=>`drops in a ${Math.min(d,11)}-foot floater`,{PTS:2,FGM:1,FGA:1}],["Post fadeaway",2,"Made FG","hits the turnaround fadeaway from the post",{PTS:2,FGM:1,FGA:1}],["Alley-oop",2,"Alley-oop","throws down the alley-oop",{PTS:2,FGM:1,FGA:1}],
  ["Rebound",2,"Rebound","pulls down the rebound",{REB:1}],["Putback",2,"Rebound + score","grabs the board and puts it back",{REB:1,PTS:2,FGM:1,FGA:1}],["Steal + assist",2,"Steal + assist","steals it and sets up the layup",{STL:1,AST:1}],["Steal + three",2,"Steal + three","steals it and pulls up for three",{STL:1,PTS:3,"3PM":1,FGM:1,FGA:1}]];
 const pick=a=>a[Math.floor(Math.random()*a.length)];let PN=0,CURP=null;const GAMES={};
-function director(){const pool=ROST.filter(r=>FLT==='all'||FLT===r.side||FLT===rid(r));const r=pick(pool.length?pool:ROST);const tot=PLAYS.reduce((a,x)=>a+x[1],0);let q=Math.random()*tot,pl=PLAYS[0];for(const x of PLAYS){q-=x[1];if(q<=0){pl=x;break}}if(window.__force)pl=PLAYS.find(x=>x[0]===window.__force)||pl;let gsub=null;
+const LQ=[];let LIDLE=0;
+function director(){if(LIVE){const e=LQ.shift();if(!e){LIDLE=1;CURP=null;const t=document.getElementById("tag");t.innerHTML="<i></i>Live · waiting for the next play";t.className="tag";setTimeout(director,2500);return}LIDLE=0;return liveStart(e)}
+ const pool=ROST.filter(r=>FLT==='all'||FLT===r.side||FLT===rid(r));const r=pick(pool.length?pool:ROST);const tot=PLAYS.reduce((a,x)=>a+x[1],0);let q=Math.random()*tot,pl=PLAYS[0];for(const x of PLAYS){q-=x[1];if(q<=0){pl=x;break}}if(window.__force)pl=PLAYS.find(x=>x[0]===window.__force)||pl;let gsub=null;
  if(pl[0]==="Free throw"){const n=window.__ft?window.__ft[1]:(Math.random()<.75?2:Math.random()<.5?3:1),m=window.__ft?window.__ft[0]:Math.max(1,n-(Math.random()<.3?1:0));pl=[pl[0],pl[1],`Free throws · ${m} of ${n}`,`makes ${m} of ${n} at the line`,{PTS:m,FTM:m,FTA:n}];gsub=`${m} of ${n} at the line`}
  const ft=pl[0]==="3PT"?24+Math.floor(Math.random()*4):12+Math.floor(Math.random()*8);const g=GAMES[r.p.n]=GAMES[r.p.n]||{q:2+Math.floor(Math.random()*2),c:300+Math.floor(Math.random()*300),a:70+Math.floor(Math.random()*20),b:70+Math.floor(Math.random()*20)};g.c=Math.max(5,g.c-30-Math.floor(Math.random()*60));if(pl[4].PTS)g.a+=pl[4].PTS;
  const SPR={"Mid-range":[ft,ft],"3PT":[ft,ft],"Fadeaway":[ft,ft],"Post fadeaway":[7,12],"Floater":[7,12]}[pl[0]];const ang=(Math.random()*2-1)*1.2,rr=(SPR?SPR[0]+Math.random()*(SPR[1]-SPR[0]):3)*.3048;
@@ -675,7 +686,7 @@ function lower(){const {r,pl,ft,g}=CURP;const c=r.side==="me"?"#f5b82e":"#9d7bff
  l3.className="l3";l3.innerHTML=`<div class="bar"><span class="acc" style="background:${c}"></span><div class="tx"><div class="n">${r.p.n}</div><div class="d" style="color:${c}">${tag}</div></div><div class="g">${r.p.tm||""} ${g.a} · Q${g.q} ${Math.floor(g.c/60)}:${String(g.c%60).padStart(2,"0")} · ${r.side==="me"?ME:OP}</div><div class="pts">${pts}</div></div><div class="ph">${r.p.id?`<img src="https://a.espncdn.com/i/headshots/nba/players/full/${r.p.id}.png" onerror="this.remove()">`:""}</div>`;void l3.offsetWidth;l3.className="l3 in";clearTimeout(l3._t);l3._t=setTimeout(()=>l3.className="l3 out",5200)}
 window.__onBig=()=>{if(!CURP)return;try{const r0=FIG.A&&FIG.A.root;if(r0)CURP.spot=r0.getWorldPosition(new THREE.Vector3())}catch(e){}const {r,pl,ft}=CURP;const before=Object.fromEntries(CATS.map(c=>[c,lead(c)]));Object.entries(pl[4]).forEach(([k,v])=>SV[r.side][k]+=v);const flips=CATS.filter(c=>lead(c)!==before[c]&&lead(c)!==0);const touched=Object.keys(pl[4]).map(k=>k==="FGM"||k==="FGA"?"FG%":k).filter(k=>CATS.includes(k));
  tick(touched);setTimeout(lower,900);setTimeout(()=>{const im=document.getElementById("imp");const c=flips[0]||touched[0]||"PTS";const l=lead(c);im.className="imp"+(flips.length?" lc":"");im.innerHTML=flips.length?`<div class="k">Lead change · ${c}</div><div class="v" style="color:${l>0?"#f5b82e":"#9d7bff"}">${l>0?ME:OP} ${fv(l>0?"me":"op",c)} – ${fv(l>0?"op":"me",c)}</div>`:`<div class="k">${c} · ${l===0?"Tied":(l>0?ME:OP)}</div><div class="v"><span style="color:#f5b82e">${fv("me",c)}</span> <span style="color:#5d6069">–</span> <span style="color:#9d7bff">${fv("op",c)}</span></div>`;void im.offsetWidth;im.className+=" in"},1500);
- const desc=typeof pl[3]==="function"?pl[3](ft):pl[3];FEED.push({r,q:CURP.g.q,t:clk(CURP.g.c),desc,eff:pl[4].PTS?"+"+pl[4].PTS:Object.keys(pl[4])[0],hot:!!(pl[4].PTS||!pl[4].TO),lc:flips.join(", "),nw:1});renderFeed()};
+ const desc=typeof pl[3]==="function"?pl[3](ft):pl[3];FEED.push({r,q:CURP.g.q,t:CURP.live?clk(CURP.g.c):clk(CURP.g.c),desc,eff:pl[4].PTS?"+"+pl[4].PTS:Object.keys(pl[4])[0],hot:!!(pl[4].PTS||!pl[4].TO),lc:flips.join(", "),nw:1});renderFeed()};
 /* ===== feed + filters (GC4 style) ===== */
 var FLT="all";const FEED=[];const rid=r=>nrm(r.p.n);const showR=r=>FLT==="all"||FLT===r.side||FLT===rid(r);
 const clk=c=>Math.floor(c/60)+":"+String(c%60).padStart(2,"0");const lastN=n=>n.split(" ").slice(1).join(" ")||n;
@@ -685,13 +696,46 @@ function renderFeed(){const L=FEED.filter(f=>showR(f.r));document.getElementById
 function chips(){const L=[["all","All"],["me",short(ME)],["op",short(OP)],...ROST.map(r=>[rid(r),lastN(r.p.n),r.side])];document.getElementById("flt").innerHTML=L.map(([k,l,sd])=>`<button class="chip${FLT===k?" on":""}" data-f="${k}">${sd?`<span class="dt" style="background:${sd==="me"?"#f5b82e":"#9d7bff"}"></span>`:""}${l}</button>`).join("")}
 document.getElementById("flt").addEventListener("click",e=>{const c=e.target.closest("[data-f]");if(!c)return;FLT=c.dataset.f;chips();renderFeed()});
 /* seed earlier plays so the feed and floor aren't empty */
-(function seed(){const W=[["hits a {d}-foot pull-up jumper","+2",1,0],["drains a {d}-foot three","+3",1,1],["scores on a driving layup","+2",1,0],["misses a {d}-foot jumper","—",1,0],["grabs the defensive rebound","REB",0,0],["finds the cutter for the assist","AST",0,0],["comes up with the steal","STL",0,0],["swats the shot at the rim","BLK",0,0],["makes free throw 1 of 2","+1",0,0],["throws it away, bad pass","TO",0,0]];
+(function seed(){if(LIVE){chips();renderFeed();return}const W=[["hits a {d}-foot pull-up jumper","+2",1,0],["drains a {d}-foot three","+3",1,1],["scores on a driving layup","+2",1,0],["misses a {d}-foot jumper","—",1,0],["grabs the defensive rebound","REB",0,0],["finds the cutter for the assist","AST",0,0],["comes up with the steal","STL",0,0],["swats the shot at the rim","BLK",0,0],["makes free throw 1 of 2","+1",0,0],["throws it away, bad pass","TO",0,0]];
  for(let i=0;i<14;i++){const r=pick(ROST);const w=pick(W);const three=w[3];const d=three?24+Math.floor(Math.random()*4):8+Math.floor(Math.random()*12);
   const g=GAMES[r.p.n]=GAMES[r.p.n]||{q:2+Math.floor(Math.random()*2),c:300+Math.floor(Math.random()*300),a:70+Math.floor(Math.random()*20),b:70+Math.floor(Math.random()*20)};g.c=Math.max(5,g.c-20-Math.floor(Math.random()*50));
   FEED.push({r,q:g.q,t:clk(g.c),desc:w[0].replace("{d}",d),eff:w[1],hot:w[1]!=="—"&&w[1]!=="TO",lc:""});
   if(w[2]){const bx=r.side==="me"?-12.75:12.75,ang=(Math.random()-.5)*Math.PI*.9,dm=d*.3048,col=r.side==="me"?0xf5b82e:0x9d7bff,mk=w[1]!=="—";
    const geo=mk?new THREE.CircleGeometry(.22,24):new THREE.RingGeometry(.15,.22,24);const m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.85}));m.rotation.x=-Math.PI/2;m.position.set(bx-Math.sign(bx)*Math.cos(ang)*dm,.03,Math.sin(ang)*dm);m.userData={side:r.side,pid:rid(r)};MARKS.add(m)}}
  chips();renderFeed()})();
+/* ===== LIVE: real play-by-play for this matchup ===== */
+import("./pbp.js?v=4").then(({classify})=>{if(!LIVE)return;
+ try{const sv=JSON.parse(sessionStorage.getItem("fpLiveSV")||"null");if(sv){["me","op"].forEach(k=>["PTS","REB","AST","STL","BLK","3PM","FGM","FGA","FTM","FTA","TO"].forEach(c=>{if(sv[k][c]!=null)SV[k][c]=sv[k][c]}));tick()}}catch(e){}
+ const BY={};ROST.forEach(r=>{if(r.id)BY[r.id]=r});const API="https://site.api.espn.com/apis/site/v2/sports/basketball/nba/";
+ const AL={GSW:"GS",NYK:"NY",SAS:"SA",NOP:"NO",UTA:"UTAH",WAS:"WSH",PHO:"PHX"};const ab=x=>AL[x]||x;const MYT=new Set(ROST.map(r=>ab(r.p.tm||"")).filter(Boolean));
+ const SEEN=new Set(),G={};let first=true;const secs=c=>{const m=String(c||"0").split(":");return m.length>1?+m[0]*60+ +m[1]:+m[0]};
+ const MAPA={"Fadeaway":"Mid-range"};const TAG=Object.fromEntries(PLAYS.map(p=>[p[0],p[2]]));
+ window.liveStart=e=>{const r=e.r;let anim=MAPA[e.anim]||e.anim;if(!M[anim])anim=/3/.test(e.stats["3PM"]||"")?"3PT":"Mid-range";
+  const ft=e.spot?e.spot.ft:(anim==="3PT"?25:15);const nm=r.p.n;let desc=(e.text||"").replace(/\n/g," ");desc=desc.split(nm).join("").replace(/^\s+/,"").replace(/\s+/g," ").trim()||TAG[anim]||anim;
+  let tag=TAG[anim]||anim,gsub=null;if(anim==="Free throw"&&e.fta){tag=`Free throws · ${e.ftm} of ${e.fta}`;gsub=`${e.ftm} of ${e.fta} at the line`}
+  const pl=[anim,1,tag,desc,e.stats];const g={q:e.period,c:secs(e.clock),a:0,b:0};
+  window.__sp=e.spot&&anim!=="Free throw"?{x:e.spot.x,z:e.spot.z}:null;window.__ft=null;
+  CURP={r,pl,ft,g,sp:window.__sp||{x:RIM.x-ft*.3048,z:0},gsub,live:1};auto=false;cur=anim;ACT.rotation.y=r.side==="me"?Math.PI:0;ACT.updateMatrixWorld(true);const st=STARF[nrm(nm)];setFeatured(r.p);NAMES.SA=[nm,r.side];if(!st||SCN[st[0]])start(anim);else busy=1};
+ function silent(e){const r=e.r;Object.entries(e.stats).forEach(([k,v])=>{if(SV[r.side][k]!=null)SV[r.side][k]+=v});tick(Object.keys(e.stats).map(k=>k==="FGM"||k==="FGA"?"FG%":k==="FTM"||k==="FTA"?"FT%":k).filter(k=>CATS.includes(k)))}
+ function toFeed(e,hist){const r=e.r;const nm=r.p.n;let d=(e.text||"").replace(/\n/g," ").split(nm).join("").replace(/\s+/g," ").trim();const st=e.stats;const eff=st.PTS?"+"+st.PTS:e.anim?Object.keys(st).find(k=>CATS.includes(k))||"":"—";
+  FEED.push({r,q:e.period,t:e.clock,desc:d,eff:eff||"—",hot:!!(st.PTS||(e.anim&&!st.TO)),lc:"",nw:hist?0:1});}
+ async function poll(){let sb;try{const et=new Date(new Date().toLocaleString("en-US",{timeZone:"America/New_York"}));if(et.getHours()<6)et.setDate(et.getDate()-1);const d=`${et.getFullYear()}${String(et.getMonth()+1).padStart(2,"0")}${String(et.getDate()).padStart(2,"0")}`;sb=await (await fetch(API+"scoreboard?dates="+d+"&_="+Date.now())).json()}catch(e){return}
+  const evs=(sb.events||[]).filter(ev=>{const c=ev.competitions[0].competitors.map(x=>ab(x.team.abbreviation));return !MYT.size||c.some(t=>MYT.has(t))});
+  const live=evs.filter(ev=>ev.status.type.state==="in").length,done=evs.filter(ev=>ev.status.type.state==="post").length,pre=evs.filter(ev=>ev.status.type.state==="pre");
+  const PBN=`${live} LIVE · ${done} FINAL · ${pre.length} TO COME`;
+  for(const ev of evs){const stt=ev.status.type.state;if(stt==="pre")continue;if(stt==="post"&&G[ev.id]==="post")continue;
+   let j;try{j=await (await fetch(API+"summary?event="+ev.id+"&_="+Date.now())).json()}catch(e){continue}
+   const plays=j.plays||[];if(!plays.length)continue;const last=plays[plays.length-1],lp=(last.period&&last.period.number)||0,lc=secs(last.clock&&last.clock.displayValue);
+   const E=classify(plays);
+   for(const e of E){const r=BY[e.athlete];if(!r)continue;const key=e.src[0]+":"+e.athlete+":"+(e.role||"");if(SEEN.has(key))continue;
+    const settled=stt==="post"||lp>e.period||secs(e.clock)-lc>9;if(!settled)continue;SEEN.add(key);e.r=r;if(e.role==="passer")e.anim="Assist";
+    if(first){toFeed(e,1);continue}
+    if(!e.anim){silent(e);toFeed(e);continue}
+    if(LQ.length>=4){silent(e);toFeed(e)}else LQ.push(e)}
+   G[ev.id]=stt}
+  first=false;renderFeed();document.getElementById("pbn").textContent=PBN;window.__live={q:LQ.length,seen:SEEN.size,games:evs.length,live}}
+ poll();setInterval(poll,20000);
+});
 const _gr=window.__real;const wt=setInterval(()=>{if(window.__real&&MX.SA){clearInterval(wt);busy=0;director();(async()=>{for(const r of ROST){const st=STARF[nrm(r.p.n)];if(st&&!SCN[st[0]])await new Promise(res=>LD.load("../moves/"+st[0],g=>{SCN[st[0]]=g;res()},undefined,()=>res()))}})()}},300);
 requestAnimationFrame(loop);
 </script></body></html>
