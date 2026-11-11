@@ -614,13 +614,13 @@ const ZC={f:new THREE.Vector3(),w:6,last:0,pF:new THREE.Vector3(),lF:new THREE.V
 const sstep=u=>{u=Math.min(1,Math.max(0,u));return u*u*u*(u*(u*6-15)+10)};
 function camAt(t){/* wide shot -> push in on the play -> pull back out */const hv=Math.atan(Math.tan(cam.fov*Math.PI/360)*cam.aspect);const now=performance.now(),dt=Math.min(.05,(now-(ZC.last||now))/1000);ZC.last=now;
  const dF=Math.max(22,(window.__HW||16.4)/Math.tan(hv)),eF=(window.__EL||30)*Math.PI/180;ZC.pF.set(0,dF*Math.sin(eF),.6+dF*Math.cos(eF));ZC.lF.set(0,0,(window.__LZ!=null?__LZ:-6.5));
- let z=0;if(VIEW==="half"&&cur&&CURP&&M[cur]){const d=M[cur].dur;z=Math.min(sstep(T/1.1),1-sstep((T-(d-.25))/1.3));
-  const A=FIG[Object.keys(CAST).find(r=>CAST[r]==="SA")]||FIG.A||Object.values(FIG)[0];if(A){A.root.getWorldPosition(ZC.a);ball.getWorldPosition(ZC.b);const sep=Math.hypot(ZC.a.x-ZC.b.x,ZC.a.z-ZC.b.z);ZC.a.lerp(ZC.b,.4);ZC.a.y=0;const tw=Math.min(9,Math.max(window.__ZW||3.6,sep*.62+2.4));
+ let z=0;if(VIEW==="half"&&cur&&CURP&&M[cur]){const d=M[cur].dur;z=Math.min(sstep(T/.8),1-sstep((T-(d+.1))/1.1));
+  const A=FIG[Object.keys(CAST).find(r=>CAST[r]==="SA")]||FIG.A||Object.values(FIG)[0];if(A){A.root.getWorldPosition(ZC.a);ball.getWorldPosition(ZC.b);const sep=Math.hypot(ZC.a.x-ZC.b.x,ZC.a.z-ZC.b.z);ZC.a.lerp(ZC.b,.4);ZC.a.y=0;const tw=Math.min(8,Math.max(window.__ZW||3.0,sep*.55+2.1));
    if(T<.06||window.__zsnap){ZC.f.copy(ZC.a);ZC.w=tw}else{const k=1-Math.exp(-dt*3.2);ZC.f.lerp(ZC.a,k);ZC.w+=(tw-ZC.w)*(1-Math.exp(-dt*(tw>ZC.w?5:1.6)))}}}
  if(z<=0){cam.position.copy(ZC.pF);cam.lookAt(ZC.lF);return}
  const dC=ZC.w/Math.tan(hv),eC=(window.__ZE||21)*Math.PI/180;ZC.pC.set(ZC.f.x,dC*Math.sin(eC)+1,ZC.f.z+dC*Math.cos(eC));ZC.lC.set(ZC.f.x,1.25,ZC.f.z);
  cam.position.lerpVectors(ZC.pF,ZC.pC,z);cam.lookAt(ZC.b.lerpVectors(ZC.lF,ZC.lC,z))}
-let VIEW=new URLSearchParams(location.search).get("view")==="full"?"full":"half";window.__view=v=>{VIEW=v;const b=document.getElementById("vw");if(b)b.textContent=v==="half"?"ZOOM ON":"ZOOM OFF"};
+let VIEW=new URLSearchParams(location.search).get("view")==="full"?"full":"half";window.__view=v=>{VIEW=v;const b=document.getElementById("vw");if(b)b.textContent=v==="half"?"ZOOM: ON":"ZOOM: OFF";b.style.color=v==="half"?"#f5b82e":"#8a8d96"};
 function camAt_old(t){const CZ=M[cur].zoom||.62;const c=lerpKeys(M[cur].cam,t);const sk=rimT>=0&&rimT<.35?(.35-rimT)*.12:0;c[0]+=Math.sin(rimT*90)*sk;c[1]+=Math.cos(rimT*77)*sk;cam.position.set(c[3]+(c[0]-c[3])*CZ,c[4]+(c[1]-c[4])*CZ+.3,c[5]+(c[2]-c[5])*CZ);cam.lookAt(c[3],c[4],c[5])}
 function showBig(){window.__onBig&&__onBig();const [h,who,sub0]=M[cur].graphic,sub=(CURP&&CURP.gsub)||sub0,[n,sd]=NAMES[CAST[who]],col=sd==="me"?"#f5b82e":"#9d7bff";const b=document.getElementById("big");
  b.className="big";b.innerHTML=`<span class="ln" style="background:${col}"></span><div class="h">${h}</div><div class="nm"><b style="color:${col}">${n}</b><small>${sub}</small></div>`;void b.offsetWidth;b.className="big in";setTimeout(()=>b.className="big out",2600)}
