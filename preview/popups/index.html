@@ -1,0 +1,141 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Play Alerts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@500;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--g:#f5b82e;--p:#9d7bff;--C:"Barlow Condensed","Arial Narrow",sans-serif;--b:#23252c;--m:#8a8d96}
+*{box-sizing:border-box}html,body{margin:0;background:#050506;color:#eef0f3;font:14px Inter,-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.w{max-width:520px;margin:0 auto;padding-bottom:60px}
+h1{margin:0;padding:16px 14px 4px;font:800 26px/1 var(--C);letter-spacing:.04em;text-transform:uppercase}
+.sub{padding:0 14px 6px;color:var(--m);font-size:12.5px;line-height:1.45}
+.opt{padding:22px 0 4px}
+.lab{display:flex;align-items:baseline;gap:8px;padding:0 14px;margin-bottom:4px}
+.lab b{font:800 13px/1 var(--C);letter-spacing:.12em;color:#0a0a0c;background:#eef0f3;padding:4px 7px;border-radius:5px}
+.lab span{font:700 16px/1 var(--C);letter-spacing:.08em;text-transform:uppercase}
+.lab button{margin-left:auto;border:1px solid var(--b);background:#111216;color:#eee;border-radius:99px;font:700 11px/1 var(--C);letter-spacing:.12em;padding:6px 10px}
+.why{padding:0 14px 10px;color:var(--m);font-size:12px;line-height:1.4}
+/* mini gamecast */
+.gc{position:relative;margin:0 8px;border:1px solid #2a2c33;border-radius:20px;overflow:hidden;background:#050506}
+.sb{display:flex;align-items:stretch;height:52px;margin:8px 8px 0;position:relative}
+.sb .wg{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:4px;padding:0 8px;position:relative;overflow:hidden}
+.sb .l{background:linear-gradient(90deg,transparent,rgba(245,184,46,.2));border-bottom:3px solid var(--g)}
+.sb .r{background:linear-gradient(270deg,transparent,rgba(157,123,255,.22));border-bottom:3px solid var(--p);align-items:flex-end}
+.sb .nm{font:700 12px/1 var(--C);letter-spacing:.12em;white-space:nowrap}.sb .l .nm{color:var(--g)}.sb .r .nm{color:var(--p)}
+.sb .lv{font:700 9.5px/1 var(--C);letter-spacing:.2em;color:#ff4d4d}.sb .wp{font:600 10.5px/1 var(--C);letter-spacing:.1em;color:#a8abb3}
+.sb .ct{flex:none;background:#fff;color:#0a0a0c;padding:0 18px;display:flex;align-items:center;gap:8px;font:800 32px/1 var(--C);clip-path:polygon(10% 0,90% 0,100% 100%,0 100%);margin:0 -4px;position:relative;overflow:hidden}
+.sb .ct em{font:500 13px/1 var(--C);opacity:.45;font-style:normal}
+.cs{display:grid;grid-template-columns:repeat(9,1fr);margin:8px;border-radius:12px;background:#111216;border:1px solid var(--b);padding:5px 0;position:relative}
+.cs div{text-align:center;padding:3px 0 7px;position:relative}.cs div+div{border-left:1px solid #1d1f25}
+.cs small{display:block;font:700 9px/1 var(--C);letter-spacing:.14em;color:var(--m)}
+.cs b{display:block;font:800 13px/1.25 var(--C);margin-top:2px}.cs b.m{color:var(--g)}.cs b.o{color:var(--p)}
+.cs i{position:absolute;left:18%;right:18%;bottom:2px;height:3px;border-radius:3px}
+.st{position:relative;aspect-ratio:804/504;background:#07080b url(stage.webp) center/cover;overflow:hidden}
+.st .tg{position:absolute;left:12px;top:10px;font:700 11px/1 var(--C);letter-spacing:.2em;color:#d9dbe0;display:flex;gap:6px;align-items:center}.st .tg i{width:6px;height:6px;border-radius:50%;background:#ff4d4d}
+.dot{position:absolute;width:9px;height:9px;border-radius:50%;background:var(--g);box-shadow:0 0 0 3px rgba(245,184,46,.25);left:40%;top:72%;opacity:0}
+.go .dot{animation:dot 1.6s ease-in-out forwards}
+@keyframes dot{0%{opacity:1;left:40%;top:72%}55%{left:28%;top:64%}70%{opacity:1}100%{opacity:0;left:28%;top:64%}}
+.ball{position:absolute;width:6px;height:6px;border-radius:50%;background:#e8762c;left:28%;top:62%;opacity:0}
+.go .ball{animation:ball 1s .9s ease-out forwards}
+@keyframes ball{0%{opacity:1;left:28%;top:62%}50%{top:44%}100%{opacity:0;left:10.5%;top:52%}}
+.fd{padding:6px 10px 10px;position:relative}
+.fd:before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--b)}
+.tl{display:flex;align-items:center;margin:6px 0;position:relative}.tl.op{flex-direction:row-reverse}
+.tl .cd{flex:1;min-width:0;background:#17181d;border:1px solid var(--b);border-radius:10px;padding:7px 9px}
+.tl.me .cd{border-right:3px solid var(--g);text-align:right}.tl.op .cd{border-left:3px solid var(--p)}
+.tl .h{font:800 13.5px/1 var(--C);letter-spacing:.04em}.tl.me .h span{color:var(--g)}.tl.op .h span{color:var(--p)}
+.tl .d{font-size:11px;color:var(--m);margin-top:3px}
+.tl .tm{flex:none;width:46px;text-align:center;font:700 9.5px/1.25 var(--C);color:#8a8e98;background:#0b0c0f;padding:3px 0;z-index:1}
+.tl .sp{flex:1}
+.fx{position:absolute;pointer-events:none}
+</style></head><body><div class="w">
+<h1>Play alerts · 20 ideas</h1>
+<div class="sub">Each one replays a Tyrese Maxey three (+3 PTS, +1 3PM, win 56% → 59%). None of them cover the floor while the play runs. Tap Replay to see it again. Tell me the numbers you like.</div>
+<div id="out"></div>
+</div>
+<script>
+const G="#f5b82e",P="#9d7bff";
+const CATS=[["PTS",412,405],["REB",168,173],["AST",101,96],["STL",28,30],["BLK",19,22],["3PM",44,42],["FG%",".472",".458"],["FT%",".810",".762"],["TO",52,49]];
+const lead=c=>{const a=parseFloat(c[1]),b=parseFloat(c[2]);return c[0]==="TO"?a<b:a>b};
+const base=()=>`<div class="sb"><div class="wg l"><span class="nm">ACL ENAYILERI</span><span class="lv">● LIVE</span></div><div class="ct"><span class="sm">5</span><em>–</em><span class="so">4</span></div><div class="wg r"><span class="nm">PIERRE CROCKRELL</span><span class="wp">WIN <span class="wpv">56%</span></span></div></div>
+<div class="cs">${CATS.map(c=>`<div data-c="${c[0]}"><small>${c[0]}</small><b class="m">${c[1]}</b><b class="o">${c[2]}</b><i style="background:${lead(c)?G:P}"></i></div>`).join("")}</div>
+<div class="st"><div class="tg"><i></i>LIVE</div><div class="dot"></div><div class="ball"></div></div>
+<div class="fd"><div class="tl op"><div class="cd"><div class="h">Avdija <span>REB</span></div><div class="d">defensive rebound</div></div><span class="tm">Q1<br>7:44</span><div class="sp"></div></div></div>`;
+const AT=1700; // ms after the play starts: shot is good
+const q=(r,s)=>r.querySelector(s);
+const css=t=>{const s=document.createElement("style");s.textContent=t;document.head.appendChild(s)};
+const count=(el,a,b,ms=700)=>{const t0=performance.now();const f=()=>{const u=Math.min(1,(performance.now()-t0)/ms);el.textContent=Math.round(a+(b-a)*u);if(u<1)requestAnimationFrame(f)};f()};
+const tick=r=>{const p=q(r,'[data-c="PTS"] .m'),t=q(r,'[data-c="3PM"] .m');count(p,412,415);count(t,44,45)};
+const add=(r,sel,html,cls)=>{const e=document.createElement("div");e.className="fx "+(cls||"");e.innerHTML=html;(sel?q(r,sel):r).appendChild(e);return e};
+const feedIn=r=>{const f=q(r,".fd");f.insertAdjacentHTML("afterbegin",`<div class="tl me nw"><div class="cd"><div class="h">Maxey <span>+3</span></div><div class="d">26-foot pull-up three</div></div><span class="tm">Q2<br>4:12</span><div class="sp"></div></div>`)};
+css(`.tl.nw .cd{animation:nw .5s cubic-bezier(.2,.9,.2,1)}@keyframes nw{from{transform:translateY(-10px);opacity:0}}`);
+
+const O=[
+["Score bug takeover","The white score box flips to the play for 2 seconds, then flips back to the matchup score. The eye is already there.",
+ `.o1 .ct .pl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:6px;background:${G};font:800 14px/1 var(--C);letter-spacing:.02em;transform:translateY(100%);transition:transform .35s cubic-bezier(.2,.9,.2,1)}.o1 .ct .pl b{font-size:22px}.o1 .ct.on .pl{transform:none}`,
+ r=>{const c=q(r,".ct");c.insertAdjacentHTML("beforeend",`<div class="pl">MAXEY <b>+3</b></div>`);setTimeout(()=>c.classList.add("on"),AT);setTimeout(()=>{c.classList.remove("on");tick(r);feedIn(r)},AT+2200)}],
+["Category burst","The PTS and 3PM columns light up gold, the numbers count up and +3 / +1 float out. No banner at all.",
+ `.o2 .cs div.hit{background:rgba(245,184,46,.18);box-shadow:inset 0 0 0 1px ${G};border-radius:8px;transition:background .3s}.o2 .up{left:50%;top:-6px;transform:translateX(-50%);font:800 15px/1 var(--C);color:${G};animation:up 1.4s ease-out forwards}@keyframes up{0%{opacity:0;transform:translate(-50%,10px)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-26px)}}`,
+ r=>setTimeout(()=>{["PTS","3PM"].forEach((c,i)=>{const d=q(r,`[data-c="${c}"]`);d.classList.add("hit");add(r,`[data-c="${c}"]`,i?"+1":"+3","up");setTimeout(()=>d.classList.remove("hit"),1800)});tick(r);feedIn(r)},AT)],
+["Wing sweep","Your gold wing of the scoreboard stretches across the top with the play, then snaps back.",
+ `.o3 .sb .sweep{position:absolute;left:0;top:0;bottom:3px;width:0;background:linear-gradient(90deg,${G},#d99a12);z-index:3;display:flex;align-items:center;gap:8px;padding-left:12px;overflow:hidden;white-space:nowrap;color:#0a0a0c;font:800 18px/1 var(--C);letter-spacing:.04em;transition:width .45s cubic-bezier(.2,.9,.2,1)}.o3 .sb .sweep small{font:700 11px/1 var(--C);letter-spacing:.14em;opacity:.7}.o3 .sb.on .sweep{width:100%}`,
+ r=>{const s=q(r,".sb");s.insertAdjacentHTML("beforeend",`<div class="sweep">TYRESE MAXEY · THREE <small>+3 PTS · +1 3PM</small></div>`);setTimeout(()=>s.classList.add("on"),AT);setTimeout(()=>{s.classList.remove("on");tick(r);feedIn(r)},AT+2300)}],
+["Courtside LED boards","The LED boards along the sideline in the arena scroll the play in gold, like a real arena.",
+ `.o4 .led{left:11.5%;right:11.5%;top:46.3%;height:3.6%;background:#050506;overflow:hidden;opacity:0;transition:opacity .2s}.o4 .led.on{opacity:1}.o4 .led span{position:absolute;white-space:nowrap;top:50%;transform:translateY(-50%);font:800 11px/1 var(--C);letter-spacing:.18em;color:${G};text-shadow:0 0 6px ${G};animation:mq 3s linear infinite}@keyframes mq{from{left:100%}to{left:-120%}}`,
+ r=>{const e=add(r,".st",`<span>TYRESE MAXEY · THREE POINTER · +3 · TYRESE MAXEY · THREE POINTER · +3</span>`,"led");setTimeout(()=>e.classList.add("on"),AT);setTimeout(()=>{e.classList.remove("on");tick(r);feedIn(r)},AT+3200)}],
+["Upper-deck ribbon","The ribbon board up in the stands turns gold and runs the play. Feels like the arena is reacting.",
+ `.o5 .rb{left:0;right:0;top:15.6%;height:3.4%;background:${G};overflow:hidden;transform:scaleX(0);transition:transform .4s cubic-bezier(.2,.9,.2,1)}.o5 .rb.on{transform:none}.o5 .rb span{position:absolute;white-space:nowrap;top:50%;transform:translateY(-50%);font:800 10.5px/1 var(--C);letter-spacing:.2em;color:#0a0a0c;animation:mq 3.4s linear infinite}`,
+ r=>{const e=add(r,".st",`<span>MAXEY FOR THREE · +3 PTS · +1 3PM · WIN 59% · MAXEY FOR THREE · +3 PTS</span>`,"rb");setTimeout(()=>e.classList.add("on"),AT);setTimeout(()=>{e.classList.remove("on");tick(r);feedIn(r)},AT+3200)}],
+["Crowd card stunt","The crowd in the stands flips cards to spell +3 in gold. Big, fun, and nowhere near the floor.",
+ `.o6 .cr{left:0;right:0;top:0;height:44%;display:flex;align-items:center;justify-content:center;font:800 64px/1 var(--C);letter-spacing:.06em;color:transparent;background:radial-gradient(circle,${G} 1.3px,transparent 1.7px) 0 0/5px 6px;-webkit-background-clip:text;background-clip:text;opacity:0;transition:opacity .35s}.o6 .cr.on{opacity:1}.o6 .cr small{font-size:22px;margin-left:10px}`,
+ r=>{const e=add(r,".st",`MAXEY +3`,"cr");setTimeout(()=>e.classList.add("on"),AT);setTimeout(()=>{e.classList.remove("on");tick(r);feedIn(r)},AT+2400)}],
+["Apron text","The HOME / AWAY lettering under the floor turns into the player and stat, in your colour.",
+ `.o7 .ap{left:0;right:50%;bottom:2%;height:12%;display:flex;align-items:center;justify-content:center;font:italic 800 19px/1 var(--C);letter-spacing:.06em;color:${G};background:linear-gradient(180deg,#0e0f12,#121318);opacity:0;transition:opacity .3s}.o7 .ap.on{opacity:1}`,
+ r=>{const e=add(r,".st",`MAXEY +3`,"ap");setTimeout(()=>e.classList.add("on"),AT);setTimeout(()=>{e.classList.remove("on");tick(r);feedIn(r)},AT+2600)}],
+["Scorer's table screen","The black scorer's table at half court lights up like a screen with the play.",
+ `.o8 .tb{left:38.5%;right:38.5%;top:44.6%;height:4.6%;background:#050506;border:1px solid ${G};display:flex;align-items:center;justify-content:center;gap:5px;font:800 10px/1 var(--C);letter-spacing:.12em;color:#fff;opacity:0;transform:scaleY(.2);transition:all .3s}.o8 .tb b{color:${G};font-size:12px}.o8 .tb.on{opacity:1;transform:none;box-shadow:0 0 14px rgba(245,184,46,.6)}`,
+ r=>{const e=add(r,".st",`MAXEY <b>+3</b>`,"tb");setTimeout(()=>e.classList.add("on"),AT);setTimeout(()=>{e.classList.remove("on");tick(r);feedIn(r)},AT+2600)}],
+["Ticker under the court","A TV-style crawl directly under the stage. The court never gets anything on it.",
+ `.o9 .tk{position:relative;height:0;overflow:hidden;background:#0c0d10;border-top:2px solid ${G};transition:height .3s}.o9 .tk.on{height:26px}.o9 .tk span{position:absolute;white-space:nowrap;top:6px;font:800 13px/1 var(--C);letter-spacing:.1em;animation:mq 4s linear infinite}.o9 .tk b{color:${G}}`,
+ r=>{q(r,".st").insertAdjacentHTML("afterend",`<div class="tk"><span><b>MAXEY</b> 26-FT THREE · +3 PTS · +1 3PM · ACL now leads 3PM 45–42 · <b>MAXEY</b> 26-FT THREE</span></div>`);const e=q(r,".tk");setTimeout(()=>e.classList.add("on"),AT);setTimeout(()=>{e.classList.remove("on");tick(r);feedIn(r)},AT+3600)}],
+["Lower third below the stage","The broadcast name bar, but parked under the court instead of on it.",
+ `.o10 .l3{display:flex;align-items:center;gap:10px;margin:0 8px;height:0;overflow:hidden;transition:height .35s cubic-bezier(.2,.9,.2,1),margin .35s}.o10 .l3.on{height:52px;margin:8px}.o10 .l3 .av{width:40px;height:40px;border-radius:50%;background:#1d1f25;border:2px solid ${G};display:grid;place-items:center;font:800 15px var(--C);color:${G};flex:none}.o10 .l3 .x{flex:1}.o10 .l3 .x b{display:block;font:800 18px/1 var(--C);letter-spacing:.04em}.o10 .l3 .x small{font:700 10.5px/1.4 var(--C);letter-spacing:.14em;color:var(--m)}.o10 .l3 .v{font:800 30px/1 var(--C);color:${G}}`,
+ r=>{q(r,".st").insertAdjacentHTML("afterend",`<div class="l3"><span class="av">TM</span><div class="x"><b>TYRESE MAXEY</b><small>PHI · 26-FT PULL-UP THREE</small></div><span class="v">+3</span></div>`);const e=q(r,".l3");setTimeout(()=>e.classList.add("on"),AT);setTimeout(()=>{e.classList.remove("on");tick(r);feedIn(r)},AT+2800)}],
+["Game-flow bar","A strip under the court with a dot for every play tonight. The new one drops in with its label.",
+ `.o11 .gf{position:relative;height:34px;margin:6px 10px 0;border-bottom:1px solid var(--b)}.o11 .gf i{position:absolute;bottom:-4px;width:8px;height:8px;border-radius:50%}.o11 .gf i.n{animation:drop .5s cubic-bezier(.3,1.6,.5,1) both}@keyframes drop{from{transform:translateY(-22px);opacity:0}}.o11 .gf span{position:absolute;bottom:8px;transform:translateX(-50%);font:800 11px/1 var(--C);letter-spacing:.06em;color:${G};white-space:nowrap;animation:up2 2.4s forwards}@keyframes up2{0%,80%{opacity:1}100%{opacity:0}}`,
+ r=>{const pts=[[8,P],[15,G],[22,P],[31,G],[38,G],[47,P],[55,P],[61,G]];q(r,".st").insertAdjacentHTML("afterend",`<div class="gf">${pts.map(p=>`<i style="left:${p[0]}%;background:${p[1]}"></i>`).join("")}</div>`);setTimeout(()=>{const g=q(r,".gf");g.insertAdjacentHTML("beforeend",`<i class="n" style="left:69%;background:${G}"></i><span style="left:69%">MAXEY +3</span>`);tick(r);feedIn(r)},AT)}],
+["The feed is the alert","Nothing on the stage. The new card shoots up out of the court's bottom edge into the timeline and glows.",
+ `.o12 .tl.nw .cd{animation:shoot .7s cubic-bezier(.2,.9,.2,1)!important;box-shadow:0 0 0 1px ${G},0 0 22px rgba(245,184,46,.35);background:#1f1b10}@keyframes shoot{from{transform:translateY(-70px) scale(.85);opacity:0}}`,
+ r=>setTimeout(()=>{feedIn(r);tick(r)},AT)],
+["Dynamic Island","A black pill grows out of the top of the screen like an iPhone Live Activity, then shrinks away.",
+ `.o13 .di{left:50%;top:6px;transform:translateX(-50%);width:84px;height:24px;border-radius:99px;background:#000;z-index:5;display:flex;align-items:center;gap:8px;padding:0 6px;overflow:hidden;transition:all .45s cubic-bezier(.3,1.3,.5,1);box-shadow:0 0 0 1px #222}.o13 .di.on{width:88%;height:44px}.o13 .di .av{width:30px;height:30px;border-radius:50%;background:#1d1f25;border:2px solid ${G};display:grid;place-items:center;font:800 12px var(--C);color:${G};flex:none;opacity:0;transition:opacity .2s .2s}.o13 .di .x{flex:1;font:800 15px/1 var(--C);letter-spacing:.04em;white-space:nowrap;opacity:0;transition:opacity .2s .2s}.o13 .di .x small{display:block;font:600 10px/1.4 Inter;color:var(--m)}.o13 .di .v{font:800 22px var(--C);color:${G};opacity:0;transition:opacity .2s .2s;padding-right:6px}.o13 .di.on>*{opacity:1}.o13 .sb{margin-top:40px}`,
+ r=>{add(r,null,`<span class="av">TM</span><div class="x">Maxey · three<small>Win 56% → 59%</small></div><span class="v">+3</span>`,"di");const e=q(r,".di");setTimeout(()=>e.classList.add("on"),AT);setTimeout(()=>{e.classList.remove("on");tick(r);feedIn(r)},AT+2600)}],
+["Edge glow","The stage frame glows gold for a beat; a small chip sits up in the crowd. Subtle, never covers players.",
+ `.o14 .st{transition:box-shadow .3s}.o14 .st.on{box-shadow:inset 0 0 0 3px ${G},inset 0 0 40px rgba(245,184,46,.45)}.o14 .ch{right:10px;top:10px;background:rgba(10,11,14,.85);border:1px solid ${G};border-radius:99px;padding:5px 10px;font:800 12px/1 var(--C);letter-spacing:.08em;opacity:0;transform:translateY(-6px);transition:all .3s}.o14 .ch b{color:${G}}.o14 .st.on .ch{opacity:1;transform:none}`,
+ r=>{add(r,".st",`MAXEY <b>+3</b>`,"ch");const s=q(r,".st");setTimeout(()=>s.classList.add("on"),AT);setTimeout(()=>{s.classList.remove("on");tick(r);feedIn(r)},AT+2200)}],
+["Win-chance swing","Shows what the play did to the matchup: the win % ticks 56 → 59 with a green arrow and who did it.",
+ `.o15 .sb .r .wp{transition:color .3s}.o15 .sw{right:8px;top:100%;margin-top:4px;background:#0d2a17;border:1px solid #3ecf72;color:#7ff0a6;border-radius:8px;padding:5px 8px;font:800 11.5px/1 var(--C);letter-spacing:.08em;z-index:4;opacity:0;transform:translateY(-6px);transition:all .3s}.o15 .sw.on{opacity:1;transform:none}`,
+ r=>{const e=add(r,".sb",`▲ +3% · MAXEY THREE`,"sw");setTimeout(()=>{e.classList.add("on");const w=q(r,".wpv");w.parentNode.style.color="#3ecf72";let v=56;const t=setInterval(()=>{w.textContent=(++v)+"%";if(v>=59)clearInterval(t)},180);tick(r)},AT);setTimeout(()=>{e.classList.remove("on");q(r,".wpv").parentNode.style.color="";feedIn(r)},AT+2600)}],
+["Category flip","When a play changes who leads a category, that column flips over like a card from purple to gold.",
+ `.o16 .cs div.flip{animation:fl .7s ease-in-out}@keyframes fl{50%{transform:rotateY(90deg)}}.o16 .lc{left:50%;top:126px;transform:translateX(-50%);background:${G};color:#0a0a0c;border-radius:6px;padding:4px 8px;font:800 11px/1 var(--C);letter-spacing:.1em;white-space:nowrap;z-index:4;animation:up2 2.4s forwards}`,
+ r=>{const d=q(r,'[data-c="3PM"]');q(r,'[data-c="3PM"] .o').textContent="44";q(r,'[data-c="3PM"] .m').textContent="43";q(r,'[data-c="3PM"] i').style.background=P;setTimeout(()=>{d.classList.add("flip");setTimeout(()=>{q(r,'[data-c="3PM"] .m').textContent="44";q(r,'[data-c="3PM"] .o').textContent="44";q(r,'[data-c="3PM"] i').style.background="#8a8d96";add(r,null,`3PM TIED 44–44`,"lc");feedIn(r)},350)},AT)}],
+["Headshot pop from the bench","The player's photo pops up from the bench corner of the apron with the stat orbiting it.",
+ `.o17 .hs{left:4%;bottom:3%;width:54px;height:54px;border-radius:50%;background:#1d1f25;border:3px solid ${G};display:grid;place-items:center;font:800 18px var(--C);color:${G};transform:translateY(90px);transition:transform .45s cubic-bezier(.3,1.5,.5,1);box-shadow:0 6px 20px rgba(0,0,0,.6)}.o17 .hs.on{transform:none}.o17 .hs b{position:absolute;right:-30px;top:-8px;background:${G};color:#0a0a0c;border-radius:99px;padding:3px 7px;font:800 14px/1 var(--C)}`,
+ r=>{const e=add(r,".st",`TM<b>+3</b>`,"hs");setTimeout(()=>e.classList.add("on"),AT);setTimeout(()=>{e.classList.remove("on");tick(r);feedIn(r)},AT+2300)}],
+["Fantasy-points meter","Each wing carries a running fantasy-value meter; a big play makes yours surge and shake.",
+ `.o18 .fp{left:8px;right:8px;bottom:-1px;height:3px;background:#2a2c33}.o18 .fp i{display:block;height:100%;width:48%;background:${G};transition:width .7s cubic-bezier(.2,.9,.2,1)}.o18 .sb.on{animation:sh .4s}@keyframes sh{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}.o18 .fv{position:static!important;font:800 10px/1 var(--C);letter-spacing:.12em;color:#fff;display:none}.o18 .sb.on .fv{display:block}.o18 .sb.on .l .lv{display:none}`,
+ r=>{add(r,".sb .l",`<i></i>`,"fp");add(r,".sb .l",`MAXEY +7.4 VALUE`,"fv");setTimeout(()=>{q(r,".fp i").style.width="62%";q(r,".sb").classList.add("on");tick(r)},AT);setTimeout(()=>{q(r,".sb").classList.remove("on");feedIn(r)},AT+2400)}],
+["Cinema bars after the play","Nothing during the play. Once it's over, black bars slide in top and bottom with the caption in the bottom bar, like a replay.",
+ `.o19 .bar{left:0;right:0;height:0;background:#000;transition:height .4s;z-index:3;display:flex;align-items:center;justify-content:center;overflow:hidden}.o19 .bar.t{top:0}.o19 .bar.b{bottom:0;font:800 16px/1 var(--C);letter-spacing:.08em}.o19 .bar.b b{color:${G};margin-left:8px}.o19 .st.on .bar{height:16%}`,
+ r=>{add(r,".st","","bar t");add(r,".st",`TYRESE MAXEY · 26-FT THREE<b>+3</b>`,"bar b");const s=q(r,".st");setTimeout(()=>s.classList.add("on"),AT+900);setTimeout(()=>{s.classList.remove("on");tick(r);feedIn(r)},AT+3300)}],
+["Quiet tray","No alert at all. Plays pile up as chips in a tray under the court; tap the tray when you look up.",
+ `.o20 .tr{display:flex;gap:6px;align-items:center;margin:8px 10px 0;padding:6px 8px;border-radius:10px;background:#111216;border:1px solid var(--b);overflow:hidden}.o20 .tr small{font:700 10px/1 var(--C);letter-spacing:.14em;color:var(--m);white-space:nowrap}.o20 .tr span{flex:none;font:800 11.5px/1 var(--C);letter-spacing:.06em;padding:5px 7px;border-radius:6px;background:#1b1c22}.o20 .tr span.n{background:${G};color:#0a0a0c;animation:pop .4s cubic-bezier(.3,1.6,.5,1)}@keyframes pop{from{transform:scale(.3)}}.o20 .tr em{margin-left:auto;font:800 11px var(--C);color:var(--m);font-style:normal}`,
+ r=>{q(r,".st").insertAdjacentHTML("afterend",`<div class="tr"><small>SINCE YOU LOOKED</small><span style="color:${P}">AVDIJA REB</span><span style="color:${G}">IGHODARO REB</span><em>3 ›</em></div>`);setTimeout(()=>{q(r,".tr small").insertAdjacentHTML("afterend",`<span class="n">MAXEY +3</span>`);q(r,".tr em").textContent="4 ›";tick(r)},AT)}]
+];
+O.forEach((o,i)=>css(o[2]));
+function run(i){const box=document.querySelector(`#g${i}`);box.className=`gc o${i+1}`;box.innerHTML=base();void box.offsetWidth;box.classList.add("go");O[i][3](box)}
+document.getElementById("out").innerHTML=O.map((o,i)=>`<div class="opt"><div class="lab"><b>${i+1}</b><span>${o[0]}</span><button data-r="${i}">Replay</button></div><div class="why">${o[1]}</div><div id="g${i}" class="gc"></div></div>`).join("");
+O.forEach((o,i)=>run(i));
+document.addEventListener("click",e=>{const b=e.target.closest("[data-r]");if(b)run(+b.dataset.r)});
+if(!/nocap/.test(location.search)){}const io=window.__noio?null:new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const i=+e.target.id.slice(1);clearTimeout(e.target.__t);e.target.__t=setTimeout(()=>run(i),250)}}),{threshold:.6});
+if(io&&!/still/.test(location.search))document.querySelectorAll(".gc").forEach(g=>io.observe(g));
+</script></body></html>
