@@ -719,7 +719,7 @@ import("./pbp.js?v=4").then(({classify})=>{if(!LIVE)return;
  function silent(e){const r=e.r;Object.entries(e.stats).forEach(([k,v])=>{if(SV[r.side][k]!=null)SV[r.side][k]+=v});tick(Object.keys(e.stats).map(k=>k==="FGM"||k==="FGA"?"FG%":k==="FTM"||k==="FTA"?"FT%":k).filter(k=>CATS.includes(k)))}
  function toFeed(e,hist){const r=e.r;const nm=r.p.n;let d=(e.text||"").replace(/\n/g," ").split(nm).join("").replace(/\s+/g," ").trim();const st=e.stats;const eff=st.PTS?"+"+st.PTS:e.anim?Object.keys(st).find(k=>CATS.includes(k))||"":"—";
   FEED.push({r,q:e.period,t:e.clock,desc:d,eff:eff||"—",hot:!!(st.PTS||(e.anim&&!st.TO)),lc:"",nw:hist?0:1});}
- async function poll(){let sb;try{const et=new Date(new Date().toLocaleString("en-US",{timeZone:"America/New_York"}));if(et.getHours()<6)et.setDate(et.getDate()-1);const d=`${et.getFullYear()}${String(et.getMonth()+1).padStart(2,"0")}${String(et.getDate()).padStart(2,"0")}`;sb=await (await fetch(API+"scoreboard?dates="+d+"&_="+Date.now())).json()}catch(e){return}
+ async function poll(){let sb;try{const et=new Date(new Date().toLocaleString("en-US",{timeZone:"America/New_York"}));if(et.getHours()<6)et.setDate(et.getDate()-1);const d=`${et.getFullYear()}${String(et.getMonth()+1).padStart(2,"0")}${String(et.getDate()).padStart(2,"0")}`;sb=await (await fetch(API+"scoreboard?dates="+(QS.get("date")||d)+"&_="+Date.now())).json()}catch(e){return}
   const evs=(sb.events||[]).filter(ev=>{const c=ev.competitions[0].competitors.map(x=>ab(x.team.abbreviation));return !MYT.size||c.some(t=>MYT.has(t))});
   const live=evs.filter(ev=>ev.status.type.state==="in").length,done=evs.filter(ev=>ev.status.type.state==="post").length,pre=evs.filter(ev=>ev.status.type.state==="pre");
   const PBN=`${live} LIVE · ${done} FINAL · ${pre.length} TO COME`;
@@ -729,9 +729,9 @@ import("./pbp.js?v=4").then(({classify})=>{if(!LIVE)return;
    const E=classify(plays);
    for(const e of E){const r=BY[e.athlete];if(!r)continue;const key=e.src[0]+":"+e.athlete+":"+(e.role||"");if(SEEN.has(key))continue;
     const settled=stt==="post"||lp>e.period||secs(e.clock)-lc>9;if(!settled)continue;SEEN.add(key);e.r=r;if(e.role==="passer")e.anim="Assist";
-    if(first){toFeed(e,1);continue}
+    if(first&&!QS.get("replay")){toFeed(e,1);continue}
     if(!e.anim){silent(e);toFeed(e);continue}
-    if(LQ.length>=4){silent(e);toFeed(e)}else LQ.push(e)}
+    if(LQ.length>=(QS.get("replay")?12:4)){silent(e);toFeed(e)}else LQ.push(e)}
    G[ev.id]=stt}
   first=false;renderFeed();document.getElementById("pbn").textContent=PBN;window.__live={q:LQ.length,seen:SEEN.size,games:evs.length,live}}
  poll();setInterval(poll,20000);
