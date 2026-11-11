@@ -734,7 +734,7 @@ import("./pbp.js?v=4").then(({classify})=>{if(!LIVE)return;
     const settled=stt==="post"||lp>e.period||secs(e.clock)-lc>9;if(!settled)continue;SEEN.add(key);e.r=r;if(e.role==="passer")e.anim="Assist";
     if(first&&!QS.get("replay")){toFeed(e,1);continue}
     if(!e.anim){silent(e);toFeed(e);continue}
-    if(LQ.length>=(QS.get("replay")?12:4)){silent(e);toFeed(e)}else LQ.push(e)}
+    if(LQ.length>=(QS.get("replay")?9999:4)){silent(e);toFeed(e)}else LQ.push(e)}
    G[ev.id]=stt}
   first=false;renderFeed();document.getElementById("pbn").textContent=PBN;window.__live={q:LQ.length,seen:SEEN.size,games:evs.length,live}}
  poll();setInterval(poll,20000);
