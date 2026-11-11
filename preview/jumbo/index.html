@@ -1,0 +1,122 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Arena Jumbotron</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--g:#f5b82e;--p:#9d7bff;--C:"Barlow Condensed","Arial Narrow",sans-serif;--L:"Orbitron","Barlow Condensed",sans-serif;--b:#23252c;--m:#8a8d96}
+*{box-sizing:border-box}html,body{margin:0;background:#050506;color:#eef0f3;font:14px Inter,-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.w{max-width:520px;margin:0 auto;padding-bottom:60px}
+h1{margin:0;padding:16px 14px 4px;font:800 26px/1 var(--C);letter-spacing:.04em;text-transform:uppercase}
+.sub{padding:0 14px 6px;color:var(--m);font-size:12.5px;line-height:1.45}
+.opt{padding:22px 0 4px}
+.lab{display:flex;align-items:baseline;gap:8px;padding:0 14px;margin-bottom:4px}
+.lab b{font:800 13px/1 var(--C);letter-spacing:.12em;color:#0a0a0c;background:#eef0f3;padding:4px 7px;border-radius:5px}
+.lab span{font:700 16px/1 var(--C);letter-spacing:.08em;text-transform:uppercase}
+.lab button{margin-left:auto;border:1px solid var(--b);background:#111216;color:#eee;border-radius:99px;font:700 11px/1 var(--C);letter-spacing:.12em;padding:6px 10px}
+.why{padding:0 14px 10px;color:var(--m);font-size:12px;line-height:1.4}
+.gc{position:relative;margin:0 8px;border:1px solid #2a2c33;border-radius:20px;overflow:hidden;background:#050506}
+/* top scoreboard (S17) */
+.sb{display:flex;align-items:stretch;height:52px;margin:8px 8px 0}
+.sb .wg{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:4px;padding:0 8px}
+.sb .l{background:linear-gradient(90deg,transparent,rgba(245,184,46,.2));border-bottom:3px solid var(--g)}
+.sb .r{background:linear-gradient(270deg,transparent,rgba(157,123,255,.22));border-bottom:3px solid var(--p);align-items:flex-end}
+.sb .nm{font:700 12px/1 var(--C);letter-spacing:.12em;white-space:nowrap}.sb .l .nm{color:var(--g)}.sb .r .nm{color:var(--p)}
+.sb .lv{font:700 9.5px/1 var(--C);letter-spacing:.2em;color:#ff4d4d}.sb .wp{font:600 10.5px/1 var(--C);letter-spacing:.1em;color:#a8abb3}
+.sb .ct{flex:none;background:#fff;color:#0a0a0c;padding:0 18px;display:flex;align-items:center;gap:8px;font:800 32px/1 var(--C);clip-path:polygon(10% 0,90% 0,100% 100%,0 100%);margin:0 -4px}
+.sb .ct em{font:500 13px/1 var(--C);opacity:.45;font-style:normal}
+/* category strip (C1) with +N floats, no glow */
+.cs{display:grid;grid-template-columns:repeat(9,1fr);margin:8px;border-radius:12px;background:#111216;border:1px solid var(--b);padding:5px 0}
+.cs div{text-align:center;padding:3px 0 7px;position:relative}.cs div+div{border-left:1px solid #1d1f25}
+.cs small{display:block;font:700 9px/1 var(--C);letter-spacing:.14em;color:var(--m)}
+.cs b{display:block;font:800 13px/1.25 var(--C);margin-top:2px;transition:color .3s}.cs b.m{color:var(--g)}.cs b.o{color:var(--p)}.cs b.m.hot{color:#fff}
+.cs i{position:absolute;left:18%;right:18%;bottom:2px;height:3px;border-radius:3px}
+.cs .up{position:absolute;left:50%;top:-4px;font:800 15px/1 var(--C);color:var(--g);pointer-events:none;animation:up 1.5s ease-out forwards}
+@keyframes up{0%{opacity:0;transform:translate(-50%,12px)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-26px)}}
+/* stage */
+.st{position:relative;aspect-ratio:804/504;background:#07080b url(../popups/stage.webp) center/cover;overflow:hidden}
+.dot{position:absolute;width:9px;height:9px;border-radius:50%;background:var(--g);box-shadow:0 0 0 3px rgba(245,184,46,.25);left:40%;top:78%;opacity:0}
+.go .dot{animation:dot 1.6s ease-in-out forwards}
+@keyframes dot{0%{opacity:1;left:40%;top:80%}55%{left:28%;top:72%}70%{opacity:1}100%{opacity:0;left:28%;top:72%}}
+.ball{position:absolute;width:6px;height:6px;border-radius:50%;background:#e8762c;left:28%;top:70%;opacity:0}
+.go .ball{animation:ball 1s .9s ease-out forwards}
+@keyframes ball{0%{opacity:1;left:28%;top:70%}50%{top:56%}100%{opacity:0;left:10.5%;top:60%}}
+/* upper-deck ribbon ticker */
+.rb{position:absolute;left:0;right:0;top:15.6%;height:3.4%;background:#060607;overflow:hidden}
+.rb span{position:absolute;white-space:nowrap;top:50%;transform:translateY(-50%);font:800 9.5px/1 var(--C);letter-spacing:.22em;color:#5c5f68;animation:mq 14s linear infinite}
+.rb.on{background:var(--g);box-shadow:0 0 14px rgba(245,184,46,.55)}.rb.on span{color:#0a0a0c;animation-duration:4.5s}
+@keyframes mq{from{left:100%}to{left:-160%}}
+/* jumbotron */
+.jb{position:absolute;z-index:3;background:#030304;border-radius:7px;overflow:hidden;box-shadow:0 0 0 2px #1b1c21,0 0 0 4px #0b0b0d,0 10px 26px rgba(0,0,0,.7);transition:box-shadow .3s}
+.jb:before{content:"";position:absolute;inset:0;background:radial-gradient(circle,rgba(255,255,255,.05) .7px,transparent 1px) 0 0/3px 3px;pointer-events:none;z-index:4}
+.jb:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.07),transparent 40%);pointer-events:none;z-index:4}
+.jb .sc,.jb .pl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:opacity .25s,transform .35s cubic-bezier(.2,.9,.2,1)}
+.jb .pl{opacity:0;transform:translateY(30%);flex-direction:column;gap:3px}
+.jb.on{box-shadow:0 0 0 2px var(--g),0 0 0 4px #0b0b0d,0 0 30px rgba(245,184,46,.55)}
+.jb.on .sc{opacity:0;transform:translateY(-30%)}.jb.on .pl{opacity:1;transform:none}
+.jb.flash{animation:fl .45s}
+@keyframes fl{0%{filter:brightness(3)}100%{filter:none}}
+.led{font-family:var(--L);font-weight:900;letter-spacing:.06em}
+.gl{color:var(--g);text-shadow:0 0 8px rgba(245,184,46,.7)}.pu{color:var(--p);text-shadow:0 0 8px rgba(157,123,255,.7)}.wh{color:#fff;text-shadow:0 0 8px rgba(255,255,255,.5)}
+.ty{white-space:nowrap;overflow:hidden;border-right:2px solid var(--g);animation:car .6s steps(1) infinite}
+@keyframes car{50%{border-color:transparent}}
+/* variant A: center-hung, replaces the top scoreboard */
+.va .jb{left:50%;top:3%;width:54%;height:34%;transform:translateX(-50%)}
+.va .jb .chain{position:absolute}
+.va .sc{gap:10px}.va .sc .tm{display:flex;flex-direction:column;align-items:center;gap:2px}.va .sc .tm small{font:700 8px/1 var(--L);letter-spacing:.14em}
+.va .sc .n{font-size:30px;line-height:1}.va .sc .md{display:flex;flex-direction:column;align-items:center;gap:4px;font:700 7.5px/1 var(--L);letter-spacing:.18em;color:#9aa0aa}.va .sc .md b{color:#ff4d4d}
+.va .pl .a{font-size:14px}.va .pl .b{font-size:11px}
+.cable{position:absolute;top:0;width:1px;height:3%;background:#3a3b40;z-index:2}
+/* variant B: long upper-wall board */
+.vb .jb{left:4%;right:4%;top:22%;height:16%;border-radius:4px}
+.vb .sc{justify-content:space-between;padding:0 12px}.vb .sc .n{font-size:20px}.vb .sc span{display:flex;align-items:center;gap:8px;font-size:10px}
+.vb .sc .md{font:700 8px/1 var(--L);letter-spacing:.2em;color:#9aa0aa}.vb .sc .md b{color:#ff4d4d}
+.vb .pl{flex-direction:row;gap:10px}.vb .pl .a{font-size:13px}.vb .pl .b{font-size:13px}
+/* variant C: keep top scoreboard, side screen in the corner of the crowd */
+.vc .jb{right:4%;top:22%;width:36%;height:26%;transform:perspective(300px) rotateY(-14deg)}
+.vc .sc{flex-direction:column;gap:3px}.vc .sc .lg{font-size:11px;letter-spacing:.2em}.vc .sc small{font:700 7px/1 var(--L);letter-spacing:.2em;color:#6d717a}
+.vc .pl .a{font-size:11px}.vc .pl .b{font-size:9.5px}
+.fd{padding:6px 10px 10px;position:relative}
+.fd:before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--b)}
+.tl{display:flex;align-items:center;margin:6px 0;position:relative}.tl.op{flex-direction:row-reverse}
+.tl .cd{flex:1;min-width:0;background:#17181d;border:1px solid var(--b);border-radius:10px;padding:7px 9px}
+.tl.me .cd{border-right:3px solid var(--g);text-align:right}.tl.op .cd{border-left:3px solid var(--p)}
+.tl .h{font:800 13.5px/1 var(--C);letter-spacing:.04em}.tl.me .h span{color:var(--g)}.tl.op .h span{color:var(--p)}
+.tl .d{font-size:11px;color:var(--m);margin-top:3px}
+.tl .tm{flex:none;width:46px;text-align:center;font:700 9.5px/1.25 var(--C);color:#8a8e98;background:#0b0c0f;padding:3px 0;z-index:1}
+.tl .sp{flex:1}.tl.nw .cd{animation:nw .5s cubic-bezier(.2,.9,.2,1)}@keyframes nw{from{transform:translateY(-10px);opacity:0}}
+</style></head><body><div class="w">
+<h1>Arena jumbotron</h1>
+<div class="sub">The score lives on a jumbotron in the stands. When your player does something it flashes, the play types out on it, the upper-deck ribbon scrolls it, and the category numbers tick up with +3 / +1. Nothing touches the floor. Three placements to compare; each loops.</div>
+<div id="out"></div>
+</div>
+<script>
+const G="#f5b82e",P="#9d7bff";
+const CATS=[["PTS",412,405],["REB",168,173],["AST",101,96],["STL",28,30],["BLK",19,22],["3PM",44,42],["FG%",".472",".458"],["FT%",".810",".762"],["TO",52,49]];
+const lead=c=>{const a=parseFloat(c[1]),b=parseFloat(c[2]);return c[0]==="TO"?a<b:a>b};
+const q=(r,s)=>r.querySelector(s);
+const SB=`<div class="sb"><div class="wg l"><span class="nm">ACL ENAYILERI</span><span class="lv">● LIVE</span></div><div class="ct"><span>5</span><em>–</em><span>4</span></div><div class="wg r"><span class="nm">PIERRE CROCKRELL</span><span class="wp">WIN 56%</span></div></div>`;
+const CS=`<div class="cs">${CATS.map(c=>`<div data-c="${c[0]}"><small>${c[0]}</small><b class="m">${c[1]}</b><b class="o">${c[2]}</b><i style="background:${lead(c)?G:P}"></i></div>`).join("")}</div>`;
+const RB=`<div class="rb"><span>FANTASY PLUS · ACL ENAYILERI 5 – 4 PIERRE CROCKRELL BC · WEEK 4 · FANTASY PLUS · ACL ENAYILERI 5 – 4 PIERRE CROCKRELL BC · WEEK 4</span></div>`;
+const FD=`<div class="fd"><div class="tl op"><div class="cd"><div class="h">Avdija <span>REB</span></div><div class="d">defensive rebound</div></div><span class="tm">Q1<br>7:44</span><div class="sp"></div></div></div>`;
+const PLAY=`<div class="pl"><div class="led a wh ty" data-ty="TYRESE MAXEY"></div><div class="led b gl">THREE POINTER +3</div></div>`;
+const V=[
+ ["va","Center-hung, replaces the scoreboard","The jumbotron hangs over the stands and is the scoreboard. The top bar goes away, so the screen gets taller and simpler.",
+  ()=>`${CS}<div class="st"><i class="cable" style="left:35%"></i><i class="cable" style="left:65%"></i>${RB}<div class="jb"><div class="sc"><div class="tm"><span class="led n gl">5</span><small class="gl">ACL</small></div><div class="md"><b>● LIVE</b><span>WEEK 4</span><span class="wh">WIN 56%</span></div><div class="tm"><span class="led n pu">4</span><small class="pu">PIE</small></div></div>${PLAY}</div><div class="dot"></div><div class="ball"></div></div>${FD}`],
+ ["vb","Long board on the upper wall","A wide LED wall across the upper deck. Reads like a real arena's fascia board and leaves the middle of the crowd open.",
+  ()=>`${CS}<div class="st">${RB}<div class="jb"><div class="sc"><span><b class="led n gl">5</b><b class="led gl">ACL</b></span><span class="md"><b>● LIVE</b> · WEEK 4 · <span class="wh">WIN 56%</span></span><span><b class="led pu">PIE</b><b class="led n pu">4</b></span></div>${PLAY}</div><div class="dot"></div><div class="ball"></div></div>${FD}`],
+ ["vc","Keep the top scoreboard + corner screen","The scoreboard stays where it is now. A smaller angled screen in the corner of the stands carries the plays and the arena logo between plays.",
+  ()=>`${SB}${CS}<div class="st">${RB}<div class="jb"><div class="sc"><span class="led lg wh">FANTASY+</span><small>WEEK 4 · LIVE</small></div>${PLAY}</div><div class="dot"></div><div class="ball"></div></div>${FD}`]
+];
+function type(el,txt,ms){el.textContent="";let i=0;const t=setInterval(()=>{el.textContent=txt.slice(0,++i);if(i>=txt.length)clearInterval(t)},ms)}
+function count(el,a,b){const t0=performance.now();const f=()=>{const u=Math.min(1,(performance.now()-t0)/700);el.textContent=Math.round(a+(b-a)*u);if(u<1)requestAnimationFrame(f)};f()}
+function run(i){const box=document.getElementById("g"+i);box.className="gc "+V[i][0];box.innerHTML=V[i][3]();void box.offsetWidth;box.classList.add("go");
+ clearTimeout(box.__a);clearTimeout(box.__b);clearTimeout(box.__c);
+ box.__a=setTimeout(()=>{const jb=q(box,".jb"),rb=q(box,".rb");jb.classList.add("flash","on");type(q(jb,"[data-ty]"),"TYRESE MAXEY",55);
+  rb.classList.add("on");q(rb,"span").textContent="TYRESE MAXEY · THREE POINTER · +3 PTS · +1 3PM · TYRESE MAXEY · THREE POINTER · +3 PTS · +1 3PM";
+  [["PTS",412,415,"+3"],["3PM",44,45,"+1"]].forEach(([c,a,b,t])=>{const d=q(box,`[data-c="${c}"]`),m=q(d,".m");m.classList.add("hot");count(m,a,b);d.insertAdjacentHTML("beforeend",`<span class="up">${t}</span>`);setTimeout(()=>m.classList.remove("hot"),1400)})},1700);
+ box.__b=setTimeout(()=>{const jb=q(box,".jb"),rb=q(box,".rb");jb.classList.remove("on");rb.classList.remove("on");q(rb,"span").textContent="FANTASY PLUS · ACL ENAYILERI 5 – 4 PIERRE CROCKRELL BC · WIN 59% · FANTASY PLUS · ACL ENAYILERI 5 – 4 PIERRE CROCKRELL BC · WIN 59%";const w=q(box,".md .wh,.sb .wp");if(w)w.textContent="WIN 59%";q(box,".fd").insertAdjacentHTML("afterbegin",`<div class="tl me nw"><div class="cd"><div class="h">Maxey <span>+3</span></div><div class="d">26-foot pull-up three</div></div><span class="tm">Q2<br>4:12</span><div class="sp"></div></div>`)},4600);
+ box.__c=setTimeout(()=>{if(!/still/.test(location.search))run(i)},8200)}
+document.getElementById("out").innerHTML=V.map((v,i)=>`<div class="opt"><div class="lab"><b>${"ABC"[i]}</b><span>${v[1]}</span><button data-r="${i}">Replay</button></div><div class="why">${v[2]}</div><div id="g${i}" class="gc"></div></div>`).join("");
+V.forEach((v,i)=>setTimeout(()=>run(i),i*900));
+document.addEventListener("click",e=>{const b=e.target.closest("[data-r]");if(b)run(+b.dataset.r)});
+</script></body></html>
